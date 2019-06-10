@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -60,6 +61,7 @@ public class SystemConfiguration extends DomainEntity {
 
 	@NotNull
 	@NotEmpty
+	@ElementCollection
 	public Map<String, String> getWelcomeMessage() {
 		return welcomeMessage;
 	}
@@ -70,6 +72,7 @@ public class SystemConfiguration extends DomainEntity {
 
 	@NotNull
 	@NotEmpty
+	@ElementCollection
 	public Map<String, String> getTopics() {
 		return topics;
 	}
@@ -80,6 +83,7 @@ public class SystemConfiguration extends DomainEntity {
 
 	@NotNull
 	@NotEmpty
+	@ElementCollection
 	public Map<String, String> getVoidWords() {
 		return voidWords;
 	}

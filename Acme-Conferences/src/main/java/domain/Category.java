@@ -5,9 +5,12 @@ import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -28,6 +31,7 @@ public class Category extends DomainEntity {
 
 	@NotNull
 	@NotEmpty
+	@ElementCollection
 	public Map<String, String> getTitle() {
 		return title;
 	}
@@ -37,6 +41,7 @@ public class Category extends DomainEntity {
 	}
 
 	@Valid
+	@ManyToOne(optional = true)
 	public Category getParentCategory() {
 		return parentCategory;
 	}
@@ -46,6 +51,8 @@ public class Category extends DomainEntity {
 	}
 
 	@Valid
+	@ElementCollection
+	@OneToMany
 	public Collection<Category> getChildCategories() {
 		return childCategories;
 	}
