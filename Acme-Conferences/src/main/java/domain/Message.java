@@ -6,9 +6,11 @@ import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -62,6 +64,7 @@ public class Message extends DomainEntity {
 
 	@NotNull
 	@NotEmpty
+	@ElementCollection
 	public Map<String, String> getTopic() {
 		return topic;
 	}
@@ -73,7 +76,8 @@ public class Message extends DomainEntity {
 	@Valid
 	@NotNull
 	@NotEmpty
-	@ManyToOne(optional = false)
+	@ElementCollection
+	@ManyToMany
 	public Collection<Actor> getReciever() {
 		return reciever;
 	}
@@ -82,6 +86,10 @@ public class Message extends DomainEntity {
 		this.reciever = reciever;
 	}
 
+	@Valid
+	@NotNull
+	@NotEmpty
+	@ManyToOne(optional = false)
 	public Actor getSender() {
 		return sender;
 	}
