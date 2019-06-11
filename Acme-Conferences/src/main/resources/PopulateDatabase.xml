@@ -10,6 +10,236 @@
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<!-- USER ACCOUNTS -->
 
+	<!-- ADMINISTRATORS -->
 
+	<bean id="userAdmin1" class="security.UserAccount">
+		<property name="username" value="admin" />
+		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAdmin2" class="security.UserAccount">
+		<property name="username" value="admin2" />
+		<property name="password" value="c84258e9c39059a89ab77d846ddab909" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ADMIN" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- REVIEWERS -->
+
+	<bean id="userReviewer1" class="security.UserAccount">
+		<property name="username" value="reviewer1" />
+		<property name="password" value="6ce19528a40dde9521d97cf7ba264eca" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="REVIEWER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userReviewer2" class="security.UserAccount">
+		<property name="username" value="reviewer2" />
+		<property name="password" value="2693b57f0f59df94caacefb811e99851" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="REVIEWER" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- AUTHORS -->
+
+	<bean id="userAuthor1" class="security.UserAccount">
+		<property name="username" value="author1" />
+		<property name="password" value="b312ba4ffd5245fa2a1ab819ec0d0347" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="AUTHOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userAuthor2" class="security.UserAccount">
+		<property name="username" value="author2" />
+		<property name="password" value="9bd97baef2b853ec00cc3cffd269f679" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="AUTHOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- SPONSORS -->
+
+	<bean id="userSponsor1" class="security.UserAccount">
+		<property name="username" value="sponsor1" />
+		<property name="password" value="42c63ad66d4dc07ed17753772bef96d6" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="SPONSOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="userSponsor2" class="security.UserAccount">
+		<property name="username" value="sponsor2" />
+		<property name="password" value="3dc67f80a03324e01b1640f45d107485" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="SPONSOR" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ACTORS -->
+
+	<!-- ADMINISTATOR -->
+
+	<bean id="administrator1" class="domain.Administrator">
+		<property name="name" value="Boros" />
+		<property name="surname" value="Dominator of the Universe" />
+		<property name="photo"
+			value="https://vignette.wikia.nocookie.net/onepunchman/images/c/ce/Boros_color.jpg/revision/latest?cb=20151017212925" />
+		<property name="email" value="boros@yahoo.com" />
+		<property name="phoneNumber" value="+34666666666" />
+		<property name="address" value="C/ Collapsing Star Roaring Cannon" />
+		<property name="userAccount" ref="userAdmin1" />
+		<property name="finder" ref="finderAdmin1" />
+	</bean>
+
+	<bean id="administrator2" class="domain.Administrator">
+		<property name="name" value="Mozgus" />
+		<property name="surname" value="The Great Angel" />
+		<property name="photo"
+			value="https://vignette.wikia.nocookie.net/berserk/images/0/05/Mozgus_Manga.jpg/revision/latest/scale-to-width-down/250?cb=20140416220234" />
+		<property name="email" value="mozgus@gmail.com" />
+		<property name="phoneNumber" value="+34698652413" />
+		<property name="address" value="C/ Holy See" />
+		<property name="userAccount" ref="userAdmin2" />
+		<property name="finder" ref="finderAdmin2" />
+	</bean>
+
+	<!-- REVIEWERS -->
+
+	<bean id="reviewer1" class="domain.Reviewer">
+		<property name="name" value="Frieza" />
+		<property name="surname" value="Agent of Destruction" />
+		<property name="photo"
+			value="https://vignette.wikia.nocookie.net/dragonball/images/8/83/Frieza_DBZ_Ep_85_002v2.png/revision/latest/scale-to-width-down/278?cb=20170920193805" />
+		<property name="email" value="frieza@hotmail.com" />
+		<property name="phoneNumber" value="+34615243875" />
+		<property name="address" value="C/ Planet Namek" />
+		<property name="keywords"
+			value="ruler,emperor,agent of destruction,proud,evil,strong,mithic,short" />
+		<property name="userAccount" ref="userReviewer1" />
+		<property name="finder" ref="finderReviewer1" />
+	</bean>
+
+	<bean id="reviewer2" class="domain.Reviewer">
+		<property name="name" value="Dio" />
+		<property name="surname" value="Brando" />
+		<property name="photo"
+			value="https://vignette.wikia.nocookie.net/jjba/images/1/18/Dio3Anime.png/revision/latest/scale-to-width-down/270?cb=20170301013659" />
+		<property name="email" value="dio@outlook.com" />
+		<property name="phoneNumber" value="+34685742458" />
+		<property name="address" value="C/ Phantom Blood" />
+		<property name="keywords" value="evil,fabulous,vampire,stand user,time-saver" />
+		<property name="userAccount" ref="userReviewer2" />
+		<property name="finder" ref="finderReviewer2" />
+	</bean>
+
+	<!-- AUTHOR -->
+
+	<bean id="author1" class="domain.Author">
+		<property name="name" value="King Bradley" />
+		<property name="surname" value="Wrath" />
+		<property name="photo"
+			value="https://vignette.wikia.nocookie.net/fma/images/0/0b/KingBradley1080p.png/revision/latest/scale-to-width-down/310?cb=20161230194652" />
+		<property name="email" value="bradley@mail.com" />
+		<property name="phoneNumber" value="+34697854321" />
+		<property name="address" value="C/ Amestris" />
+		<property name="userAccount" ref="userAuthor1" />
+		<property name="finder" ref="finderAuthor1" />
+	</bean>
+
+	<bean id="author2" class="domain.Author">
+		<property name="name" value="Meruem" />
+		<property name="surname" value="Chimera Ants' King" />
+		<property name="photo"
+			value="https://vignette.wikia.nocookie.net/hunterxhunter/images/7/71/91_-_Meruem%27s_cruel_nature.png/revision/latest/scale-to-width-down/250?cb=20131008123029" />
+		<property name="email" value="meruem@yahoo.com" />
+		<property name="phoneNumber" value="+34658974582" />
+		<property name="address" value="C/ Chimera ants' nest" />
+		<property name="userAccount" ref="userAuthor2" />
+		<property name="finder" ref="finderAuthor2" />
+	</bean>
+
+	<!-- SPONSOR -->
+
+	<bean id="sponsor1" class="domain.Sponsor">
+		<property name="name" value="Ragyo" />
+		<property name="surname" value="Kiryuin" />
+		<property name="photo"
+			value="https://vignette.wikia.nocookie.net/kill-la-kill/images/1/12/Ep11-ragyoclose.jpg/revision/latest/scale-to-width-down/275?cb=20131213232653" />
+		<property name="email" value="raygo@gmail.com" />
+		<property name="phoneNumber" value="+34678765412" />
+		<property name="address" value="C/ Chimera ants' nest" />
+		<property name="userAccount" ref="userSponsor1" />
+		<property name="finder" ref="finderSponsor1" />
+	</bean>
+
+	<bean id="sponsor2" class="domain.Sponsor">
+		<property name="name" value="Madara" />
+		<property name="surname" value="Uchiha" />
+		<property name="photo"
+			value="https://vignette.wikia.nocookie.net/naruto/images/0/0c/Madara_img2.png/revision/latest/scale-to-width-down/300?cb=20160115141947" />
+		<property name="email" value="madara@hotmail.com" />
+		<property name="phoneNumber" value="+34678766412" />
+		<property name="address" value="C/ Hidden Leaf Village" />
+		<property name="userAccount" ref="userSponsor2" />
+		<property name="finder" ref="finderSponsor2" />
+	</bean>
+
+	<!-- FINDERS -->
+
+	<bean id="finderAdmin1" class="domain.Finder"></bean>
+
+	<bean id="finderAdmin2" class="domain.Finder"></bean>
+
+	<bean id="finderReviewer1" class="domain.Finder"></bean>
+
+	<bean id="finderReviewer2" class="domain.Finder"></bean>
+
+	<bean id="finderAuthor1" class="domain.Finder"></bean>
+
+	<bean id="finderAuthor2" class="domain.Finder"></bean>
+
+	<bean id="finderSponsor1" class="domain.Finder"></bean>
+
+	<bean id="finderSponsor2" class="domain.Finder"></bean>
 </beans>
