@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -24,7 +25,7 @@ public class Activity extends DomainEntity {
 	private Date startMoment;
 	private Double duration;
 	private Conference conference;
-	private Paper paper;
+	private Submission submission;
 
 	/* Getters and setters */
 
@@ -106,12 +107,12 @@ public class Activity extends DomainEntity {
 	}
 
 	@Valid
-	@ManyToOne(optional = true)
-	public Paper getPaper() {
-		return paper;
+	@OneToOne(optional = true)
+	public Submission getSubmission() {
+		return submission;
 	}
 
-	public void setPaper(Paper paper) {
-		this.paper = paper;
+	public void setSubmission(Submission submission) {
+		this.submission = submission;
 	}
 }
