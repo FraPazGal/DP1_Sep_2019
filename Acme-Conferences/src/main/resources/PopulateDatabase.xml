@@ -705,9 +705,9 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- CONFERENCES -->
-	
+
 	<bean id="conference1" class="domain.Conference">
 		<property name="title" value="Primera conferencia de plantas ever" />
 		<property name="acronym" value="PCPE" />
@@ -723,9 +723,10 @@
 		<property name="category" ref="Plants" />
 		<property name="administrator" ref="administrator1" />
 	</bean>
-	
+
 	<bean id="conference2" class="domain.Conference">
-		<property name="title" value="Posible conferencia de animales (provisional)" />
+		<property name="title"
+			value="Posible conferencia de animales (provisional)" />
 		<property name="acronym" value="TBD" />
 		<property name="summary" value="Va a ser de animales y será una conferencia" />
 		<property name="venue" value="Por determinar" />
@@ -739,11 +740,12 @@
 		<property name="category" ref="Animals" />
 		<property name="administrator" ref="administrator1" />
 	</bean>
-	
+
 	<bean id="conference3" class="domain.Conference">
 		<property name="title" value="Conferencia de Ing. del Software" />
 		<property name="acronym" value="CIS" />
-		<property name="summary" value="Conferencia que fomenta la inscripción de nuevos estudiantes en la carrega de Ing. del Software" />
+		<property name="summary"
+			value="Conferencia que fomenta la inscripción de nuevos estudiantes en la carrega de Ing. del Software" />
 		<property name="venue" value="ETSII" />
 		<property name="submissionDeadline" value="06/20/2019 23:59" />
 		<property name="notificationDealine" value="06/25/2020 23:59" />
@@ -755,7 +757,7 @@
 		<property name="category" ref="SoftwareEngineering" />
 		<property name="administrator" ref="administrator1" />
 	</bean>
-	
+
 	<bean id="conference4" class="domain.Conference">
 		<property name="title" value="Posible conferencia de fungi (provisional)" />
 		<property name="acronym" value="TBD" />
@@ -771,9 +773,10 @@
 		<property name="category" ref="Fungi" />
 		<property name="administrator" ref="administrator1" />
 	</bean>
-	
+
 	<bean id="conference5" class="domain.Conference">
-		<property name="title" value="Posible conferencia de BIG DATA (provisional)" />
+		<property name="title"
+			value="Posible conferencia de BIG DATA (provisional)" />
 		<property name="acronym" value="TBD" />
 		<property name="summary" value="Va a ser de Big Data y será una conferencia" />
 		<property name="venue" value="Por determinar" />
@@ -787,9 +790,10 @@
 		<property name="category" ref="BigData" />
 		<property name="administrator" ref="administrator1" />
 	</bean>
-	
+
 	<bean id="conference6" class="domain.Conference">
-		<property name="title" value="Posible conferencia de REGRESSION (provisional)" />
+		<property name="title"
+			value="Posible conferencia de REGRESSION (provisional)" />
 		<property name="acronym" value="TBD" />
 		<property name="summary" value="Va a ser de regresión y será una conferencia" />
 		<property name="venue" value="Por determinar" />
@@ -803,7 +807,7 @@
 		<property name="category" ref="Regression" />
 		<property name="administrator" ref="administrator2" />
 	</bean>
-	
+
 	<bean id="conference7" class="domain.Conference">
 		<property name="title" value="Posible conferencia de FISICA (provisional)" />
 		<property name="acronym" value="TBD" />
@@ -919,4 +923,279 @@
 		<property name="sender" ref="author1" />
 	</bean>
 
+	<!-- ACTIVITY -->
+
+	<!-- CONFERENCE 1 ACTIVITIES -->
+
+	<bean id="activity1Conference1" class="domain.Activity">
+		<property name="title" value="Presentation of the conference" />
+		<property name="speakersInvolved" value="Too many" />
+		<property name="summary"
+			value="The director will introduce the audience to what is coming next" />
+		<property name="usedRoom" value="A3.10" />
+		<property name="attachement" value="https://timetablepdf.com" />
+		<property name="startMoment" value="09/01/2020 09:01" />
+		<property name="duration" value="25" />
+		<property name="conference" ref="conference1" />
+		<!-- <property name="submission" ref="" /> -->
+	</bean>
+
+	<bean id="activity2Conference1" class="domain.Activity">
+		<property name="title" value="Identify plants contest" />
+		<property name="speakersInvolved" value="Too many" />
+		<property name="summary"
+			value="The audience will have to identify some plants" />
+		<property name="usedRoom" value="A3.10" />
+		<property name="attachement" value="https://todaslasplantas.com" />
+		<property name="startMoment" value="09/01/2020 09:30" />
+		<property name="duration" value="120" />
+		<property name="conference" ref="conference1" />
+		<!-- <property name="submission" ref="" /> -->
+	</bean>
+
+	<bean id="activity3Conference1" class="domain.Activity">
+		<property name="title" value="Talk about climate change" />
+		<property name="speakersInvolved" value="Too many" />
+		<property name="summary"
+			value="Some scientists will talk about climate change and the importance of planting more trees to prevent it" />
+		<property name="usedRoom" value="A3.10" />
+		<property name="attachement" value="https://climatechange.com" />
+		<property name="startMoment" value="09/01/2020 16:00" />
+		<property name="duration" value="300" />
+		<property name="conference" ref="conference1" />
+		<!-- <property name="submission" ref="" /> -->
+	</bean>
+
+	<bean id="activity4Conference1" class="domain.Activity">
+		<property name="title" value="Closing the event" />
+		<property name="speakersInvolved" value="Too many" />
+		<property name="summary"
+			value="The director will close the event and thank everyone for coming to the conference" />
+		<property name="usedRoom" value="A3.10" />
+		<property name="attachement" value="https://seeulateralligator.com" />
+		<property name="startMoment" value="09/01/2020 21:30" />
+		<property name="duration" value="25" />
+		<property name="conference" ref="conference1" />
+		<!-- <property name="submission" ref="" /> -->
+	</bean>
+
+	<!-- CONFERENCE 3 ACTIVITIES -->
+
+	<bean id="activity1Conference3" class="domain.Activity">
+		<property name="title" value="Presentation of the conference" />
+		<property name="speakersInvolved" value="Too many and more" />
+		<property name="summary"
+			value="The director will introduce the audience to what is coming next" />
+		<property name="usedRoom" value="Events room" />
+		<property name="attachement" value="https://timetablepdf.com" />
+		<property name="startMoment" value="07/01/2020 09:01" />
+		<property name="duration" value="25" />
+		<property name="conference" ref="conference3" />
+		<!-- <property name="submission" ref="" /> -->
+	</bean>
+
+	<bean id="activity2Conference3" class="domain.Activity">
+		<property name="title" value="What is Software engineering?" />
+		<property name="speakersInvolved" value="Too many and more" />
+		<property name="summary"
+			value="Some proffesionals will talk about what is SE and the importance of having qualified people in this environment" />
+		<property name="usedRoom" value="Events room" />
+		<property name="attachement" value="https://whatisit.com" />
+		<property name="startMoment" value="07/01/2020 09:30" />
+		<property name="duration" value="120" />
+		<property name="conference" ref="conference3" />
+		<!-- <property name="submission" ref="" /> -->
+	</bean>
+
+	<bean id="activity3Conference3" class="domain.Activity">
+		<property name="title"
+			value="Talk about job opportunities for young people" />
+		<property name="speakersInvolved" value="Too many and more" />
+		<property name="summary"
+			value="There will be some businessman talking about job opportunities and offers at their company" />
+		<property name="usedRoom" value="Events room" />
+		<property name="attachement" value="https://opportunities.com" />
+		<property name="startMoment" value="07/01/2020 16:00" />
+		<property name="duration" value="300" />
+		<property name="conference" ref="conference3" />
+		<!-- <property name="submission" ref="" /> -->
+	</bean>
+
+	<bean id="activity4Conference3" class="domain.Activity">
+		<property name="title"
+			value="Talk about how to improve myself at software engineering" />
+		<property name="speakersInvolved" value="Too many and more" />
+		<property name="summary"
+			value="There will be some businessman talking about how can you improve yourself." />
+		<property name="usedRoom" value="A3.10" />
+		<property name="attachement" value="https://improveyourself.com" />
+		<property name="startMoment" value="07/01/2020 16:00" />
+		<property name="duration" value="300" />
+		<property name="conference" ref="conference3" />
+		<!-- <property name="submission" ref="" /> -->
+	</bean>
+
+	<bean id="activity5Conference3" class="domain.Activity">
+		<property name="title" value="Closing the event" />
+		<property name="speakersInvolved" value="Too many and more" />
+		<property name="summary"
+			value="The director will close the event and thank everyone for coming to the conference" />
+		<property name="usedRoom" value="Events room" />
+		<property name="attachement" value="https://seeulateralligator.com" />
+		<property name="startMoment" value="07/1/2020 21:30" />
+		<property name="duration" value="25" />
+		<property name="conference" ref="conference3" />
+		<!-- <property name="submission" ref="" /> -->
+	</bean>
+
+	<!-- SECTIONS -->
+
+	<!-- ACTIVITY 2 CONFERENCE 1 SECTIONS -->
+
+	<bean id="section1Activity2Conference1" class="domain.Section">
+		<property name="title" value="Some flower" />
+		<property name="summary" value="Identify this flower" />
+		<property name="activity" ref="activity2Conference1" />
+	</bean>
+
+	<bean id="section2Activity2Conference1" class="domain.Section">
+		<property name="title" value="Some leaf" />
+		<property name="summary" value="Identify this leaf" />
+		<property name="activity" ref="activity2Conference1" />
+	</bean>
+
+	<bean id="section3Activity2Conference1" class="domain.Section">
+		<property name="title" value="Some log" />
+		<property name="summary" value="Identify this log" />
+		<property name="activity" ref="activity2Conference1" />
+	</bean>
+
+	<!-- ACTIVITY 3 CONFERENCE 1 SECTIONS -->
+
+	<bean id="section1Activity3Conference1" class="domain.Section">
+		<property name="title" value="Climate change bad" />
+		<property name="summary" value="Need to do something to make people realise" />
+		<property name="activity" ref="activity3Conference1" />
+	</bean>
+
+	<bean id="section2Activity3Conference1" class="domain.Section">
+		<property name="title" value="Plant trees good" />
+		<property name="summary"
+			value="Need to do something to make people realise that trees are good" />
+		<property name="activity" ref="activity3Conference1" />
+	</bean>
+
+	<!-- ACTIVITY 2 CONFERENCE 3 SECTIONS -->
+
+	<bean id="section1Activity2Conference3" class="domain.Section">
+		<property name="title" value="ES good" />
+		<property name="summary"
+			value="ES is good to everyone's life becouse it makes it easier" />
+		<property name="activity" ref="activity2Conference3" />
+	</bean>
+
+	<bean id="section2Activity2Conference3" class="domain.Section">
+		<property name="title" value="AE bad" />
+		<property name="summary"
+			value="AE is bad becouse it has no job opportunities nowadays and they do what they want" />
+		<property name="activity" ref="activity3Conference3" />
+	</bean>
+
+	<!-- ACTIVITY 3 CONFERENCE 3 SECTIONS -->
+
+	<bean id="section1Activity3Conference3" class="domain.Section">
+		<property name="title" value="Lots of jobs" />
+		<property name="summary"
+			value="There is high demand on qualified people, but not enough people" />
+		<property name="activity" ref="activity3Conference3" />
+	</bean>
+
+	<!-- ACTIVITY 4 CONFERENCE 3 SECTIONS -->
+
+	<bean id="section1Activity4Conference3" class="domain.Section">
+		<property name="title" value="Improve" />
+		<property name="summary"
+			value="There are non-written studies that say that people who are betterat certain job gets more money" />
+		<property name="activity" ref="activity3Conference3" />
+	</bean>
+
+	<!-- COMMENTS -->
+
+	<!-- CONFERENCE 1 COMMENTS -->
+
+	<bean id="comment1" class="domain.Comment">
+		<property name="title" value="Very borring" />
+		<property name="body"
+			value="It was very boring, what I usually like is destroy planets, not saving them." />
+		<property name="author" value="Boros" />
+		<property name="publishedDate" value="09/01/2020 22:01" />
+		<property name="conference" ref="conference1" />
+		<property name="writer" ref="administrator1" />
+	</bean>
+
+	<bean id="comment2" class="domain.Comment">
+		<property name="title" value="I think the same as that Boros guy" />
+		<property name="body" value="I also enjoy destroying planets." />
+		<property name="author" value="Frieza" />
+		<property name="publishedDate" value="09/01/2020 22:05" />
+		<property name="conference" ref="conference1" />
+		<property name="writer" ref="reviewer1" />
+	</bean>
+
+	<bean id="comment3" class="domain.Comment">
+		<property name="title" value="What is climate change" />
+		<property name="body" value="I don't know what that is." />
+		<property name="author" value="Ragyo" />
+		<property name="publishedDate" value="09/01/2020 22:15" />
+		<property name="activity" ref="activity3Conference1" />
+		<property name="writer" ref="sponsor1" />
+	</bean>
+
+	<bean id="comment4" class="domain.Comment">
+		<property name="title" value="Climate change doesn't exist" />
+		<property name="body" value="I you don't need to know more Ragyo." />
+		<property name="author" value="King Bradley" />
+		<property name="publishedDate" value="09/01/2020 22:16" />
+		<property name="activity" ref="activity3Conference1" />
+		<property name="writer" ref="author1" />
+	</bean>
+
+	<!-- CONFERENCE 3 COMMENTS -->
+
+	<bean id="comment5" class="domain.Comment">
+		<property name="title" value="Interesting..." />
+		<property name="body"
+			value="I could use this SE thing to spread my teachings" />
+		<property name="author" value="Mozgus" />
+		<property name="publishedDate" value="07/01/2020 22:01" />
+		<property name="conference" ref="conference3" />
+		<property name="writer" ref="administrator2" />
+	</bean>
+
+	<bean id="comment6" class="domain.Comment">
+		<property name="title" value="Kono Dio Da!" />
+		<property name="body" value="Wryyyyy!" />
+		<property name="author" value="Dio" />
+		<property name="publishedDate" value="07/01/2020 22:05" />
+		<property name="conference" ref="conference3" />
+		<property name="writer" ref="reviewer2" />
+	</bean>
+
+	<bean id="comment7" class="domain.Comment">
+		<property name="title" value="Don't like it" />
+		<property name="body" value="I don't like what I cannot understand." />
+		<property name="author" value="Madara" />
+		<property name="publishedDate" value="07/01/2020 22:15" />
+		<property name="activity" ref="activity3Conference3" />
+		<property name="writer" ref="sponsor2" />
+	</bean>
+
+	<bean id="comment8" class="domain.Comment">
+		<property name="title" value="I am Meruem, King of the chimera ants..." />
+		<property name="body" value="...and I approve this." />
+		<property name="author" value="Meruem" />
+		<property name="publishedDate" value="07/01/2020 22:16" />
+		<property name="activity" ref="activity3Conference3" />
+		<property name="writer" ref="author2" />
+	</bean>
 </beans>
