@@ -1,7 +1,10 @@
 package domain;
 
+import java.util.Collection;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -22,6 +25,7 @@ public class Sponsorship extends DomainEntity {
 	private String banner, targetPage;
 	private Sponsor sponsor;
 	private CreditCard creditCard;
+	private Collection<Conference> conferences;
 
 	/* Getters and setters */
 
@@ -68,4 +72,15 @@ public class Sponsorship extends DomainEntity {
 	public void setCreditCard(CreditCard creditCard) {
 		this.creditCard = creditCard;
 	}
+
+	@ElementCollection
+	public Collection<Conference> getConferences() {
+		return conferences;
+	}
+
+	public void setConferences(Collection<Conference> conferences) {
+		this.conferences = conferences;
+	}
+	
+	
 }

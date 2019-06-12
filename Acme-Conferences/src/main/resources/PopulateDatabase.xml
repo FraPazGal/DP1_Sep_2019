@@ -243,11 +243,6 @@
 
 	<bean id="finderSponsor2" class="domain.Finder"></bean>
 
-
-	<!-- CONFERENCES -->
-
-
-
 	<!-- PAPERS -->
 
 	<bean id="paper1" class="domain.Paper">
@@ -709,6 +704,120 @@
 			<list>
 			</list>
 		</property>
+	</bean>
+	
+	<!-- CONFERENCES -->
+	
+	<bean id="conference1" class="domain.Conference">
+		<property name="title" value="Primera conferencia de plantas ever" />
+		<property name="acronym" value="PCPE" />
+		<property name="summary" value="PCPE es la más mejor" />
+		<property name="venue" value="C/ No te lo digo, s/n" />
+		<property name="submissionDeadline" value="03/31/2020 23:59" />
+		<property name="notificationDealine" value="06/30/2020 23:59" />
+		<property name="cameraReadyDeadline" value="07/31/2020 23:59" />
+		<property name="startDate" value="09/01/2020 09:00" />
+		<property name="endDate" value="09/04/2020 22:00" />
+		<property name="entryFee" value="24.95" />
+		<property name="isFinal" value="true" />
+		<property name="category" ref="Plants" />
+		<property name="administrator" ref="administrator1" />
+	</bean>
+	
+	<bean id="conference2" class="domain.Conference">
+		<property name="title" value="Posible conferencia de animales (provisional)" />
+		<property name="acronym" value="TBD" />
+		<property name="summary" value="Va a ser de animales y será una conferencia" />
+		<property name="venue" value="Por determinar" />
+		<property name="submissionDeadline" value="03/31/2020 23:59" />
+		<property name="notificationDealine" value="06/30/2020 23:59" />
+		<property name="cameraReadyDeadline" value="07/31/2020 23:59" />
+		<property name="startDate" value="09/01/2020 09:00" />
+		<property name="endDate" value="09/04/2020 22:00" />
+		<property name="entryFee" value="15.50" />
+		<property name="isFinal" value="false" />
+		<property name="category" ref="Animals" />
+		<property name="administrator" ref="administrator1" />
+	</bean>
+	
+	<bean id="conference3" class="domain.Conference">
+		<property name="title" value="Conferencia de Ing. del Software" />
+		<property name="acronym" value="CIS" />
+		<property name="summary" value="Conferencia que fomenta la inscripción de nuevos estudiantes en la carrega de Ing. del Software" />
+		<property name="venue" value="ETSII" />
+		<property name="submissionDeadline" value="06/20/2019 23:59" />
+		<property name="notificationDealine" value="06/25/2020 23:59" />
+		<property name="cameraReadyDeadline" value="06/30/2020 23:59" />
+		<property name="startDate" value="07/01/2020 09:00" />
+		<property name="endDate" value="07/02/2020 22:00" />
+		<property name="entryFee" value="5.75" />
+		<property name="isFinal" value="true" />
+		<property name="category" ref="SoftwareEngineering" />
+		<property name="administrator" ref="administrator1" />
+	</bean>
+	
+	<bean id="conference4" class="domain.Conference">
+		<property name="title" value="Posible conferencia de fungi (provisional)" />
+		<property name="acronym" value="TBD" />
+		<property name="summary" value="Va a ser de fungi y será una conferencia" />
+		<property name="venue" value="Por determinar" />
+		<property name="submissionDeadline" value="01/01/2020 23:59" />
+		<property name="notificationDealine" value="01/02/2020 23:59" />
+		<property name="cameraReadyDeadline" value="01/03/2020 23:59" />
+		<property name="startDate" value="01/04/2020 09:00" />
+		<property name="endDate" value="01/05/2020 22:00" />
+		<property name="entryFee" value="1000.00" />
+		<property name="isFinal" value="false" />
+		<property name="category" ref="Fungi" />
+		<property name="administrator" ref="administrator1" />
+	</bean>
+	
+	<bean id="conference5" class="domain.Conference">
+		<property name="title" value="Posible conferencia de BIG DATA (provisional)" />
+		<property name="acronym" value="TBD" />
+		<property name="summary" value="Va a ser de Big Data y será una conferencia" />
+		<property name="venue" value="Por determinar" />
+		<property name="submissionDeadline" value="02/01/2020 23:59" />
+		<property name="notificationDealine" value="02/02/2020 23:59" />
+		<property name="cameraReadyDeadline" value="02/03/2020 23:59" />
+		<property name="startDate" value="02/04/2020 09:00" />
+		<property name="endDate" value="02/05/2020 22:00" />
+		<property name="entryFee" value="157.0" />
+		<property name="isFinal" value="false" />
+		<property name="category" ref="BigData" />
+		<property name="administrator" ref="administrator1" />
+	</bean>
+	
+	<bean id="conference6" class="domain.Conference">
+		<property name="title" value="Posible conferencia de REGRESSION (provisional)" />
+		<property name="acronym" value="TBD" />
+		<property name="summary" value="Va a ser de regresión y será una conferencia" />
+		<property name="venue" value="Por determinar" />
+		<property name="submissionDeadline" value="03/01/2020 23:59" />
+		<property name="notificationDealine" value="03/02/2020 23:59" />
+		<property name="cameraReadyDeadline" value="03/03/2020 23:59" />
+		<property name="startDate" value="03/04/2020 09:00" />
+		<property name="endDate" value="03/05/2020 22:00" />
+		<property name="entryFee" value="157.0" />
+		<property name="isFinal" value="false" />
+		<property name="category" ref="Regression" />
+		<property name="administrator" ref="administrator2" />
+	</bean>
+	
+	<bean id="conference7" class="domain.Conference">
+		<property name="title" value="Posible conferencia de FISICA (provisional)" />
+		<property name="acronym" value="TBD" />
+		<property name="summary" value="Va a ser de Física y será una conferencia" />
+		<property name="venue" value="Por determinar" />
+		<property name="submissionDeadline" value="05/01/2020 23:59" />
+		<property name="notificationDealine" value="05/02/2020 23:59" />
+		<property name="cameraReadyDeadline" value="05/03/2020 23:59" />
+		<property name="startDate" value="05/04/2020 09:00" />
+		<property name="endDate" value="05/05/2020 22:00" />
+		<property name="entryFee" value="0.99" />
+		<property name="isFinal" value="false" />
+		<property name="category" ref="Physics" />
+		<property name="administrator" ref="administrator2" />
 	</bean>
 
 	<!-- SYSTEM CONFIGURATION -->
