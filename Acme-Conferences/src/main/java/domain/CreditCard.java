@@ -73,7 +73,7 @@ public class CreditCard extends DomainEntity {
 	}
 
 	@NotNull
-	@Range(min = 100, max = 999)
+	@Range(min = 000, max = 999)
 	public Integer getCvv() {
 		return cvv;
 	}

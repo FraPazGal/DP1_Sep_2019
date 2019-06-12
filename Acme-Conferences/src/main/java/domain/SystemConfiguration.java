@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -84,6 +85,7 @@ public class SystemConfiguration extends DomainEntity {
 	@NotNull
 	@NotEmpty
 	@ElementCollection
+	@Column(length = 510)
 	public Map<String, String> getVoidWords() {
 		return voidWords;
 	}
