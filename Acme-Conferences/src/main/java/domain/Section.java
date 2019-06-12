@@ -5,6 +5,8 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -17,6 +19,7 @@ public class Section extends DomainEntity {
 	/* Attributes */
 
 	private String title, summary, pictures;
+	private Activity activity;
 
 	/* Getters and setters */
 
@@ -47,4 +50,16 @@ public class Section extends DomainEntity {
 	public void setPictures(String pictures) {
 		this.pictures = pictures;
 	}
+
+	@Valid
+	@NotNull
+	@ManyToOne(optional = false)
+	public Activity getActivity() {
+		return activity;
+	}
+
+	public void setActivity(Activity activity) {
+		this.activity = activity;
+	}
+
 }

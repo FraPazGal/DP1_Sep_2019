@@ -88,7 +88,6 @@ public class Message extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@NotEmpty
 	@ManyToOne(optional = false)
 	public Actor getSender() {
 		return sender;
