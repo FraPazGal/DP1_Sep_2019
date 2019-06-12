@@ -4,10 +4,10 @@ import java.util.Collection;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -73,7 +73,9 @@ public class Sponsorship extends DomainEntity {
 		this.creditCard = creditCard;
 	}
 
-	@ElementCollection
+	@Valid
+	@NotNull
+	@ManyToMany
 	public Collection<Conference> getConferences() {
 		return conferences;
 	}

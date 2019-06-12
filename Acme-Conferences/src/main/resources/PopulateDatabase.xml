@@ -285,6 +285,14 @@
 		<property name="paperDocument"
 			value="Paper sobre la inteligencia de los animales y cómo les afectan los espectáculos." />
 	</bean>
+	
+	<bean id="paper3cr" class="domain.Paper">
+		<property name="title" value="Animales inteligentes (Camera Ready)" />
+		<property name="authors" value="Los cuidadores del zoo" />
+		<property name="summary" value="Animales inteligentes y el zoo" />
+		<property name="paperDocument"
+			value="Paper sobre la inteligencia de los animales y cómo les afectan los espectáculos." />
+	</bean>
 
 	<bean id="paper4" class="domain.Paper">
 		<property name="title" value="Paper de coña" />
@@ -805,19 +813,151 @@
 	</bean>
 	
 	<bean id="conference7" class="domain.Conference">
-		<property name="title" value="Posible conferencia de FISICA (provisional)" />
-		<property name="acronym" value="TBD" />
-		<property name="summary" value="Va a ser de Física y será una conferencia" />
-		<property name="venue" value="Por determinar" />
-		<property name="submissionDeadline" value="05/01/2020 23:59" />
-		<property name="notificationDealine" value="05/02/2020 23:59" />
-		<property name="cameraReadyDeadline" value="05/03/2020 23:59" />
-		<property name="startDate" value="05/04/2020 09:00" />
-		<property name="endDate" value="05/05/2020 22:00" />
+		<property name="title" value="Conferencia de FISICA" />
+		<property name="acronym" value="FISICA" />
+		<property name="summary" value="Fue una conferencia de Física" />
+		<property name="venue" value="En la facultad de FISICA" />
+		<property name="submissionDeadline" value="05/01/2019 23:59" />
+		<property name="notificationDealine" value="05/02/2019 23:59" />
+		<property name="cameraReadyDeadline" value="05/03/2019 23:59" />
+		<property name="startDate" value="05/04/2019 09:00" />
+		<property name="endDate" value="05/05/2019 22:00" />
 		<property name="entryFee" value="0.99" />
-		<property name="isFinal" value="false" />
+		<property name="isFinal" value="true" />
 		<property name="category" ref="Physics" />
 		<property name="administrator" ref="administrator2" />
+	</bean>
+	
+	<!-- ***** CREDITCARD ***** -->
+
+	<bean id="creditCard1" class="domain.CreditCard">
+		<property name="holder" value="José Gamiz Redondo" />
+		<property name="make" value="VISA" />
+		<property name="number" value="4764042457713154" />
+		<property name="expirationMonth" value="02" />
+		<property name="expirationYear" value="22" />
+		<property name="CVV" value="177" />
+	</bean>
+	<bean id="creditCard2" class="domain.CreditCard">
+		<property name="holder" value="José Gamiz Redondo" />
+		<property name="make" value="VISA" />
+		<property name="number" value="4764042457713154" />
+		<property name="expirationMonth" value="02" />
+		<property name="expirationYear" value="22" />
+		<property name="CVV" value="177" />
+	</bean>
+
+	<bean id="creditCard3" class="domain.CreditCard">
+		<property name="holder" value="José Gamiz Redondo" />
+		<property name="make" value="VISA" />
+		<property name="number" value="4764042457713154" />
+		<property name="expirationMonth" value="02" />
+		<property name="expirationYear" value="22" />
+		<property name="CVV" value="177" />
+	</bean>
+
+	<bean id="creditCard4" class="domain.CreditCard">
+		<property name="holder" value="José Gamiz Redondo" />
+		<property name="make" value="VISA" />
+		<property name="number" value="4764042457713154" />
+		<property name="expirationMonth" value="02" />
+		<property name="expirationYear" value="22" />
+		<property name="CVV" value="177" />
+	</bean>
+
+	<!-- ****** SPONSORSHIP ****** -->
+
+	<bean id="sponsorship1" class="domain.Sponsorship">
+		<property name="banner"
+			value="https://earlymoves.files.wordpress.com/2015/10/amazon.png" />
+		<property name="targetPage" value="https://www.amazon.es/" />
+		<property name="sponsor" ref="sponsor1" />
+		<property name="creditCard" ref="creditCard1" />
+		<property name="conferences">
+			<list>
+				<ref bean="conference1" />
+				<ref bean="conference3" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="sponsorship2" class="domain.Sponsorship">
+		<property name="banner"
+			value="https://www.eff.org/files/banner_library/google-spy-eye.png" />
+		<property name="targetPage" value="https://www.google.com" />
+		<property name="sponsor" ref="sponsor1" />
+		<property name="creditCard" ref="creditCard2" />
+		<property name="conferences">
+			<list>
+				<ref bean="conference1" />
+				<ref bean="conference3" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsorship3" class="domain.Sponsorship">
+		<property name="banner"
+			value="https://www.informatica.us.es/images/logo-etsii251.png" />
+		<property name="targetPage" value="https://www.informatica.us.es/" />
+		<property name="sponsor" ref="sponsor1" />
+		<property name="creditCard" ref="creditCard3" />
+		<property name="conferences">
+			<list>
+				<ref bean="conference1" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="sponsorship4" class="domain.Sponsorship">
+		<property name="banner"
+			value="https://static-s.aa-cdn.net/img/gp/20600000458044/x549LxwbVCUAMLZZDEYENW-7dNw6p3nC_hsMEjBA-GT-MxahtPpKZvdy6I2SVN5lQg=w300?v=1" />
+		<property name="targetPage" value="https://www.cinesa.es/" />
+		<property name="sponsor" ref="sponsor2" />
+		<property name="creditCard" ref="creditCard4" />
+		<property name="conferences">
+			<list>
+				<ref bean="conference3" />
+			</list>
+		</property>
+	</bean>
+	
+	<!-- ****** SUBMISSION ****** -->
+	
+	<bean id="submission1" class="domain.Submission">
+		<property name="ticker" value="TPY-0P34" />
+		<property name="status" value="UNDER-REVIEW" />
+		<property name="submissionMoment" value="03/28/2020 12:25" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference1" />
+		<property name="paper" ref="paper6" />
+	</bean>
+	
+ 	<bean id="submission2" class="domain.Submission">
+		<property name="ticker" value="CXY-2S9L" />
+		<property name="status" value="UNDER-REVIEW" />
+		<property name="submissionMoment" value="06/15/2019  12:25" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference3" />
+		<property name="paper" ref="paper2" />
+	</bean>
+	
+	<bean id="submission3" class="domain.Submission">
+		<property name="ticker" value="SSL-P7JI" />
+		<property name="status" value="ACCEPTED" />
+		<property name="submissionMoment" value="04/21/2019 17:14" />
+		<property name="author" ref="author2" />
+		<property name="conference" ref="conference7" />
+		<property name="paper" ref="paper3" />
+		<property name="cameraReadyPaper" ref="paper3cr" />
+	</bean>
+	
+	<bean id="submission4" class="domain.Submission">
+		<property name="ticker" value="NJH-8OU6" />
+		<property name="status" value="REJECTED" />
+		<property name="submissionMoment" value="04/30/2019 11:47" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference7" />
+		<property name="paper" ref="paper4" />
 	</bean>
 
 </beans>

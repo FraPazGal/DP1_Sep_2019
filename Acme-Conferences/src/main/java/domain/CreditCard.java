@@ -18,7 +18,7 @@ public class CreditCard extends DomainEntity {
 	/* Attributes */
 
 	private String holder, make, number;
-	private Integer expirationMonth, expirationYear, cvv;
+	private Integer expirationMonth, expirationYear, CVV;
 
 	/* Getters and setters */
 
@@ -74,11 +74,11 @@ public class CreditCard extends DomainEntity {
 
 	@NotNull
 	@Range(min = 100, max = 999)
-	public Integer getCvv() {
-		return cvv;
+	public Integer getCVV() {
+		return CVV;
 	}
 
-	public void setCvv(Integer cvv) {
-		this.cvv = cvv;
+	public void setCVV(Integer CVV) {
+		this.CVV = CVV;
 	}
 }
