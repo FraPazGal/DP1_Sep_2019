@@ -34,8 +34,7 @@ public class UserAccount extends DomainEntity implements UserDetails {
 
 	// Constructors -----------------------------------------------------------
 
-	private static final long	serialVersionUID	= 7254823034213841482L;
-
+	private static final long serialVersionUID = 7254823034213841482L;
 
 	public UserAccount() {
 		super();
@@ -43,15 +42,13 @@ public class UserAccount extends DomainEntity implements UserDetails {
 		this.authorities = new ArrayList<Authority>();
 	}
 
-
 	// Attributes -------------------------------------------------------------
 
 	// UserDetails interface --------------------------------------------------
 
-	private String					username;
-	private String					password;
-	private Collection<Authority>	authorities;
-
+	private String username;
+	private String password;
+	private Collection<Authority> authorities;
 
 	@Size(min = 5, max = 32)
 	@Column(unique = true)
@@ -79,7 +76,8 @@ public class UserAccount extends DomainEntity implements UserDetails {
 	@ElementCollection
 	@Override
 	public Collection<Authority> getAuthorities() {
-		// WARNING: Should return an unmodifiable copy, but it's not possible with hibernate!
+		// WARNING: Should return an unmodifiable copy, but it's not possible
+		// with hibernate!
 		return this.authorities;
 	}
 

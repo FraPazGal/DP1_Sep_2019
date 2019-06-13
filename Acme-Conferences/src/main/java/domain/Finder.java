@@ -5,7 +5,6 @@ import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -92,7 +91,6 @@ public class Finder extends DomainEntity {
 	}
 
 	@Valid
-	@ElementCollection
 	@ManyToMany
 	public Collection<Conference> getResults() {
 		return results;

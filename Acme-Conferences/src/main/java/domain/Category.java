@@ -51,7 +51,6 @@ public class Category extends DomainEntity {
 	}
 
 	@Valid
-	@ElementCollection
 	@OneToMany
 	public Collection<Category> getChildCategories() {
 		return childCategories;
