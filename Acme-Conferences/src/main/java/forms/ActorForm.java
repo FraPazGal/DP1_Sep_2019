@@ -1,32 +1,39 @@
-package domain;
+package forms;
 
-import javax.persistence.Access;
-import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.OneToOne;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
-import security.UserAccount;
-
-@Entity
-@Access(AccessType.PROPERTY)
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Actor extends DomainEntity {
+public class ActorForm {
 
 	/* Attributes */
 
+	private int id, version;
 	private String name, middleName, surname, photo, email, phoneNumber,
 			address;
-	private UserAccount userAccount;
+
+	/* Form attributes */
+
+	private Boolean termsAndConditions;
 
 	/* Getters and setters */
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
 
 	@NotBlank
 	@NotNull
@@ -92,14 +99,12 @@ public abstract class Actor extends DomainEntity {
 	}
 
 	@NotNull
-	@Valid
-	@OneToOne(cascade = CascadeType.ALL, optional = false)
-	public UserAccount getUserAccount() {
-		return userAccount;
+	public Boolean getTermsAndConditions() {
+		return termsAndConditions;
 	}
 
-	public void setUserAccount(UserAccount userAccount) {
-		this.userAccount = userAccount;
+	public void setTermsAndConditions(Boolean termsAndConditions) {
+		this.termsAndConditions = termsAndConditions;
 	}
 
 }

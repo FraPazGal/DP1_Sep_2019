@@ -16,6 +16,7 @@ public class Author extends Actor {
 	/* Attributes */
 
 	private Finder finder;
+	private Double score;
 
 	/* Getters and setters */
 
@@ -27,5 +28,13 @@ public class Author extends Actor {
 
 	public void setFinder(Finder finder) {
 		this.finder = finder;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
 	}
 }
