@@ -11,4 +11,17 @@ import javax.persistence.InheritanceType;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Author extends Actor {
 
+	/* Attributes */
+
+	private Double score;
+
+	/* Getters and setters */
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
 }

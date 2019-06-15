@@ -5,12 +5,12 @@ import java.util.Date;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -29,6 +29,7 @@ public class Finder extends DomainEntity {
 	private Date minimumDate, maximumDate, searchMoment;
 	private Category category;
 	private Collection<Conference> results;
+	private Actor actor;
 
 	/* Getters and setters */
 
@@ -93,7 +94,6 @@ public class Finder extends DomainEntity {
 	}
 
 	@Valid
-	@ElementCollection
 	@ManyToMany
 	@NotNull
 	public Collection<Conference> getResults() {
@@ -102,5 +102,16 @@ public class Finder extends DomainEntity {
 
 	public void setResults(Collection<Conference> results) {
 		this.results = results;
+	}
+
+	@Valid
+	@NotNull
+	@OneToOne(optional = false)
+	public Actor getActor() {
+		return actor;
+	}
+
+	public void setActor(Actor actor) {
+		this.actor = actor;
 	}
 }
