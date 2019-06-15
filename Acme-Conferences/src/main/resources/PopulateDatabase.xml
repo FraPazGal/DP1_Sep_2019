@@ -227,21 +227,61 @@
 
 	<!-- FINDERS -->
 
-	<bean id="finderAdmin1" class="domain.Finder"></bean>
+	<bean id="finderAdmin1" class="domain.Finder">
+		<property name="results">
+			<list>
+			</list>
+		</property>
+	</bean>
 
-	<bean id="finderAdmin2" class="domain.Finder"></bean>
+	<bean id="finderAdmin2" class="domain.Finder">
+		<property name="results">
+			<list>
+			</list>
+		</property>
+	</bean>
 
-	<bean id="finderReviewer1" class="domain.Finder"></bean>
+	<bean id="finderReviewer1" class="domain.Finder">
+		<property name="results">
+			<list>
+			</list>
+		</property>
+	</bean>
 
-	<bean id="finderReviewer2" class="domain.Finder"></bean>
+	<bean id="finderReviewer2" class="domain.Finder">
+		<property name="results">
+			<list>
+			</list>
+		</property>
+	</bean>
 
-	<bean id="finderAuthor1" class="domain.Finder"></bean>
+	<bean id="finderAuthor1" class="domain.Finder">
+		<property name="results">
+			<list>
+			</list>
+		</property>
+	</bean>
 
-	<bean id="finderAuthor2" class="domain.Finder"></bean>
+	<bean id="finderAuthor2" class="domain.Finder">
+		<property name="results">
+			<list>
+			</list>
+		</property>
+	</bean>
 
-	<bean id="finderSponsor1" class="domain.Finder"></bean>
+	<bean id="finderSponsor1" class="domain.Finder">
+		<property name="results">
+			<list>
+			</list>
+		</property>
+	</bean>
 
-	<bean id="finderSponsor2" class="domain.Finder"></bean>
+	<bean id="finderSponsor2" class="domain.Finder">
+		<property name="results">
+			<list>
+			</list>
+		</property>
+	</bean>
 
 	<!-- PAPERS -->
 

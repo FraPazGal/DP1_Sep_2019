@@ -26,6 +26,7 @@ public abstract class Actor extends DomainEntity {
 			address;
 	private Double score;
 	private UserAccount userAccount;
+	private Finder finder;
 
 	/* Getters and setters */
 
@@ -109,6 +110,16 @@ public abstract class Actor extends DomainEntity {
 
 	public void setUserAccount(UserAccount userAccount) {
 		this.userAccount = userAccount;
+	}
+	
+	@NotNull
+	@OneToOne(optional = false)
+	public Finder getFinder() {
+		return finder;
+	}
+
+	public void setFinder(Finder finder) {
+		this.finder = finder;
 	}
 
 }

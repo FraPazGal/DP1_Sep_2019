@@ -5,7 +5,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -17,20 +16,9 @@ public class Reviewer extends Actor {
 
 	/* Attributes */
 
-	private Finder finder;
 	private String keywords;
 
 	/* Getters and setters */
-
-	@NotNull
-	@OneToOne(optional = false)
-	public Finder getFinder() {
-		return finder;
-	}
-
-	public void setFinder(Finder finder) {
-		this.finder = finder;
-	}
 
 	@NotNull
 	@NotBlank

@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -94,6 +95,7 @@ public class Finder extends DomainEntity {
 	@Valid
 	@ElementCollection
 	@ManyToMany
+	@NotNull
 	public Collection<Conference> getResults() {
 		return results;
 	}
