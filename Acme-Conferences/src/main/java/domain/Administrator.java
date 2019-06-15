@@ -5,8 +5,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -14,19 +12,5 @@ import javax.validation.constraints.NotNull;
 public class Administrator extends Actor {
 
 	/* Attributes */
-
-	private Finder finder;
-
-	/* Getters and setters */
-
-	@NotNull
-	@OneToOne(optional = false)
-	public Finder getFinder() {
-		return finder;
-	}
-
-	public void setFinder(Finder finder) {
-		this.finder = finder;
-	}
 
 }

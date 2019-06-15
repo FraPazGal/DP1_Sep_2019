@@ -10,8 +10,10 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -27,6 +29,7 @@ public class Finder extends DomainEntity {
 	private Date minimumDate, maximumDate, searchMoment;
 	private Category category;
 	private Collection<Conference> results;
+	private Actor actor;
 
 	/* Getters and setters */
 
@@ -98,5 +101,16 @@ public class Finder extends DomainEntity {
 
 	public void setResults(Collection<Conference> results) {
 		this.results = results;
+	}
+
+	@Valid
+	@NotNull
+	@OneToOne(optional = false)
+	public Actor getActor() {
+		return actor;
+	}
+
+	public void setActor(Actor actor) {
+		this.actor = actor;
 	}
 }
