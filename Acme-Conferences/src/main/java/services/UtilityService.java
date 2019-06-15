@@ -57,6 +57,22 @@ public class UtilityService {
 		Assert.notNull(result);
 		return result;
 	}
+	
+	/**
+	 * Check the authority of the actor
+	 * 
+	 * @param actor
+	 * @param authority
+	 * @return boolean
+	 */
+	public boolean checkAuthority(final Actor actor, final String authority) {
+		Assert.notNull(actor);
+		boolean result = false;
+		if (actor.getUserAccount().getAuthorities().iterator().next()
+				.getAuthority().equals(authority))
+			result = true;
+		return result;
+	}
 
 	/**
 	 * Checks if there exists someone with certain user name

@@ -25,7 +25,7 @@ public class Finder extends DomainEntity {
 	/* Attributes */
 
 	private String keyWord;
-	private Double maximumDutarion, maximumFee;
+	private Double maximumFee;
 	private Date minimumDate, maximumDate, searchMoment;
 	private Category category;
 	private Collection<Conference> results;
@@ -40,15 +40,6 @@ public class Finder extends DomainEntity {
 
 	public void setKeyWord(String keyWord) {
 		this.keyWord = keyWord;
-	}
-
-	@Min(value = 0L, message = "The value must be positive")
-	public Double getMaximumDutarion() {
-		return maximumDutarion;
-	}
-
-	public void setMaximumDutarion(Double maximumDutarion) {
-		this.maximumDutarion = maximumDutarion;
 	}
 
 	@Min(value = 0L, message = "The value must be positive")
