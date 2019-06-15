@@ -129,7 +129,6 @@
 		<property name="phoneNumber" value="+34666666666" />
 		<property name="address" value="C/ Collapsing Star Roaring Cannon" />
 		<property name="userAccount" ref="userAdmin1" />
-		<property name="finder" ref="finderAdmin1" />
 	</bean>
 
 	<bean id="administrator2" class="domain.Administrator">
@@ -141,7 +140,6 @@
 		<property name="phoneNumber" value="+34698652413" />
 		<property name="address" value="C/ Holy See" />
 		<property name="userAccount" ref="userAdmin2" />
-		<property name="finder" ref="finderAdmin2" />
 	</bean>
 
 	<!-- REVIEWERS -->
@@ -157,7 +155,6 @@
 		<property name="keywords"
 			value="ruler,emperor,agent of destruction,proud,evil,strong,mithic,short" />
 		<property name="userAccount" ref="userReviewer1" />
-		<property name="finder" ref="finderReviewer1" />
 	</bean>
 
 	<bean id="reviewer2" class="domain.Reviewer">
@@ -170,7 +167,6 @@
 		<property name="address" value="C/ Phantom Blood" />
 		<property name="keywords" value="evil,fabulous,vampire,stand user,time-saver" />
 		<property name="userAccount" ref="userReviewer2" />
-		<property name="finder" ref="finderReviewer2" />
 	</bean>
 
 	<!-- AUTHOR -->
@@ -184,7 +180,6 @@
 		<property name="phoneNumber" value="+34697854321" />
 		<property name="address" value="C/ Amestris" />
 		<property name="userAccount" ref="userAuthor1" />
-		<property name="finder" ref="finderAuthor1" />
 	</bean>
 
 	<bean id="author2" class="domain.Author">
@@ -196,7 +191,6 @@
 		<property name="phoneNumber" value="+34658974582" />
 		<property name="address" value="C/ Chimera ants' nest" />
 		<property name="userAccount" ref="userAuthor2" />
-		<property name="finder" ref="finderAuthor2" />
 	</bean>
 
 	<!-- SPONSOR -->
@@ -210,7 +204,6 @@
 		<property name="phoneNumber" value="+34678765412" />
 		<property name="address" value="C/ Chimera ants' nest" />
 		<property name="userAccount" ref="userSponsor1" />
-		<property name="finder" ref="finderSponsor1" />
 	</bean>
 
 	<bean id="sponsor2" class="domain.Sponsor">
@@ -222,26 +215,41 @@
 		<property name="phoneNumber" value="+34678766412" />
 		<property name="address" value="C/ Hidden Leaf Village" />
 		<property name="userAccount" ref="userSponsor2" />
-		<property name="finder" ref="finderSponsor2" />
 	</bean>
 
 	<!-- FINDERS -->
 
-	<bean id="finderAdmin1" class="domain.Finder"></bean>
+	<bean id="finderAdmin1" class="domain.Finder">
+		<property name="actor" ref="administrator1" />
+	</bean>
 
-	<bean id="finderAdmin2" class="domain.Finder"></bean>
+	<bean id="finderAdmin2" class="domain.Finder">
+		<property name="actor" ref="administrator2" />
+	</bean>
 
-	<bean id="finderReviewer1" class="domain.Finder"></bean>
+	<bean id="finderReviewer1" class="domain.Finder">
+		<property name="actor" ref="reviewer1" />
+	</bean>
 
-	<bean id="finderReviewer2" class="domain.Finder"></bean>
+	<bean id="finderReviewer2" class="domain.Finder">
+		<property name="actor" ref="reviewer2" />
+	</bean>
 
-	<bean id="finderAuthor1" class="domain.Finder"></bean>
+	<bean id="finderAuthor1" class="domain.Finder">
+		<property name="actor" ref="author1" />
+	</bean>
 
-	<bean id="finderAuthor2" class="domain.Finder"></bean>
+	<bean id="finderAuthor2" class="domain.Finder">
+		<property name="actor" ref="author2" />
+	</bean>
 
-	<bean id="finderSponsor1" class="domain.Finder"></bean>
+	<bean id="finderSponsor1" class="domain.Finder">
+		<property name="actor" ref="sponsor1" />
+	</bean>
 
-	<bean id="finderSponsor2" class="domain.Finder"></bean>
+	<bean id="finderSponsor2" class="domain.Finder">
+		<property name="actor" ref="sponsor2" />
+	</bean>
 
 	<!-- PAPERS -->
 
@@ -285,7 +293,7 @@
 		<property name="paperDocument"
 			value="Paper sobre la inteligencia de los animales y cómo les afectan los espectáculos." />
 	</bean>
-	
+
 	<bean id="paper3cr" class="domain.Paper">
 		<property name="title" value="Animales inteligentes (Camera Ready)" />
 		<property name="authors" value="Los cuidadores del zoo" />
@@ -831,7 +839,7 @@
 		<property name="category" ref="Physics" />
 		<property name="administrator" ref="administrator2" />
 	</bean>
-	
+
 	<!-- ***** CREDITCARD ***** -->
 
 	<bean id="creditCard1" class="domain.CreditCard">
@@ -884,7 +892,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="sponsorship2" class="domain.Sponsorship">
 		<property name="banner"
 			value="https://www.eff.org/files/banner_library/google-spy-eye.png" />
@@ -924,9 +932,9 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- ****** SUBMISSION ****** -->
-	
+
 	<bean id="submission1" class="domain.Submission">
 		<property name="ticker" value="TPY-0P34" />
 		<property name="status" value="UNDER-REVIEW" />
@@ -935,8 +943,8 @@
 		<property name="conference" ref="conference1" />
 		<property name="paper" ref="paper6" />
 	</bean>
-	
- 	<bean id="submission2" class="domain.Submission">
+
+	<bean id="submission2" class="domain.Submission">
 		<property name="ticker" value="CXY-2S9L" />
 		<property name="status" value="UNDER-REVIEW" />
 		<property name="submissionMoment" value="06/15/2019  12:25" />
@@ -944,7 +952,7 @@
 		<property name="conference" ref="conference3" />
 		<property name="paper" ref="paper2" />
 	</bean>
-	
+
 	<bean id="submission3" class="domain.Submission">
 		<property name="ticker" value="SSL-P7JI" />
 		<property name="status" value="ACCEPTED" />
@@ -954,7 +962,7 @@
 		<property name="paper" ref="paper3" />
 		<property name="cameraReadyPaper" ref="paper3cr" />
 	</bean>
-	
+
 	<bean id="submission4" class="domain.Submission">
 		<property name="ticker" value="NJH-8OU6" />
 		<property name="status" value="REJECTED" />
