@@ -334,7 +334,7 @@
 			<list>
 			</list>
 		</property>
-		<property name="actor" ref="sponsor1" />
+		<property name="actor" ref="author2" />
 	</bean>
 
 	<bean id="finderSponsor2" class="domain.Finder">

@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -41,7 +42,7 @@ public class SystemConfiguration extends DomainEntity {
 
 	@NotNull
 	@NotBlank
-	@URL
+	@URL(message = "url.error")
 	public String getBanner() {
 		return banner;
 	}
@@ -52,6 +53,7 @@ public class SystemConfiguration extends DomainEntity {
 
 	@NotNull
 	@NotBlank
+	@Pattern(regexp = "[+]\\d{3}", message = "cc.error")
 	public String getCountryCode() {
 		return countryCode;
 	}
@@ -95,7 +97,7 @@ public class SystemConfiguration extends DomainEntity {
 	}
 
 	@NotNull
-	@Range(min = 1, max = 24)
+	@Range(min = 1, max = 24, message = "range.error")
 	public Integer getTimeResultsCached() {
 		return timeResultsCached;
 	}
@@ -105,7 +107,7 @@ public class SystemConfiguration extends DomainEntity {
 	}
 
 	@NotNull
-	@Range(min = 0, max = 100)
+	@Range(min = 0, max = 100, message = "range.error")
 	public Integer getMaxResults() {
 		return maxResults;
 	}

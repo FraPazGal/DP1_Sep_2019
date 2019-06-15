@@ -28,7 +28,7 @@ public class Report extends DomainEntity {
 	/* Getters and setters */
 
 	@NotNull
-	@Range(min = 0, max = 10)
+	@Range(min = 0, max = 10, message = "range.error")
 	public Double getOriginalityScore() {
 		return originalityScore;
 	}
@@ -38,7 +38,7 @@ public class Report extends DomainEntity {
 	}
 
 	@NotNull
-	@Range(min = 0, max = 10)
+	@Range(min = 0, max = 10, message = "range.error")
 	public Double getQualityScore() {
 		return qualityScore;
 	}
@@ -48,7 +48,7 @@ public class Report extends DomainEntity {
 	}
 
 	@NotNull
-	@Range(min = 0, max = 10)
+	@Range(min = 0, max = 10, message = "range.error")
 	public Double getReadabilityScore() {
 		return readabilityScore;
 	}
@@ -57,7 +57,9 @@ public class Report extends DomainEntity {
 		this.readabilityScore = readabilityScore;
 	}
 
-	@Pattern(regexp = "^BORDER-LINE|ACCEPTED|REJECTED$")
+	@NotNull
+	@NotBlank
+	@Pattern(regexp = "^BORDER-LINE|ACCEPTED|REJECTED$", message = "status.error")
 	public String getStatus() {
 		return status;
 	}

@@ -37,9 +37,6 @@ public class SponsorshipService {
 	@Autowired
 	private CreditCardService creditCardService;
 	
-	@Autowired
-	private SystemConfigurationService sysConfigService;
-	
 	public Sponsorship create() {
 		Actor principal;
 		Sponsorship result;
@@ -252,10 +249,6 @@ public class SponsorshipService {
 	}
 	
 	private void receivePaymentForSponsorship(Sponsorship sponsorship) {
-		final Double tax = this.sysConfigService.findMySystemConfiguration().getVATTax();
-		final Double flatRate = this.sysConfigService.findMySystemConfiguration().getVATTax();
-		final Double paymentQuantity = flatRate + (flatRate*tax);
-		CreditCard sponsorCreditCard = sponsorship.getCreditCard();
 		
 		//Here would be our api call to the selected payment method
 	}

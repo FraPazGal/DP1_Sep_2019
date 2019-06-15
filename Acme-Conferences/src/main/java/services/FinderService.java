@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -28,9 +27,7 @@ public class FinderService {
 	private FinderRepository finderRepository;
 
 	// Supporting services -----------------------
-	@Autowired
-	private ActorService actorService;
-	
+
 	@Autowired
 	private UtilityService utilityService;
 
@@ -137,7 +134,7 @@ public class FinderService {
 		Collection<Conference> results = new ArrayList<Conference>();
 		String keyWord;
 		Double maximumFee;
-		Date minimumDate, maximumDate, searchMoment, aux;
+		Date minimumDate, maximumDate, aux;
 		int nResults;
 
 		Collection<Conference> resultsPageables = new ArrayList<Conference>();
