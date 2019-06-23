@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ import org.springframework.validation.Validator;
 import repositories.CategoryRepository;
 import domain.Actor;
 import domain.Category;
+import domain.Conference;
 import domain.SystemConfiguration;
 
 @Service
@@ -35,8 +37,8 @@ public class CategoryService {
 	@Autowired
 	private SystemConfigurationService systemConfigurationService;
 	
-//	@Autowired
-//	private ConferenceService conferenceService;
+	@Autowired
+	private ConferenceService conferenceService;
 	
 	@Autowired
 	private Validator validator;
@@ -49,10 +51,13 @@ public class CategoryService {
 		
 		principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(
-				this.utilityService.checkAuthority(principal, "ADMINISTRATOR"),
+				this.utilityService.checkAuthority(principal, "ADMIN"),
 				"not.allowed");
 
 		result = new Category();
+		result.setTitle(new HashMap<String,String>());
+		result.setChildCategories(new ArrayList<Category>());
+		result.setConferences(new ArrayList<Conference>());
 		
 		return result;
 	}
@@ -76,19 +81,18 @@ public class CategoryService {
 	}
 	
 	public Category save(final Category category) {
-		Category result;
+		Category result,aux;
 		SystemConfiguration systemConf;
 		Set<String> idiomasCategory;
 		Actor principal;
 		
 		principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(
-				this.utilityService.checkAuthority(principal, "ADMINISTRATOR"),
+				this.utilityService.checkAuthority(principal, "ADMIN"),
 				"not.allowed");
 		
-		//root = this.findRoot();
-		//Assert.isTrue(category.getId() != root.getId());
-		//Assert.notNull(category.getParentCategory());
+		Assert.notNull(category.getChildCategories());
+		Assert.notNull(category.getConferences());
 		Assert.notNull(category.getTitle());
 		
 		systemConf = systemConfigurationService.findMySystemConfiguration();
@@ -96,9 +100,21 @@ public class CategoryService {
 				.getWelcomeMessage().keySet());
 		idiomasCategory = category.getTitle().keySet();
 		Assert.isTrue(idiomasSystemConf.equals(idiomasCategory));
-
+		
+		if(category.getTitle().containsValue("CONFERENCE")) {
+			aux = this.findOne(category.getId());
+			category.setParentCategory(aux.getParentCategory());
+			category.setTitle(aux.getTitle());
+		} else {
+			Assert.notNull(category.getParentCategory());
+		}
+		
 		result = this.categoryRepository.save(category);
 		Assert.notNull(result);
+		
+		if(category.getId() == 0) {
+			this.addNewChild(result);
+		}
 		
 		return result;
 	}
@@ -108,11 +124,21 @@ public class CategoryService {
 		
 		principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(
-				this.utilityService.checkAuthority(principal, "ADMINISTRATOR"),
+				this.utilityService.checkAuthority(principal, "ADMIN"),
 				"not.allowed");
 		
 		Assert.notNull(category);
 		Assert.isTrue(category.getId() != 0);
+		
+		this.deleteFromParent(category);
+		
+		if(!category.getChildCategories().isEmpty()) {
+			this.transferChildren(category);
+		}
+		
+		if(!category.getConferences().isEmpty()) {
+			this.transferConferences(category);
+		}
 		
 		this.categoryRepository.delete(category);
 	}
@@ -121,34 +147,75 @@ public class CategoryService {
 	
 	public Category reconstruct(Category category, String nameES,
 			String nameEN, BindingResult binding) {
-		Category res;
+		Category res = this.create();
+		Map<String,String> aux = new HashMap<String,String>();
 
-		if (category.getId() == 0) {
-			category.setTitle(new HashMap<String, String>());
-
-			category.getTitle().put("Español", nameES);
-			category.getTitle().put("English", nameEN);
-			
-			res = category;
-		} else {
+		aux.put("Español", nameES);
+		aux.put("English", nameEN);
+		
+		if (category.getId() != 0) {
 			res = this.categoryRepository.findOne(category.getId());
-
-			category.setTitle(new HashMap<String, String>());
-
-			category.getTitle().put("Español", nameES);
-			category.getTitle().put("English", nameEN);
-
-			res.setTitle(category.getTitle());
-			
+		} else {
+			res.setParentCategory(category.getParentCategory());
 		}
+		res.setTitle(aux);
+
 		this.validator.validate(res, binding);
 
 		return res;
 	}
 	
-	//TODO: pass conferences with a category to it's parentCat
+	private void transferConferences(Category category) {
+		Category parent = category.getParentCategory();
+		Collection<Conference> conferencesToTransfer = category.getConferences();
+		Collection<Conference> conferences = parent.getConferences();
+		
+		conferences.addAll(conferencesToTransfer);
+		parent.setConferences(conferences);
+		
+		for(Conference conference : conferencesToTransfer) {
+			conference.setCategory(parent);
+			this.conferenceService.save(conference);
+		}
+		this.save(parent);
+	}
 	
-	public Collection<Category> parseCategorys (String [] array) {
+	private void transferChildren(Category category) {
+		Category parent = category.getParentCategory();
+		Collection<Category> childrenToTransfer = category.getChildCategories();
+		Collection<Category> children = parent.getChildCategories();
+		
+		children.addAll(childrenToTransfer);
+		parent.setChildCategories(children);
+		
+		for(Category cat : childrenToTransfer) {
+			cat.setParentCategory(parent);
+			this.save(cat);
+			//this.addNewChild(cat);
+		}
+		this.save(parent);
+	}
+	
+	private void deleteFromParent(Category category) {
+		Category parent = category.getParentCategory();
+		Collection<Category> aux = parent.getChildCategories();
+		aux.remove(category);
+		parent.setChildCategories(aux);
+		
+		this.save(parent);
+	}
+	
+	private void addNewChild(Category category) {
+		Collection<Category> children;
+		Category parent = this.findOne(category.getParentCategory().getId());
+		
+		children = parent.getChildCategories();
+		children.add(category);
+		parent.setChildCategories(children);
+		this.save(parent);
+	}
+	
+	public Collection<Category> parseCategories (String [] array) {
 		Collection<Category> result = new ArrayList<>();
 		String a = null;
 		Integer n = 0;
@@ -166,6 +233,19 @@ public class CategoryService {
 	
 	public void flush(){
 		this.categoryRepository.flush();
+	}
+	
+	public Category findOneByConferenceId(int conferenceId) {
+		
+		return this.categoryRepository.findOneByConferenceId(conferenceId);
+	}
+	
+	public void addNewConference(Collection<Category> categories, Conference conference) {
+		for(Category cat : categories) {
+			Collection<Conference> collCon = cat.getConferences();
+			collCon.add(conference);
+			cat.setConferences(collCon);
+		}
 	}
 }
 

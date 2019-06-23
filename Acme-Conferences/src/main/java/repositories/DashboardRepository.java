@@ -22,8 +22,7 @@ public interface DashboardRepository extends
 	@Query("select max(datediff(c.endDate, c.startDate)),min(datediff(c.endDate, c.startDate)),avg(datediff(c.endDate, c.startDate)),stddev(datediff(c.endDate, c.startDate)) from Conference c")
 	Double[] statsDaysPerConference();
 	
-	//TODO
-	@Query("select max(c.category),min(c.category),avg(c.category),stddev(c.category) from Conference c")
+	@Query("select max(c.conferences.size),min(c.conferences.size),avg(c.conferences.size),stddev(c.conferences.size) from Category c")
 	Double[] statsConferencesPerCategory();
 	
 	@Query("select max(1.0*(select count(*) from Comment com where com.conference = c)),min(1.0*(select count(*) from Comment com where com.conference = c)),avg(1.0*(select count(*) from Comment com where com.conference = c)),stddev(1.0*(select count(*) from Comment com where com.conference = c)) from Conference c")

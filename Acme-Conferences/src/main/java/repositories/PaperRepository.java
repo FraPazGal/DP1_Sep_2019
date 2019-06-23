@@ -7,5 +7,6 @@ import domain.Paper;
 
 @Repository
 public interface PaperRepository extends JpaRepository<Paper, Integer> {
+	
 
 }

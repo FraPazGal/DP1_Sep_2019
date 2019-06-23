@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.SponsorshipRepository;
 import domain.Actor;
@@ -36,6 +37,9 @@ public class SponsorshipService {
 	
 	@Autowired
 	private CreditCardService creditCardService;
+	
+	@Autowired
+	private Validator validator;
 	
 	public Sponsorship create() {
 		Actor principal;
@@ -83,7 +87,7 @@ public class SponsorshipService {
 		}
 		
 		for(Conference conference : sponsorship.getConferences()) {
-			Assert.isTrue(!conference.getIsFinal());
+			Assert.isTrue(conference.getIsFinal());
 		}
 		
 		Assert.notNull(sponsorship.getBanner());
@@ -117,17 +121,27 @@ public class SponsorshipService {
 		Sponsorship sponsorship = this.create();
 
 		/* Creating sponsorship */
-		Sponsorship aux = this.findOne(form.getId());
 		
-		sponsorship.setId(aux.getId());
-		sponsorship.setVersion(aux.getVersion());
+		if(form.getId() != 0) {
+			Sponsorship aux = this.findOne(form.getId());
+			
+			sponsorship.setId(aux.getId());
+			sponsorship.setVersion(aux.getVersion());
+		}
 		
 		sponsorship.setBanner(form.getBanner());
 		sponsorship.setTargetPage(form.getTargetPage());
 		sponsorship.setConferences(form.getConferences());
 
 		/* Creating credit card */
-		CreditCard creditCard = new CreditCard();
+		CreditCard creditCard = this.creditCardService.create();
+		
+		if(form.getIdCC() != 0) {
+			CreditCard auxCC = this.creditCardService.findOne(form.getIdCC());
+			
+			creditCard.setId(auxCC.getId());
+			creditCard.setVersion(auxCC.getVersion());
+		}
 
 		creditCard.setHolder(form.getHolder());
 		creditCard.setMake(form.getMake());
@@ -135,10 +149,17 @@ public class SponsorshipService {
 		creditCard.setExpirationMonth(form.getExpirationMonth());
 		creditCard.setExpirationYear(form.getExpirationYear());
 		creditCard.setCVV(form.getCVV());
-
-		sponsorship.setCreditCard(creditCard);
 		
-		//this.validator.validate(sponsorship, binding);
+		this.validator.validate(creditCard, binding);
+		
+		if (!binding.hasErrors()) {
+			CreditCard saved;
+			saved = this.creditCardService.save(creditCard);
+			
+			sponsorship.setCreditCard(saved);
+		}
+		
+		this.validator.validate(sponsorship, binding);
 		
 		try {
 			Assert.notNull(form.getConferences(), "no.conferences");
@@ -188,21 +209,6 @@ public class SponsorshipService {
 		res = this.sponsorshipRepository.sponsorshipsPerConference(conferenceId);
 		
 		return res;
-	}
-	
-	public void deleteSponsorships(int id){
-		
-		this.sponsorshipRepository.deleteInBatch(this.sponsorshipsPerSponsor(id));
-	}
-
-	public void deleteSponsorshipsPerFilms(Conference conf) {
-		
-		for(Sponsorship s :this.findAll()){
-			
-			if(s.getConferences().contains(conf)){
-				this.sponsorshipRepository.delete(s);
-			}
-		}
 	}
 
 	public Collection<Sponsorship> sponsorshipsPerSponsor(int sponsorId) {

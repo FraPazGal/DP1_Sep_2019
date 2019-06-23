@@ -26,6 +26,7 @@ public class Category extends DomainEntity {
 	private Map<String, String> title;
 	private Category parentCategory;
 	private Collection<Category> childCategories;
+	private Collection<Conference> conferences;
 
 	/* Getters and setters */
 
@@ -52,6 +53,7 @@ public class Category extends DomainEntity {
 
 	@Valid
 	@OneToMany
+	@NotNull
 	public Collection<Category> getChildCategories() {
 		return childCategories;
 	}
@@ -59,5 +61,18 @@ public class Category extends DomainEntity {
 	public void setChildCategories(Collection<Category> childCategories) {
 		this.childCategories = childCategories;
 	}
+
+	@Valid
+	@NotNull
+	@OneToMany(mappedBy = "category")
+	public Collection<Conference> getConferences() {
+		return conferences;
+	}
+
+	public void setConferences(Collection<Conference> conferences) {
+		this.conferences = conferences;
+	}
+	
+	
 
 }

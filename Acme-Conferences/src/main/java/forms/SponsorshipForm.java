@@ -26,6 +26,7 @@ public class SponsorshipForm {
 	private Collection<Conference> conferences;
 
 	/* Credit Card attributes */
+	private int idCC;
 	private String holder;
 	private String make;
 	private String number;
@@ -49,6 +50,7 @@ public class SponsorshipForm {
 		this.expirationMonth = sponsorship.getCreditCard().getExpirationMonth();
 		this.expirationYear = sponsorship.getCreditCard().getExpirationYear();
 		this.CVV = sponsorship.getCreditCard().getCVV();
+		this.idCC = sponsorship.getCreditCard().getId();
 	}
 	
 	@URL
@@ -152,6 +154,12 @@ public class SponsorshipForm {
 		this.version = version;
 	}
 	
-	
+	public int getIdCC() {
+		return idCC;
+	}
+
+	public void setIdCC(int idCC) {
+		this.idCC = idCC;
+	}
 
 }

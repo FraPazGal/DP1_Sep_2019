@@ -57,6 +57,25 @@
 		}
 		window.location.replace(loc);
 	}
+	
+	$(document).ready(function() {
+		$("#jSubMenu").jMenu();
+	});
+
+	function askSubmission(msg, form) {
+		if (confirm(msg))
+			form.submit();
+	}
+	
+	function relativeRedir(loc) {	
+		var b = document.getElementsByTagName('base');
+		if (b && b[0] && b[0].href) {
+  			if (b[0].href.substr(b[0].href.length - 1) == '/' && loc.charAt(0) == '/')
+    		loc = loc.substr(1);
+  			loc = b[0].href + loc;
+		}
+		window.location.replace(loc);
+	}
 </script>
 
 </head>
@@ -67,9 +86,11 @@
 		<tiles:insertAttribute name="header" />
 	</div>
 	<div>
-		<h1>
-			<tiles:insertAttribute name="title" />
-		</h1>
+		
+		<jstl:if test="${listConf}">
+		<br><br>
+			<tiles:insertAttribute name="subheader" />
+		</jstl:if>
 		<tiles:insertAttribute name="body" />
 		<jstl:if test="${message != null}">
 			<br />

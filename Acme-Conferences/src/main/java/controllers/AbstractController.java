@@ -18,6 +18,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class AbstractController {
+	
+//	@Autowired
+//	private SystemConfigurationService	systemConfigurationService;
+//
+//	// Methods
+//
+//	@ModelAttribute("banner")
+//	public String getBanner(final Model model) {
+//
+//		final String urlBanner = this.systemConfigurationService.findMyBanner();
+//		return urlBanner;
+//	}
+	
 
 	// Panic handler ----------------------------------------------------------
 

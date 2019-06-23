@@ -16,6 +16,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -51,6 +52,7 @@ public class Finder extends DomainEntity {
 		this.maximumFee = maximumFee;
 	}
 
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getMinimumDate() {
 		return minimumDate;
 	}
@@ -59,6 +61,7 @@ public class Finder extends DomainEntity {
 		this.minimumDate = minimumDate;
 	}
 
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getMaximumDate() {
 		return maximumDate;
 	}
@@ -67,6 +70,7 @@ public class Finder extends DomainEntity {
 		this.maximumDate = maximumDate;
 	}
 
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getSearchMoment() {
 		return searchMoment;
 	}

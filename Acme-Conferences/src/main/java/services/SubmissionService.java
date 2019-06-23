@@ -1,0 +1,198 @@
+package services;
+
+import java.security.SecureRandom;
+import java.util.Collection;
+import java.util.Date;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+
+import repositories.SubmissionRepository;
+import domain.Actor;
+import domain.Author;
+import domain.Paper;
+import domain.Submission;
+import forms.SubmissionForm;
+
+@Transactional
+@Service
+public class SubmissionService {
+	
+	// Managed repository ------------------------------------
+	
+	@Autowired
+	private SubmissionRepository submissionRepository;
+	
+	// Supporting services -----------------------------------
+	
+	@Autowired
+	private UtilityService utilityService;
+	
+	@Autowired
+	private PaperService paperService;
+	
+	@Autowired
+	private Validator validator;
+	
+	public Submission create() {
+		Actor principal;
+		Submission result;
+
+		principal = this.utilityService.findByPrincipal();
+		Assert.isTrue(this.utilityService.checkAuthority(principal, "AUTHOR"),
+				"not.allowed");
+
+		result = new Submission();
+		result.setSubmissionMoment(new Date(System.currentTimeMillis() - 1));
+		result.setAuthor((Author) principal);
+		result.setTicker(this.generateTicker(principal));
+		result.setStatus("UNDER-REVIEW");
+
+		return result;
+	}
+
+	public Collection<Submission> findAll() {
+		Collection<Submission> result;
+		result = this.submissionRepository.findAll();
+
+		return result;
+	}
+
+	public Submission findOne(final int submissionId) {
+		Submission result;
+		result = this.submissionRepository.findOne(submissionId);
+
+		return result;
+	}
+	
+	public Submission save(final Submission submission) {
+		Actor principal;
+		Submission result;
+
+		Assert.notNull(submission.getTicker());
+		Assert.notNull(submission.getStatus());
+		Assert.notNull(submission.getSubmissionMoment());
+		Assert.notNull(submission.getAuthor());
+		Assert.notNull(submission.getConference());
+		Assert.notNull(submission.getPaper());
+		
+		principal = this.utilityService.findByPrincipal();
+		Assert.isTrue(principal.equals(submission.getAuthor()));
+		
+		Assert.isTrue(submission.getSubmissionMoment().before(submission.getConference().getSubmissionDeadline()), "submissionDeadline.limit");
+		
+		result = this.submissionRepository.save(submission);
+
+		return result;
+	}
+	
+	public void delete(final Submission submission) {
+		Actor principal;
+
+		Assert.notNull(submission);
+		Assert.isTrue(submission.getId() != 0, "wrong.id");
+
+		principal = this.utilityService.findByPrincipal();
+		Assert.isTrue(principal.equals(submission.getAuthor()));
+
+		this.submissionRepository.delete(submission.getId());
+	}
+	
+	// Other business methods -------------------------------
+	
+	public void flush() {
+		this.submissionRepository.flush();
+	}
+	
+	public Submission reconstruct(SubmissionForm form,
+			BindingResult binding) {
+		
+		Date now = new Date(System.currentTimeMillis() - 1);
+		Submission submission = this.create();
+		
+		/* Creating paper */
+		Paper paper = this.paperService.create();
+		
+		if(form.getId() == 0) {
+			paper.setTitle(form.getTitleP());
+			paper.setAuthors(form.getAuthorsP());
+			paper.setSummary(form.getSummaryP());
+			paper.setPaperDocument(form.getPaperDocumentP());
+		
+		} else {
+			paper.setTitle(form.getTitlePCR());
+			paper.setAuthors(form.getAuthorsPCR());
+			paper.setSummary(form.getSummaryPCR());
+			paper.setPaperDocument(form.getPaperDocumentPCR());
+		}
+		
+		this.validator.validate(paper, binding);
+		
+		if (!binding.hasErrors()) {
+			Paper saved;
+			saved = this.paperService.save(paper);
+			
+			if(form.getId() != 0) {
+				submission = this.findOne(form.getId());
+				Assert.isTrue(submission.getStatus() == "ACCEPTED", "submission.not.accepted");
+				submission.setCameraReadyPaper(paper);
+			} else {
+				submission.setConference(form.getConference());
+				submission.setPaper(saved);
+			}
+		}
+		
+		Assert.isTrue(submission.getSubmissionMoment().before(submission.getConference().getSubmissionDeadline()), "submissionDeadline.limit");
+		Assert.isTrue(now.before(submission.getConference().getCameraReadyDeadline()), "cameraReadyDeadline.limit");
+		
+		this.validator.validate(submission, binding);
+		
+		return submission;
+	}
+	
+	private String generateTicker(Actor author) {
+		String uniqueTicker = null;
+		String nameInitial, middleNameInitial, surnameInitial, alphaNum, initials;
+		boolean unique = false;
+
+		nameInitial = author.getName().substring(0, 1);
+		surnameInitial = author.getSurname().substring(0, 1);
+		middleNameInitial = author.getMiddleName().isEmpty() ? "X" : author.getMiddleName().substring(0, 1);
+
+		while (unique == false) {
+			alphaNum = this.randomString();
+			initials = nameInitial + middleNameInitial + surnameInitial;
+			uniqueTicker = initials + "-" + alphaNum;
+			for (final Submission submission : this.findAll())
+				if (submission.getTicker().equals(uniqueTicker))
+					continue;
+			unique = true;
+		}
+		return uniqueTicker;
+	}
+
+	private String randomString() {
+
+		final String possibleChars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		final SecureRandom rnd = new SecureRandom();
+		final int length = 4;
+
+		final StringBuilder stringBuilder = new StringBuilder(length);
+
+		for (int i = 0; i < length; i++)
+			stringBuilder.append(possibleChars.charAt(rnd.nextInt(possibleChars
+					.length())));
+		return stringBuilder.toString();
+
+	}
+	
+	public Submission findSubByPaper(int paperId) {
+		
+		return this.submissionRepository.findSubByPaper(paperId);
+	}
+}

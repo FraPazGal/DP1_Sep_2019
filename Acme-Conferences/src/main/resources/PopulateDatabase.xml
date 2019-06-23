@@ -334,7 +334,7 @@
 			<list>
 			</list>
 		</property>
-		<property name="actor" ref="author2" />
+		<property name="actor" ref="sponsor1" />
 	</bean>
 
 	<bean id="finderSponsor2" class="domain.Finder">
@@ -475,6 +475,10 @@
 				<ref bean="Biology" />
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Computer Science -->
@@ -493,6 +497,10 @@
 			<list>
 				<ref bean="ArtificialIntelligence" />
 				<ref bean="SoftwareEngineering" />
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
 			</list>
 		</property>
 	</bean>
@@ -516,6 +524,11 @@
 				<ref bean="Electronics" />
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference7" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Biology -->
@@ -537,6 +550,10 @@
 				<ref bean="Fungi" />
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Artificial Intelligence -->
@@ -556,6 +573,10 @@
 				<ref bean="DeepLeaning" />
 				<ref bean="Instance-basedLearning" />
 				<ref bean="Regression" />
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
 			</list>
 		</property>
 	</bean>
@@ -580,6 +601,11 @@
 				<ref bean="Tools" />
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference3" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Kinetic -->
@@ -595,6 +621,10 @@
 			<ref bean="Physics" />
 		</property>
 		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
 			<list>
 			</list>
 		</property>
@@ -616,6 +646,10 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Electronics -->
@@ -631,6 +665,10 @@
 			<ref bean="Physics" />
 		</property>
 		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
 			<list>
 			</list>
 		</property>
@@ -652,6 +690,11 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference2" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Plants -->
@@ -668,6 +711,11 @@
 		</property>
 		<property name="childCategories">
 			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference1" />
 			</list>
 		</property>
 	</bean>
@@ -688,6 +736,11 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference4" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Deep Leaning -->
@@ -703,6 +756,10 @@
 			<ref bean="ArtificialIntelligence" />
 		</property>
 		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
 			<list>
 			</list>
 		</property>
@@ -724,6 +781,10 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Regression -->
@@ -740,6 +801,11 @@
 		</property>
 		<property name="childCategories">
 			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference6" />
 			</list>
 		</property>
 	</bean>
@@ -760,6 +826,11 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference5" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Big Processing -->
@@ -775,6 +846,10 @@
 			<ref bean="SoftwareEngineering" />
 		</property>
 		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
 			<list>
 			</list>
 		</property>
@@ -796,6 +871,10 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Tools -->
@@ -814,6 +893,10 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- CONFERENCES -->
@@ -824,14 +907,14 @@
 		<property name="summary" value="PCPE es la más mejor" />
 		<property name="venue" value="C/ No te lo digo, s/n" />
 		<property name="submissionDeadline" value="03/31/2020 23:59" />
-		<property name="notificationDealine" value="06/30/2020 23:59" />
+		<property name="notificationDeadline" value="06/30/2020 23:59" />
 		<property name="cameraReadyDeadline" value="07/31/2020 23:59" />
 		<property name="startDate" value="09/01/2020 09:00" />
 		<property name="endDate" value="09/04/2020 9:00" />
 		<property name="entryFee" value="24.95" />
 		<property name="isFinal" value="true" />
-		<property name="category" ref="Plants" />
 		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="Plants" />
 	</bean>
 
 	<bean id="conference2" class="domain.Conference">
@@ -841,14 +924,14 @@
 		<property name="summary" value="Va a ser de animales y será una conferencia" />
 		<property name="venue" value="Por determinar" />
 		<property name="submissionDeadline" value="03/31/2020 23:59" />
-		<property name="notificationDealine" value="06/30/2020 23:59" />
+		<property name="notificationDeadline" value="06/30/2020 23:59" />
 		<property name="cameraReadyDeadline" value="07/31/2020 23:59" />
 		<property name="startDate" value="09/01/2020 09:00" />
 		<property name="endDate" value="09/04/2020 22:00" />
 		<property name="entryFee" value="15.50" />
 		<property name="isFinal" value="false" />
-		<property name="category" ref="Animals" />
 		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="Animals" />
 	</bean>
 
 	<bean id="conference3" class="domain.Conference">
@@ -858,14 +941,14 @@
 			value="Conferencia que fomenta la inscripción de nuevos estudiantes en la carrega de Ing. del Software" />
 		<property name="venue" value="ETSII" />
 		<property name="submissionDeadline" value="06/20/2019 23:59" />
-		<property name="notificationDealine" value="06/25/2020 23:59" />
+		<property name="notificationDeadline" value="06/25/2020 23:59" />
 		<property name="cameraReadyDeadline" value="06/30/2020 23:59" />
 		<property name="startDate" value="07/01/2020 09:00" />
 		<property name="endDate" value="07/02/2020 22:00" />
 		<property name="entryFee" value="5.75" />
 		<property name="isFinal" value="true" />
-		<property name="category" ref="SoftwareEngineering" />
 		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="SoftwareEngineering" />
 	</bean>
 
 	<bean id="conference4" class="domain.Conference">
@@ -874,14 +957,14 @@
 		<property name="summary" value="Va a ser de fungi y será una conferencia" />
 		<property name="venue" value="Por determinar" />
 		<property name="submissionDeadline" value="01/01/2020 23:59" />
-		<property name="notificationDealine" value="01/02/2020 23:59" />
+		<property name="notificationDeadline" value="01/02/2020 23:59" />
 		<property name="cameraReadyDeadline" value="01/03/2020 23:59" />
 		<property name="startDate" value="01/04/2020 09:00" />
-		<property name="endDate" value="01/04/2020 09:30" />
+		<property name="endDate" value="02/04/2020 09:30" />
 		<property name="entryFee" value="1000.00" />
 		<property name="isFinal" value="false" />
-		<property name="category" ref="Fungi" />
 		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="Fungi" />
 	</bean>
 
 	<bean id="conference5" class="domain.Conference">
@@ -891,14 +974,14 @@
 		<property name="summary" value="Va a ser de Big Data y será una conferencia" />
 		<property name="venue" value="Por determinar" />
 		<property name="submissionDeadline" value="02/01/2020 23:59" />
-		<property name="notificationDealine" value="02/02/2020 23:59" />
+		<property name="notificationDeadline" value="02/02/2020 23:59" />
 		<property name="cameraReadyDeadline" value="02/03/2020 23:59" />
 		<property name="startDate" value="02/04/2020 09:00" />
 		<property name="endDate" value="02/05/2020 22:00" />
 		<property name="entryFee" value="157.0" />
 		<property name="isFinal" value="false" />
-		<property name="category" ref="BigData" />
 		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="BigData" />
 	</bean>
 
 	<bean id="conference6" class="domain.Conference">
@@ -908,14 +991,14 @@
 		<property name="summary" value="Va a ser de regresión y será una conferencia" />
 		<property name="venue" value="Por determinar" />
 		<property name="submissionDeadline" value="03/01/2020 23:59" />
-		<property name="notificationDealine" value="03/02/2020 23:59" />
+		<property name="notificationDeadline" value="03/02/2020 23:59" />
 		<property name="cameraReadyDeadline" value="03/03/2020 23:59" />
 		<property name="startDate" value="03/04/2020 09:00" />
 		<property name="endDate" value="03/05/2020 22:00" />
 		<property name="entryFee" value="157.0" />
 		<property name="isFinal" value="false" />
-		<property name="category" ref="Regression" />
 		<property name="administrator" ref="administrator2" />
+		<property name="category" ref="Regression" />
 	</bean>
 
 	<bean id="conference7" class="domain.Conference">
@@ -924,14 +1007,14 @@
 		<property name="summary" value="Fue una conferencia de Física" />
 		<property name="venue" value="En la facultad de FISICA" />
 		<property name="submissionDeadline" value="05/01/2019 23:59" />
-		<property name="notificationDealine" value="05/02/2019 23:59" />
+		<property name="notificationDeadline" value="05/02/2019 23:59" />
 		<property name="cameraReadyDeadline" value="05/03/2019 23:59" />
 		<property name="startDate" value="05/04/2019 09:00" />
-		<property name="endDate" value="05/05/2019 22:00" />
+		<property name="endDate" value="05/17/2019 22:00" />
 		<property name="entryFee" value="0.99" />
 		<property name="isFinal" value="true" />
-		<property name="category" ref="Physics" />
 		<property name="administrator" ref="administrator2" />
+		<property name="category" ref="Physics" />
 	</bean>
 
 	<!-- ***** CREDITCARD ***** -->
@@ -944,32 +1027,34 @@
 		<property name="expirationYear" value="22" />
 		<property name="CVV" value="177" />
 	</bean>
+
 	<bean id="creditCard2" class="domain.CreditCard">
-		<property name="holder" value="José Gamiz Redondo" />
-		<property name="make" value="VISA" />
-		<property name="number" value="4764042457713154" />
-		<property name="expirationMonth" value="02" />
-		<property name="expirationYear" value="22" />
-		<property name="CVV" value="177" />
+		<property name="holder" value="Carlos Albalat Heredia" />
+		<property name="make" value="MASTERCARD" />
+		<property name="number" value="4544963188930071" />
+		<property name="expirationMonth" value="11" />
+		<property name="expirationYear" value="20" />
+		<property name="CVV" value="366" />
 	</bean>
 
 	<bean id="creditCard3" class="domain.CreditCard">
-		<property name="holder" value="José Gamiz Redondo" />
+		<property name="holder" value="Alberto Ramírez" />
 		<property name="make" value="VISA" />
-		<property name="number" value="4764042457713154" />
-		<property name="expirationMonth" value="02" />
-		<property name="expirationYear" value="22" />
-		<property name="CVV" value="177" />
+		<property name="number" value="4582276213483252" />
+		<property name="expirationMonth" value="01" />
+		<property name="expirationYear" value="28" />
+		<property name="CVV" value="707" />
 	</bean>
 
 	<bean id="creditCard4" class="domain.CreditCard">
-		<property name="holder" value="José Gamiz Redondo" />
-		<property name="make" value="VISA" />
-		<property name="number" value="4764042457713154" />
+		<property name="holder" value="Pepe Viyuela" />
+		<property name="make" value="AMERICAN EXPRESS" />
+		<property name="number" value="4354197982162289" />
 		<property name="expirationMonth" value="02" />
-		<property name="expirationYear" value="22" />
-		<property name="CVV" value="177" />
+		<property name="expirationYear" value="28" />
+		<property name="CVV" value="479" />
 	</bean>
+
 	
 	<bean id="creditCard6" class="domain.CreditCard">
 		<property name="holder" value="Pedro Marín López" />
@@ -1511,6 +1596,5 @@
 		<property name="conference" ref="conference3" />
 		<property name="creditCard" ref="creditCard9" />
 	</bean>
-	
 	
 </beans>

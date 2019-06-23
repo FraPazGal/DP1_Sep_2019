@@ -13,6 +13,7 @@
 	<definition name="master.page" template="/views/master-page/layout.jsp">
 		<put-attribute name="title" value="" />
 		<put-attribute name="header" value="/views/master-page/header.jsp" />
+		<put-attribute name="subheader" value="/views/conference/subheader.jsp" />
 		<put-attribute name="body" value="" />
 		<put-attribute name="footer" value="/views/master-page/footer.jsp" />
 	</definition>
