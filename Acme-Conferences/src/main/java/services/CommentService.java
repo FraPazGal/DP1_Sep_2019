@@ -1,5 +1,7 @@
 package services;
 
+import java.util.Collection;
+
 import javax.transaction.Transactional;
 
 import org.joda.time.LocalDate;
@@ -66,5 +68,13 @@ public class CommentService {
 			res.setBody(comment.getBody());
 		}
 		return res;
+	}
+
+	public Collection<Comment> getCommentsOfConference(Integer conferenceid) {
+		return this.commentRepository.getCommentsOfConference(conferenceid);
+	}
+
+	public Collection<Comment> getCommentsOfActivity(Integer activityid) {
+		return this.commentRepository.getCommentsOfConference(activityid);
 	}
 }

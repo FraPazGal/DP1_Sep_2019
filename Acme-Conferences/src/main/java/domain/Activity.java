@@ -11,8 +11,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -21,7 +23,8 @@ public class Activity extends DomainEntity {
 
 	/* Attributes */
 
-	private String title, speakersInvolved, summary, usedRoom, attachement;
+	private String title, speakersInvolved, summary, usedRoom, attachement,
+			type;
 	private Date startMoment;
 	private Double duration;
 	private Conference conference;
@@ -77,6 +80,17 @@ public class Activity extends DomainEntity {
 		this.attachement = attachement;
 	}
 
+	@NotBlank
+	@NotNull
+	@Pattern(regexp = "^PANEL|TUTORIAL|PRESENTATION", message = "type.error")
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	@NotNull
 	public Date getStartMoment() {
 		return startMoment;
@@ -87,6 +101,7 @@ public class Activity extends DomainEntity {
 	}
 
 	@NotNull
+	@Range(min = 0, message = "duration.error")
 	public Double getDuration() {
 		return duration;
 	}

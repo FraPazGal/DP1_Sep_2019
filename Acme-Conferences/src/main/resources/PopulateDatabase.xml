@@ -89,7 +89,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="userAuthor3" class="security.UserAccount">
 		<property name="username" value="author3" />
 		<property name="password" value="c59a474d5ade296a15ebc40d6c4e8e11" />
@@ -216,23 +216,21 @@
 		<property name="address" value="C/ Chimera ants' nest" />
 		<property name="userAccount" ref="userAuthor2" />
 	</bean>
-	
+
 	<bean id="author3" class="domain.Author">
 		<property name="name" value="TBD" />
 		<property name="surname" value="TBD" />
-		<property name="photo"
-			value="https://TBD.net" />
+		<property name="photo" value="https://TBD.net" />
 		<property name="email" value="TBD@yahoo.com" />
 		<property name="phoneNumber" value="+34TBD" />
 		<property name="address" value="TBD" />
 		<property name="userAccount" ref="userAuthor3" />
 	</bean>
-	
+
 	<bean id="author4" class="domain.Author">
 		<property name="name" value="TBD" />
 		<property name="surname" value="TBD" />
-		<property name="photo"
-			value="https://TBD.net" />
+		<property name="photo" value="https://TBD.net" />
 		<property name="email" value="TBD@yahoo.com" />
 		<property name="phoneNumber" value="+34TBD" />
 		<property name="address" value="TBD" />
@@ -312,7 +310,7 @@
 		</property>
 		<property name="actor" ref="author2" />
 	</bean>
-	
+
 	<bean id="finderAuthor3" class="domain.Finder">
 		<property name="results">
 			<list>
@@ -320,7 +318,7 @@
 		</property>
 		<property name="actor" ref="author3" />
 	</bean>
-	
+
 	<bean id="finderAuthor4" class="domain.Finder">
 		<property name="results">
 			<list>
@@ -334,7 +332,7 @@
 			<list>
 			</list>
 		</property>
-		<property name="actor" ref="author2" />
+		<property name="actor" ref="sponsor1" />
 	</bean>
 
 	<bean id="finderSponsor2" class="domain.Finder">
@@ -970,7 +968,7 @@
 		<property name="expirationYear" value="22" />
 		<property name="CVV" value="177" />
 	</bean>
-	
+
 	<bean id="creditCard6" class="domain.CreditCard">
 		<property name="holder" value="Pedro Marín López" />
 		<property name="make" value="MASTERCARD" />
@@ -1217,6 +1215,7 @@
 	<bean id="activity1Conference1" class="domain.Activity">
 		<property name="title" value="Presentation of the conference" />
 		<property name="speakersInvolved" value="Too many" />
+		<property name="type" value="PRESENTATION" />
 		<property name="summary"
 			value="The director will introduce the audience to what is coming next" />
 		<property name="usedRoom" value="A3.10" />
@@ -1230,6 +1229,7 @@
 	<bean id="activity2Conference1" class="domain.Activity">
 		<property name="title" value="Identify plants contest" />
 		<property name="speakersInvolved" value="Too many" />
+		<property name="type" value="TUTORIAL" />
 		<property name="summary"
 			value="The audience will have to identify some plants" />
 		<property name="usedRoom" value="A3.10" />
@@ -1243,6 +1243,7 @@
 	<bean id="activity3Conference1" class="domain.Activity">
 		<property name="title" value="Talk about climate change" />
 		<property name="speakersInvolved" value="Too many" />
+		<property name="type" value="PANEL" />
 		<property name="summary"
 			value="Some scientists will talk about climate change and the importance of planting more trees to prevent it" />
 		<property name="usedRoom" value="A3.10" />
@@ -1256,6 +1257,7 @@
 	<bean id="activity4Conference1" class="domain.Activity">
 		<property name="title" value="Closing the event" />
 		<property name="speakersInvolved" value="Too many" />
+		<property name="type" value="PRESENTATION" />
 		<property name="summary"
 			value="The director will close the event and thank everyone for coming to the conference" />
 		<property name="usedRoom" value="A3.10" />
@@ -1271,6 +1273,7 @@
 	<bean id="activity1Conference3" class="domain.Activity">
 		<property name="title" value="Presentation of the conference" />
 		<property name="speakersInvolved" value="Too many and more" />
+		<property name="type" value="PRESENTATION" />
 		<property name="summary"
 			value="The director will introduce the audience to what is coming next" />
 		<property name="usedRoom" value="Events room" />
@@ -1284,6 +1287,7 @@
 	<bean id="activity2Conference3" class="domain.Activity">
 		<property name="title" value="What is Software engineering?" />
 		<property name="speakersInvolved" value="Too many and more" />
+		<property name="type" value="PRESENTATION" />
 		<property name="summary"
 			value="Some proffesionals will talk about what is SE and the importance of having qualified people in this environment" />
 		<property name="usedRoom" value="Events room" />
@@ -1298,6 +1302,7 @@
 		<property name="title"
 			value="Talk about job opportunities for young people" />
 		<property name="speakersInvolved" value="Too many and more" />
+		<property name="type" value="TUTORIAL" />
 		<property name="summary"
 			value="There will be some businessman talking about job opportunities and offers at their company" />
 		<property name="usedRoom" value="Events room" />
@@ -1312,6 +1317,7 @@
 		<property name="title"
 			value="Talk about how to improve myself at software engineering" />
 		<property name="speakersInvolved" value="Too many and more" />
+		<property name="type" value="PANEL" />
 		<property name="summary"
 			value="There will be some businessman talking about how can you improve yourself." />
 		<property name="usedRoom" value="A3.10" />
@@ -1325,6 +1331,7 @@
 	<bean id="activity5Conference3" class="domain.Activity">
 		<property name="title" value="Closing the event" />
 		<property name="speakersInvolved" value="Too many and more" />
+		<property name="type" value="PRESENTATION" />
 		<property name="summary"
 			value="The director will close the event and thank everyone for coming to the conference" />
 		<property name="usedRoom" value="Events room" />
@@ -1485,32 +1492,32 @@
 		<property name="activity" ref="activity3Conference3" />
 		<property name="writer" ref="author2" />
 	</bean>
-	
+
 	<!-- REGISTRATIONS -->
-	
+
 	<bean id="registration1" class="domain.Registration">
 		<property name="author" ref="author3" />
 		<property name="conference" ref="conference1" />
 		<property name="creditCard" ref="creditCard6" />
 	</bean>
-	
+
 	<bean id="registration2" class="domain.Registration">
 		<property name="author" ref="author3" />
 		<property name="conference" ref="conference3" />
 		<property name="creditCard" ref="creditCard7" />
 	</bean>
-	
+
 	<bean id="registration3" class="domain.Registration">
 		<property name="author" ref="author4" />
 		<property name="conference" ref="conference1" />
 		<property name="creditCard" ref="creditCard8" />
 	</bean>
-	
+
 	<bean id="registration4" class="domain.Registration">
 		<property name="author" ref="author4" />
 		<property name="conference" ref="conference3" />
 		<property name="creditCard" ref="creditCard9" />
 	</bean>
-	
-	
+
+
 </beans>

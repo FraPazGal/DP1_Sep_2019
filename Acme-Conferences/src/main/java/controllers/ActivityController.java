@@ -1,0 +1,180 @@
+package controllers;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import services.ActivityService;
+import services.UtilityService;
+import domain.Activity;
+import domain.Actor;
+
+@Controller
+@RequestMapping("/activity")
+public class ActivityController extends AbstractController {
+
+	@Autowired
+	private ActivityService activityService;
+
+	@Autowired
+	private UtilityService utilityService;
+
+	// Listing all activities
+
+	@RequestMapping(value = "/listAll", method = RequestMethod.GET)
+	public ModelAndView listAll() {
+		ModelAndView res;
+		Collection<Activity> activities;
+
+		activities = this.activityService.listAll();
+		activities = (activities == null) ? activities = new ArrayList<>()
+				: activities;
+
+		res = new ModelAndView("activity/listAll");
+		res.addObject("activities", activities);
+
+		return res;
+	}
+
+	// Listing activities of a conference
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list(@RequestParam int conferenceid) {
+		ModelAndView res;
+		Collection<Activity> activities;
+		Actor principal;
+		boolean permission = false;
+
+		try {
+			principal = this.utilityService.findByPrincipal();
+			Assert.isTrue(this.utilityService
+					.checkAuthority(principal, "ADMIN"));
+
+			permission = true;
+
+			activities = this.activityService
+					.getActivitiesOfConference(conferenceid);
+			activities = (activities == null) ? activities = new ArrayList<>()
+					: activities;
+
+			res = new ModelAndView("activity/list");
+			res.addObject("permission", permission);
+			res.addObject("activities", activities);
+		} catch (Throwable oops) {
+			res = new ModelAndView("welcome/index");
+		}
+		return res;
+	}
+
+	// Creating activity
+
+	@RequestMapping(value = "/create", method = RequestMethod.GET)
+	public ModelAndView create(@RequestParam Integer conferenceid) {
+		ModelAndView res;
+		Activity newActivity;
+		Actor principal;
+		boolean permission = false;
+
+		try {
+			principal = this.utilityService.findByPrincipal();
+			Assert.isTrue(this.utilityService
+					.checkAuthority(principal, "ADMIN"));
+
+			permission = true;
+
+			newActivity = this.activityService.create(conferenceid);
+
+			res = new ModelAndView("activity/create");
+			res.addObject("newActivity", newActivity);
+			res.addObject("permission", permission);
+		} catch (Throwable oops) {
+			res = new ModelAndView("welcome/index");
+		}
+		return res;
+	}
+
+	// Editing activity
+
+	@RequestMapping(value = "/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam Integer activityid) {
+		ModelAndView res;
+		Activity toEdit;
+		Actor principal;
+		boolean permission = false;
+
+		try {
+			principal = this.utilityService.findByPrincipal();
+			Assert.isTrue(this.utilityService
+					.checkAuthority(principal, "ADMIN"));
+
+			permission = true;
+
+			toEdit = this.activityService.findOne(activityid);
+
+			res = new ModelAndView("activity/edit");
+			res.addObject("activity", toEdit);
+			res.addObject("permission", permission);
+		} catch (Throwable oops) {
+			res = new ModelAndView("welcome/index");
+		}
+		return res;
+	}
+
+	// Saving activity
+	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
+	public ModelAndView save(@Valid Activity activity, BindingResult binding) {
+		ModelAndView res;
+		Actor principal;
+
+		try {
+			if (binding.hasErrors()) {
+				res = new ModelAndView("activity/edit");
+				res.addObject(activity);
+				res.addObject("permission", true);
+			} else {
+				principal = this.utilityService.findByPrincipal();
+				Assert.isTrue(this.utilityService.checkAuthority(principal,
+						"ADMIN"));
+
+				this.activityService.save(activity);
+				res = new ModelAndView("redirect:/list?conferenceid="
+						+ activity.getConference().getId());
+			}
+		} catch (Throwable oops) {
+			res = new ModelAndView("welcome/index");
+		}
+		return res;
+	}
+
+	// Deleting section
+
+	@RequestMapping(value = "/delete", method = RequestMethod.POST, params = "delete")
+	public ModelAndView delete(Activity activity) {
+		ModelAndView res;
+		Actor principal;
+
+		try {
+			principal = this.utilityService.findByPrincipal();
+			Assert.isTrue(this.utilityService
+					.checkAuthority(principal, "ADMIN"));
+
+			this.activityService.delete(activity);
+			res = new ModelAndView("redirect:/list?conferenceid="
+					+ activity.getConference().getId());
+		} catch (Throwable oops) {
+			res = new ModelAndView("welcome/index");
+		}
+		return res;
+	}
+
+}
