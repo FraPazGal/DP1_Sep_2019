@@ -64,6 +64,18 @@
 			
 		</security:authorize>
 		
+		<security:authorize access="hasAnyRole('AUTHOR', 'REVIEWER')">
+			<li><a class="fNiv"><spring:message
+						code="master.page.submission" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="submission/list.do"><spring:message
+								code="master.page.submission.list" /></a></li>
+				</ul></li>
+				
+			
+		</security:authorize>
+		
 		<security:authorize access="permitAll">
 			<li><a class="fNiv"><spring:message
 							code="master.page.conference" /></a>

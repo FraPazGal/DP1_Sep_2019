@@ -43,4 +43,7 @@ public interface ConferenceRepository extends
 	@Query("select c from Registration r join r.conference c where r.author.id = ?1")
 	Collection<Conference> conferencesRegisteredTo(int authorId);
 	
+	@Query("select c from Submission s join s.conference c where s.author.id = ?1")
+	Collection<Conference> conferencesSubmittedTo(int authorId);
+	
 }

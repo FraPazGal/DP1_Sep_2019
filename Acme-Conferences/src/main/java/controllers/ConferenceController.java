@@ -84,6 +84,7 @@ public class ConferenceController extends AbstractController {
 		final ModelAndView result = new ModelAndView("conference/list");
 		Collection<Conference> conferences  = new ArrayList<>();
 		Collection<Conference> conferencesRegisteredTo = new ArrayList<>();
+		Collection<Conference> conferencesSubmittedTo = new ArrayList<>();
 		Actor principal = null;
 		String isPrincipal = null;
 
@@ -128,12 +129,14 @@ public class ConferenceController extends AbstractController {
 				} else if (this.utilityService.checkAuthority(principal, "AUTHOR")) {
 					isPrincipal = "AUTHOR";
 					conferencesRegisteredTo = this.conferenceService.conferencesRegisteredTo(principal.getId());
+					conferencesSubmittedTo = this.conferenceService.conferencesSubmittedTo(principal.getId());
 				}
 					
 			} catch (Exception e) {}
 						
 			result.addObject("conferences", conferences);
 			result.addObject("conferencesRegisteredTo", conferencesRegisteredTo);
+			result.addObject("conferencesSubmittedTo", conferencesSubmittedTo);
 			result.addObject("isPrincipal", isPrincipal);
 			result.addObject("catalog", catalog);
 			result.addObject("listConf", true);

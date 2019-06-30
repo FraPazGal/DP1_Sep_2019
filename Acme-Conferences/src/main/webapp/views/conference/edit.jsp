@@ -25,7 +25,7 @@
 			
 				<acme:textbox code="conference.title" path="title" size="100px" /><br/> <br/>
 				<acme:textbox code="conference.acronym" path="acronym" size="100px" /><br/> <br/>
-				<acme:textarea code="conference.summary" path="summary" /><br/> <br/>
+				<acme:textarea code="conference.summary" path="summary" cols="80px" rows="4"/><br/> <br/>
 				<acme:textbox code="conference.venue" path="venue" size="100px" /><br/> <br/>
 				<acme:textbox code="conference.entryFee" path="entryFee" size="100px" /><br/> <br/>
 				

@@ -136,6 +136,20 @@
 							</a>
 						</jstl:if>
 					</display:column>
+					
+					<display:column>
+						<jstl:set var="contains" value="false" />
+						<jstl:forEach var="conf" items="${conferencesSubmittedTo}">
+						  <jstl:if test="${conf eq conference}">
+						    <jstl:set var="contains" value="true" />
+						  </jstl:if>
+						</jstl:forEach>
+						<jstl:if test="${!contains}">
+							<a href="submission/create.do?conferenceId=${conference.id}"> <spring:message
+									code="conference.submission" />
+							</a>
+						</jstl:if>
+					</display:column>
 				
 				</jstl:if>
 			</display:table>

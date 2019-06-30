@@ -271,4 +271,9 @@ public class ConferenceService {
 		return this.conferenceRepository.conferencesRegisteredTo(authorId);
 	}
 	
+	public Collection<Conference> conferencesSubmittedTo(Integer authorId) {
+		
+		return this.conferenceRepository.conferencesSubmittedTo(authorId);
+	}
+	
 }

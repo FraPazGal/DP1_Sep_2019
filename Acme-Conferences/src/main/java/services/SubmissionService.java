@@ -135,13 +135,17 @@ public class SubmissionService {
 		
 		if (!binding.hasErrors()) {
 			Paper saved;
-			saved = this.paperService.save(paper);
 			
 			if(form.getId() != 0) {
 				submission = this.findOne(form.getId());
-				Assert.isTrue(submission.getStatus() == "ACCEPTED", "submission.not.accepted");
-				submission.setCameraReadyPaper(paper);
+				Assert.isTrue(submission.getStatus().equals("ACCEPTED"), "submission.not.accepted");
+				
+				saved = this.paperService.save(paper);
+				
+				submission.setCameraReadyPaper(saved);
 			} else {
+				saved = this.paperService.save(paper);
+				
 				submission.setConference(form.getConference());
 				submission.setPaper(saved);
 			}
@@ -162,7 +166,7 @@ public class SubmissionService {
 
 		nameInitial = author.getName().substring(0, 1);
 		surnameInitial = author.getSurname().substring(0, 1);
-		middleNameInitial = author.getMiddleName().isEmpty() ? "X" : author.getMiddleName().substring(0, 1);
+		middleNameInitial = author.getMiddleName() == null ? "X" : author.getMiddleName().substring(0, 1);
 
 		while (unique == false) {
 			alphaNum = this.randomString();
@@ -194,5 +198,10 @@ public class SubmissionService {
 	public Submission findSubByPaper(int paperId) {
 		
 		return this.submissionRepository.findSubByPaper(paperId);
+	}
+	
+	public Collection<Submission> submissionsPerAuthor(int authorId) {
+		
+		return this.submissionRepository.submissionsPerAuthor(authorId);
 	}
 }

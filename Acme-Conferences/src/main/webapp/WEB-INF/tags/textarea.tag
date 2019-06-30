@@ -27,6 +27,8 @@
 <%@ attribute name="code" required="true" %>
 <%@ attribute name="readonly" required="false" %>
 <%@ attribute name="cols" required="false" %>
+<%@ attribute name="rows" required="false" %>
+<%@ attribute name="fixed" required="false" %>
 
 <jstl:if test="${readonly == null}">
 	<jstl:set var="readonly" value="false" />
@@ -38,6 +40,17 @@
 	<form:label path="${path}">
 		<spring:message code="${code}" />
 	</form:label>
-	<form:textarea path="${path}" readonly="${readonly}" cols="${cols}"/>
+	<br><br>
+	<form:textarea path="${path}" readonly="${readonly}" cols="${cols}" rows="${rows }"/>
 	<form:errors path="${path}" cssClass="error" />
 </div>
+
+<style>
+
+textarea {
+   resize: none;
+}
+
+</style>
+
+

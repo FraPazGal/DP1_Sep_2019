@@ -111,27 +111,28 @@ public class CategoryController extends AbstractController {
 			@RequestParam("nameEN") String nameEN, BindingResult binding) {
 		ModelAndView res;
 		Actor principal;
+		Category reconstructed;
 		
 			try {
 				principal = this.utilityService.findByPrincipal();
 				Assert.isTrue(this.utilityService.checkAuthority(principal,
 						"ADMIN"));
-				category = this.categoryService.reconstruct(category, nameES,
+				reconstructed = this.categoryService.reconstruct(category, nameES,
 						nameEN, binding);
 				
 				if (binding.hasErrors()) {
-					res = this.createEditModelAndView(category, binding.toString());
-				
+					Collection<Category> categories = this.categoryService.findAll();
+					res = this.createEditModelAndView(category);
+					res.addObject("categories", categories);
+					
 				} else {
-
-					this.categoryService.save(category);
+					this.categoryService.save(reconstructed);
+					res = new ModelAndView("redirect:list.do");
 				}
-
-				res = new ModelAndView("redirect:list.do");
 			} catch (Throwable oopsie) {
-				res = this.createEditModelAndView(category,
-						"category.commit.error");
 				Collection<Category> categories = this.categoryService.findAll();
+				res = this.createEditModelAndView(category,
+						oopsie.getMessage());
 				res.addObject("categories", categories);
 			}
 		return res;

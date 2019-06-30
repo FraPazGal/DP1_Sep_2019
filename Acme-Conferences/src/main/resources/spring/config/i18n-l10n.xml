@@ -29,6 +29,7 @@
 		<value>/views/sponsorship/messages</value>
 		<value>/views/registration/messages</value>
 		<value>/views/category/messages</value>
+		<value>/views/submission/messages</value>
 	</util:list>
 
 </beans>

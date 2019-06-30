@@ -152,21 +152,6 @@ public class SponsorshipService {
 		
 		this.validator.validate(creditCard, binding);
 		
-		if (!binding.hasErrors()) {
-			CreditCard saved;
-			saved = this.creditCardService.save(creditCard);
-			
-			sponsorship.setCreditCard(saved);
-		}
-		
-		this.validator.validate(sponsorship, binding);
-		
-		try {
-			Assert.notNull(form.getConferences(), "no.conferences");
-		} catch (Throwable oops) {
-			binding.rejectValue("conferences", "conferences.error");
-		}
-
 		/* Credit card */
 		if (form.getNumber() != null) {
 			try {
@@ -200,6 +185,16 @@ public class SponsorshipService {
 				}
 			}
 		}
+		
+		if (!binding.hasErrors()) {
+			CreditCard saved;
+			saved = this.creditCardService.save(creditCard);
+			
+			sponsorship.setCreditCard(saved);
+		}
+		
+		this.validator.validate(sponsorship, binding);
+
 		return sponsorship;
 	}
 	
