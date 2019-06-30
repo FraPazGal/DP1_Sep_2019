@@ -63,7 +63,13 @@
 			access="hasRole('ADMIN')" />
 			
 		<security:intercept-url pattern="/submission/**"
-			access="hasAnyRole('AUTHOR','REVIEWER')" />
+			access="hasRole('AUTHOR')" />
+			
+		<security:intercept-url pattern="/submission/list"
+			access="hasRole('REVIEWER')" />
+			
+		<security:intercept-url pattern="/submission/display"
+			access="hasRole('REVIEWER')" />
 
 		<security:intercept-url pattern="/**"
 			access="hasRole('NONE')" />

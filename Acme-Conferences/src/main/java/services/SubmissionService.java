@@ -115,6 +115,7 @@ public class SubmissionService {
 		Date now = new Date(System.currentTimeMillis() - 1);
 		Submission submission = this.create();
 		
+		Assert.isTrue(form.getConference().getIsFinal(), "wrong.conference");
 		Assert.isTrue(submission.getSubmissionMoment().before(form.getConference().getSubmissionDeadline()), "submissionDeadline.limit");
 		Assert.isTrue(now.before(form.getConference().getCameraReadyDeadline()), "cameraReadyDeadline.limit");
 		

@@ -147,9 +147,7 @@ public class SubmissionController extends AbstractController {
 
 		try {
 			principal = this.utilityService.findByPrincipal();
-			Submission submission;
-
-			submission = this.submissionService.reconstruct(submissionForm, binding);
+			Submission submission = this.submissionService.reconstruct(submissionForm, binding);
 			
 			if (binding.hasErrors()) {
 				res = this.createEditModelAndView(submissionForm);

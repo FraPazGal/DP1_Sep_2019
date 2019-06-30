@@ -1,6 +1,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -95,7 +96,8 @@ public class RegistrationService {
 		Registration registration = this.create();
 		
 		Assert.isTrue(!this.isAlreadyRegistered(form.getConference().getId(), registration.getAuthor().getId()), "already.registered");
-		
+		Assert.isTrue(form.getConference().getIsFinal(), "wrong.conference");
+		Assert.isTrue(form.getConference().getStartDate().after(new Date(System.currentTimeMillis() - 1)), "wrong.conference");
 		registration.setConference(form.getConference());
 		
 		/* Creating credit card */

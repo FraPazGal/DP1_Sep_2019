@@ -154,7 +154,7 @@
 			<spring:message code="conference.sponsored" />
 		</h3>
 		<a href="${spoBanner.targetPage }" target="_blank">
-			<img style="height: 100px" src="${spoBanner.banner}" 
+			<img style="height: 100px; outline: none;" src="${spoBanner.banner}" 
 				alt="Banner" >
 		</a><br><br>
 	</div>

@@ -4,8 +4,6 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -131,7 +129,7 @@ public class RegistrationController extends AbstractController {
 	}
 	
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView edit(@Valid final RegistrationForm registrationForm, BindingResult binding) {
+	public ModelAndView edit(RegistrationForm registrationForm, BindingResult binding) {
 		ModelAndView result = new ModelAndView("redirect:list.do");
 		boolean isPrincipal = true;
 
