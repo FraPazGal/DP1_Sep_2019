@@ -115,6 +115,9 @@ public class SubmissionService {
 		Date now = new Date(System.currentTimeMillis() - 1);
 		Submission submission = this.create();
 		
+		Assert.isTrue(submission.getSubmissionMoment().before(form.getConference().getSubmissionDeadline()), "submissionDeadline.limit");
+		Assert.isTrue(now.before(form.getConference().getCameraReadyDeadline()), "cameraReadyDeadline.limit");
+		
 		/* Creating paper */
 		Paper paper = this.paperService.create();
 		
@@ -123,15 +126,61 @@ public class SubmissionService {
 			paper.setAuthors(form.getAuthorsP());
 			paper.setSummary(form.getSummaryP());
 			paper.setPaperDocument(form.getPaperDocumentP());
+			
+			try {
+				Assert.isTrue(!paper.getTitle().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("titleP", "empty.string");
+			}
+			
+			try {
+				Assert.isTrue(!paper.getAuthors().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("authorsP", "empty.string");
+			}
+			
+			try {
+				Assert.isTrue(!paper.getSummary().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("summaryP", "empty.string");
+			}
+			
+			try {
+				Assert.isTrue(!paper.getPaperDocument().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("paperDocumentP", "empty.string");
+			}
 		
 		} else {
 			paper.setTitle(form.getTitlePCR());
 			paper.setAuthors(form.getAuthorsPCR());
 			paper.setSummary(form.getSummaryPCR());
 			paper.setPaperDocument(form.getPaperDocumentPCR());
+			
+			try {
+				Assert.isTrue(!paper.getTitle().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("titlePCR", "empty.string");
+			}
+			
+			try {
+				Assert.isTrue(!paper.getAuthors().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("authorsPCR", "empty.string");
+			}
+			
+			try {
+				Assert.isTrue(!paper.getSummary().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("summaryPCR", "empty.string");
+			}
+			
+			try {
+				Assert.isTrue(!paper.getPaperDocument().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("paperDocumentPCR", "empty.string");
+			}
 		}
-		
-		this.validator.validate(paper, binding);
 		
 		if (!binding.hasErrors()) {
 			Paper saved;
@@ -149,13 +198,8 @@ public class SubmissionService {
 				submission.setConference(form.getConference());
 				submission.setPaper(saved);
 			}
+			this.validator.validate(submission, binding);
 		}
-		
-		Assert.isTrue(submission.getSubmissionMoment().before(submission.getConference().getSubmissionDeadline()), "submissionDeadline.limit");
-		Assert.isTrue(now.before(submission.getConference().getCameraReadyDeadline()), "cameraReadyDeadline.limit");
-		
-		this.validator.validate(submission, binding);
-		
 		return submission;
 	}
 	
@@ -204,4 +248,6 @@ public class SubmissionService {
 		
 		return this.submissionRepository.submissionsPerAuthor(authorId);
 	}
+	
+
 }

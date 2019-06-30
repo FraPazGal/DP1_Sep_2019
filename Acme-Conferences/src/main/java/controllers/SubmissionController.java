@@ -4,8 +4,6 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -82,6 +80,14 @@ public class SubmissionController extends AbstractController {
 				submissions = this.submissionService.submissionsPerAuthor(principal.getId());
 				isPrincipal = "AUTHOR";
 			}
+			
+			
+			//TODO: listado de submissions para un reviewer
+			
+//			if (this.utilityService.checkAuthority(principal, "REVIEWER")) {
+//				submissions = this.submissionService.submissionsPerReviewer(principal.getId());
+//				isPrincipal = "REVIEWER";
+//			}
 						
 			result.addObject("submissions", submissions);
 			result.addObject("isPrincipal", isPrincipal);
@@ -134,7 +140,7 @@ public class SubmissionController extends AbstractController {
 	}
 	
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView edit(@Valid final SubmissionForm submissionForm, BindingResult binding) {
+	public ModelAndView edit(SubmissionForm submissionForm, BindingResult binding) {
 		Actor principal;
 		ModelAndView res;
 		boolean isPrincipal = false;

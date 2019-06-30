@@ -20,7 +20,8 @@
 				
 				<form:hidden path="conference" />
 				
-				<acme:textbox code="submission.paper.title" path="titleP" size="70px" /><br> <br>
+				<acme:textbox code="submission.paper.title" path="titleP" size="70px" /><br>
+				<form:errors path="titleP" id="title" dir="title" element="title" cssClass="error" /><br>
 				<acme:textarea code="submission.paper.authors" path="authorsP" cols="40px" rows="3"/><br> <br>
 				<acme:textarea code="submission.paper.summary" path="summaryP" cols="80px" rows="4" /><br> <br>
 				<acme:textarea code="submission.paper.paperDocument" path="paperDocumentP" cols="80px" rows="8" /><br> <br>
