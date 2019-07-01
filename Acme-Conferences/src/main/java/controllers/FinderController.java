@@ -1,20 +1,19 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
-
-import javax.validation.Valid;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.CategoryService;
 import services.FinderService;
 import services.SystemConfigurationService;
 import services.UtilityService;
@@ -33,6 +32,9 @@ public class FinderController extends AbstractController {
 
 	@Autowired
 	private UtilityService utilityService;
+	
+	@Autowired
+	private CategoryService categoryService;
 
 	@Autowired
 	private SystemConfigurationService systemConfigurationService;
@@ -44,7 +46,7 @@ public class FinderController extends AbstractController {
 	}
 
 	// DELETE
-	@RequestMapping(value = "/filmEnthusiast/search", method = RequestMethod.POST, params = "delete")
+	@RequestMapping(value = "/search", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final Finder finder, final BindingResult binding) {
 
 		ModelAndView result;
@@ -65,12 +67,15 @@ public class FinderController extends AbstractController {
 		ModelAndView result;
 		Finder finder;
 		Actor principal;
-
-		principal = this.utilityService.findByPrincipal();
-		finder = this.finderService.findFinderByActorId(principal.getId());
-		 
-		 Date maxLivedMoment = new Date();
-		 
+		Date maxLivedMoment = new Date();
+		boolean isPrincipal = false;
+		
+		try {
+			principal = this.utilityService.findByPrincipal();
+			finder = this.finderService.findFinderByActorId(principal.getId());
+			
+			isPrincipal = true;
+			
 			if (finder.getSearchMoment() != null) {
 				final int timeChachedFind = this.systemConfigurationService.findMySystemConfiguration().getTimeResultsCached();
 				maxLivedMoment = DateUtils.addHours(maxLivedMoment, -timeChachedFind);
@@ -78,38 +83,73 @@ public class FinderController extends AbstractController {
 				if (finder.getSearchMoment().before(maxLivedMoment))
 					this.finderService.deleteExpiredFinder(finder);
 			}
-		result = new ModelAndView("finder/search");
-		result.addObject("finder", finder);
+			result = new ModelAndView("finder/search");
+			result.addObject("finder", finder);
 
-		result.addObject("conferences", finder.getResults());
-
+			result.addObject("conferences", finder.getResults());
+			result.addObject("categories", this.categoryService.findAll());
+			
+		} catch (Throwable oops) {
+			result = new ModelAndView("finder/search");
+		}
 		result.addObject("requestUri", "finder/search.do");
+		result.addObject("isPrincipal", isPrincipal);
+
 		return result;
+	}
+	
+	// searchAnon
+	@RequestMapping(value = "/anon/search", method = RequestMethod.GET)
+	public ModelAndView searchAnon(@RequestParam (required = false) String keyWord) {
+		ModelAndView result;
+		Collection<Conference> conferences = new ArrayList<>();
+		
+		try {
+			result = new ModelAndView("finder/anon/search");
+
+			conferences = this.finderService.searchAnon(keyWord);
+			
+			result.addObject("conferences", conferences);
+
+			result.addObject("requestUri", "finder/anon/search.do");
+		} catch (Throwable oopsie) {
+			result = new ModelAndView("conferences/list?catalog=unpublished");
+
+			result.addObject("errMsg", oopsie);
+		}
+		return result;
+		
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST, params = "save")
-	public ModelAndView search(@Valid final Finder finder,
-			final BindingResult binding) {
+	public ModelAndView search(final Finder finder, BindingResult binding) {
 		ModelAndView result;
+		Finder aux;
+		
+		try {
+			aux = this.finderService.reconstruct(finder, binding);
+			
+			if (binding.hasErrors()) {
+				result = this.createEditModelAndView(finder);
 
-		if (binding.hasErrors()) {
-			final List<ObjectError> errors = binding.getAllErrors();
-			for (final ObjectError e : errors)
-				System.out.println(e.toString());
-			result = this.createEditModelAndView(finder);
+			} else {
+				try {
 
-		} else {
-			try {
+					this.finderService.search(aux);
+					result = new ModelAndView(
+							"redirect:/finder/search.do");
 
-				this.finderService.search(finder);
-				result = new ModelAndView(
-						"redirect:/finder/search.do");
-
-			} catch (final Throwable oops) {
-				result = this.createEditModelAndView(finder,
-						"finder.commit.error");
+				} catch (final Throwable oops) {
+					result = this.createEditModelAndView(finder,
+							"finder.commit.error");
+				}
 			}
+		} catch (Exception e) {
+			result = new ModelAndView(
+					"redirect:/finder/search.do");
 		}
+		result.addObject("categories", this.categoryService.findAll());
+		
 		return result;
 	}
 

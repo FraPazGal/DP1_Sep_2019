@@ -10,14 +10,14 @@
 -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	">
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- User accounts -->
 
-	<bean id="userAccount1" class="security.UserAccount">
+	<bean id="userAdmin1" class="security.UserAccount">
 		<property name="username" value="admin" />
 		<property name="password" value="21232f297a57a5a743894a0e4a801fc3" />
 		<property name="authorities">
@@ -27,6 +27,54 @@
 				</bean>
 			</list>
 		</property>
+	</bean>
+	
+	<!-- ADMINISTATOR -->
+	
+	<bean id="administrator1" class="domain.Administrator">
+		<property name="name" value="Boros" />
+		<property name="surname" value="Dominator of the Universe" />
+		<property name="photo"
+			value="https://vignette.wikia.nocookie.net/onepunchman/images/c/ce/Boros_color.jpg/revision/latest?cb=20151017212925" />
+		<property name="email" value="boros@yahoo.com" />
+		<property name="phoneNumber" value="+34666666666" />
+		<property name="address" value="C/ Collapsing Star Roaring Cannon" />
+		<property name="userAccount" ref="userAdmin1" />
+	</bean>
+	
+	<!-- SYSTEM CONFIGURATION -->
+
+	<bean id="systemConfiguration" class="domain.SystemConfiguration">
+		<property name="systemName" value="Acme-Conferenes" />
+		<property name="banner" value="https://i.ibb.co/GVpZCtM/acme-conference.png" />
+		<property name="countryCode" value="+034"></property>
+		<property name="welcomeMessage">
+			<util:map id="utilmap19" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="English"
+					value="Welcome to Acme Conference! Your scientific event manager" />
+				<entry key="Español"
+					value="¡Bienvenidos a Acme Conference! Su gestor de eventos científicos" />
+			</util:map>
+		</property>
+		<property name="topics">
+			<util:map id="utilmap20" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="CONSULTA,INPUGNACIÓN,REGISTRO,TEMAS,OTROS" />
+				<entry key="English" value="INQUIRY,REBUTTAL,REGISTRATION,TOPICS,OTHER" />
+			</util:map>
+		</property>
+		<property name="voidWords">
+			<util:map id="utilmap21" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español"
+					value="a,capaz,más o menos,de,atravesar,después de,todo,casi,un,yo,entre,un,y cualquier,estoy,como,en,ser,como,en,ser,porque,por,poder,pero,por,poder,no,puede, querido,hacer,hace,o hace,cualquier otra cosa,siempre,conseguir,obtener,tener,ella,a ella,él,a él,sin embargo,cómo,tenerlo,yo,si,en,estar,es,su,lo,menos,déjame,como,probablemente,me,pueda,dejar,a mí,tener,sí mismo,la mayoría,mi,ni,fuera,a menudo,en,sólo,o,otro,nuestro,más bien,dice,debería,ya que,así,algunos,que,los,sus,entonces,allí,estos,esto,también,nosotros,también,queríamos,qué,cuando,dónde,lo estábamos,lo que,mientras,con,quién,lo harías,sin embargo,tu" />
+				<entry key="English"
+					value="a,able,about,across,after,all,almost,also,am,among,an,and,any,are,as,at,be,because,been,but,by,can,cannot,could,dear,did,do,does,either,else,ever,every,for,from,get,got,had,has,have,he,her,hers,him,his,how,however,i,if,in,into,is,it,its,just,least,let,like,likely,may,me,might,most,must,my,neither,no,nor,not,of,off,often,on,only,or,other,our,own,rather,said,say,says,she,should,since,so,some,than,that,the,their,them,then,there,these,they,this,tis,to,too,twas,us,wants,was,we,were,what,when,where,which,while,who,whom,why,will,with,would,yet,you,your" />
+			</util:map>
+		</property>
+		<property name="timeResultsCached" value="5" />
+		<property name="maxResults" value="10" />
 	</bean>
 
 </beans>

@@ -28,20 +28,21 @@ public class LoginService implements UserDetailsService {
 	// Managed repository -----------------------------------------------------
 
 	@Autowired
-	UserAccountRepository	userRepository;
-
+	UserAccountRepository userRepository;
 
 	// Business methods -------------------------------------------------------
 
 	@Override
-	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(final String username)
+			throws UsernameNotFoundException {
 		Assert.notNull(username);
 
 		UserDetails result;
 
 		result = this.userRepository.findByUsername(username);
 		Assert.notNull(result);
-		// WARNING: The following sentences prevent lazy initialisation problems!
+		// WARNING: The following sentences prevent lazy initialisation
+		// problems!
 		Assert.notNull(result.getAuthorities());
 		result.getAuthorities().size();
 

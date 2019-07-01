@@ -7,6 +7,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
@@ -32,6 +33,7 @@ public class Paper extends DomainEntity {
 
 	@NotNull
 	@NotBlank
+	@Type(type="text")
 	public String getAuthors() {
 		return authors;
 	}
@@ -42,6 +44,7 @@ public class Paper extends DomainEntity {
 
 	@NotNull
 	@NotBlank
+	@Type(type="text")
 	public String getSummary() {
 		return summary;
 	}
@@ -52,6 +55,7 @@ public class Paper extends DomainEntity {
 
 	@NotNull
 	@NotBlank
+	@Type(type="text")
 	public String getPaperDocument() {
 		return paperDocument;
 	}

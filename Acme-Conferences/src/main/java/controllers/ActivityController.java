@@ -15,9 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActivityService;
+import services.CommentService;
+import services.SectionService;
 import services.UtilityService;
 import domain.Activity;
 import domain.Actor;
+import domain.Comment;
+import domain.Section;
 
 @Controller
 @RequestMapping("/activity")
@@ -27,7 +31,47 @@ public class ActivityController extends AbstractController {
 	private ActivityService activityService;
 
 	@Autowired
+	private SectionService sectionService;
+
+	@Autowired
 	private UtilityService utilityService;
+
+	@Autowired
+	private CommentService commentService;
+
+	// Displaying an activity
+
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam int activityid) {
+		ModelAndView res;
+		Activity activity;
+		Collection<Section> sections;
+		Collection<Comment> comments;
+		Boolean permission;
+
+		try {
+			permission = this.utilityService.isAdmin();
+
+			activity = this.activityService.findOne(activityid);
+
+			sections = (activity != null) ? this.sectionService
+					.getSectionsOfActivity(activity.getId())
+					: new ArrayList<Section>();
+
+			comments = (activity != null) ? this.commentService
+					.getCommentsOfActivity(activityid)
+					: new ArrayList<Comment>();
+
+			res = new ModelAndView("activity/display");
+			res.addObject("activity", activity);
+			res.addObject("sections", sections);
+			res.addObject("comments", comments);
+			res.addObject("permission", permission);
+		} catch (Throwable oops) {
+			res = new ModelAndView("welcome/index");
+		}
+		return res;
+	}
 
 	// Listing all activities
 
@@ -35,14 +79,26 @@ public class ActivityController extends AbstractController {
 	public ModelAndView listAll() {
 		ModelAndView res;
 		Collection<Activity> activities;
+		Actor principal;
+		String requestUri;
 
-		activities = this.activityService.listAll();
-		activities = (activities == null) ? activities = new ArrayList<>()
-				: activities;
+		try {
+			principal = this.utilityService.findByPrincipal();
+			Assert.isTrue(this.utilityService
+					.checkAuthority(principal, "ADMIN"));
 
-		res = new ModelAndView("activity/listAll");
-		res.addObject("activities", activities);
+			activities = this.activityService.listAll();
+			activities = (activities == null) ? activities = new ArrayList<>()
+					: activities;
 
+			requestUri = "activity/listAll.do";
+
+			res = new ModelAndView("activity/list");
+			res.addObject("activities", activities);
+			res.addObject("requestUri", requestUri);
+		} catch (Throwable oops) {
+			res = new ModelAndView("welcome/index");
+		}
 		return res;
 	}
 
@@ -52,24 +108,19 @@ public class ActivityController extends AbstractController {
 	public ModelAndView list(@RequestParam int conferenceid) {
 		ModelAndView res;
 		Collection<Activity> activities;
-		Actor principal;
-		boolean permission = false;
+		String requestUri;
 
 		try {
-			principal = this.utilityService.findByPrincipal();
-			Assert.isTrue(this.utilityService
-					.checkAuthority(principal, "ADMIN"));
-
-			permission = true;
-
 			activities = this.activityService
 					.getActivitiesOfConference(conferenceid);
 			activities = (activities == null) ? activities = new ArrayList<>()
 					: activities;
 
+			requestUri = "activity/list.do?conferenceid=" + conferenceid;
+
 			res = new ModelAndView("activity/list");
-			res.addObject("permission", permission);
 			res.addObject("activities", activities);
+			res.addObject("requestUri", requestUri);
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
 		}
@@ -94,8 +145,8 @@ public class ActivityController extends AbstractController {
 
 			newActivity = this.activityService.create(conferenceid);
 
-			res = new ModelAndView("activity/create");
-			res.addObject("newActivity", newActivity);
+			res = new ModelAndView("activity/edit");
+			res.addObject("activity", newActivity);
 			res.addObject("permission", permission);
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
@@ -131,7 +182,7 @@ public class ActivityController extends AbstractController {
 	}
 
 	// Saving activity
-	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid Activity activity, BindingResult binding) {
 		ModelAndView res;
 		Actor principal;
@@ -147,7 +198,7 @@ public class ActivityController extends AbstractController {
 						"ADMIN"));
 
 				this.activityService.save(activity);
-				res = new ModelAndView("redirect:/list?conferenceid="
+				res = new ModelAndView("redirect:list.do?conferenceid="
 						+ activity.getConference().getId());
 			}
 		} catch (Throwable oops) {
@@ -158,7 +209,7 @@ public class ActivityController extends AbstractController {
 
 	// Deleting section
 
-	@RequestMapping(value = "/delete", method = RequestMethod.POST, params = "delete")
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(Activity activity) {
 		ModelAndView res;
 		Actor principal;
@@ -169,7 +220,7 @@ public class ActivityController extends AbstractController {
 					.checkAuthority(principal, "ADMIN"));
 
 			this.activityService.delete(activity);
-			res = new ModelAndView("redirect:/list?conferenceid="
+			res = new ModelAndView("redirect:list.do?conferenceid="
 					+ activity.getConference().getId());
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");

@@ -21,12 +21,6 @@ public class UtilityService {
 	@Autowired
 	private ActorRepository actorRepository;
 
-	/**
-	 * Validate email pattern
-	 * 
-	 * @param email
-	 * @return messageCode
-	 */
 	public Boolean checkEmail(final String email, final String authority) {
 		Boolean result;
 		String emailLowerCase = email.toLowerCase();
@@ -44,27 +38,13 @@ public class UtilityService {
 		return result;
 	}
 
-	/**
-	 * Find the logged actor
-	 * 
-	 * @return actor
-	 */
-
 	public Actor findByPrincipal() {
 		Actor result = null;
 		final UserAccount userAccount = LoginService.getPrincipal();
 		result = this.actorRepository.findByUserAccountId(userAccount.getId());
-		Assert.notNull(result);
 		return result;
 	}
-	
-	/**
-	 * Check the authority of the actor
-	 * 
-	 * @param actor
-	 * @param authority
-	 * @return boolean
-	 */
+
 	public boolean checkAuthority(final Actor actor, final String authority) {
 		Assert.notNull(actor);
 		boolean result = false;
@@ -74,13 +54,19 @@ public class UtilityService {
 		return result;
 	}
 
-	/**
-	 * Checks if there exists someone with certain user name
-	 * 
-	 * @param username
-	 * @return boolean
-	 */
 	public Boolean existsUsername(String username) {
 		return !(this.actorRepository.existsUsername(username) != null);
+	}
+
+	public boolean isAdmin() {
+		boolean isAdmin = false;
+
+		try {
+			isAdmin = this.checkAuthority(this.findByPrincipal(), "ADMIN");
+		} catch (Throwable oops) {
+
+		}
+
+		return isAdmin;
 	}
 }

@@ -11,10 +11,11 @@ import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.FinderRepository;
 import domain.Actor;
-import domain.Category;
 import domain.Conference;
 import domain.Finder;
 
@@ -33,11 +34,12 @@ public class FinderService {
 
 	@Autowired
 	private SystemConfigurationService systemConfigurationService;
+	
+	@Autowired
+	private Validator validator;
 
-	// Constructors
-	public FinderService() {
-		super();
-	}
+
+	// CRUD Methods -------------------
 
 	public Finder create() {
 		Finder result;
@@ -49,7 +51,6 @@ public class FinderService {
 		return result;
 	}
 
-	// /FINDONE
 	public Finder findOne(final int finderId) {
 		Finder result;
 
@@ -58,7 +59,6 @@ public class FinderService {
 		return result;
 	}
 
-	// FINDALL
 	public Collection<Finder> findAll() {
 		Collection<Finder> result;
 		result = this.finderRepository.findAll();
@@ -89,21 +89,25 @@ public class FinderService {
 
 	public void delete(Finder finder) {
 		Actor principal;
-
-		principal = this.utilityService.findByPrincipal();
+		Finder aux;
 		
 		Assert.isTrue(finder.getId() != 0);
-		Assert.isTrue(principal.equals(finder.getActor()), "not.allowed");
 		
-		finder.setResults(null);
+		principal = this.utilityService.findByPrincipal();
+		aux = this.findOne(finder.getId());
+		
+		Assert.isTrue(principal.equals(aux.getActor()), "not.allowed");
+		
+		finder.setActor(aux.getActor());
+		finder.setVersion(aux.getVersion());
+		finder.setResults(new ArrayList<Conference>());
 		finder.setKeyWord(null);
 		finder.setMaximumFee(null);
-		finder.setSearchMoment(null);
 		finder.setMinimumDate(null);
 		finder.setMaximumDate(null);
 		finder.setCategory(null);
 
-		this.finderRepository.save(finder);
+		this.save(finder);
 	}
 
 	// Ancillary methods
@@ -163,15 +167,15 @@ public class FinderService {
 				&& finder.getCategory() == null) {
 			results = this.allConferencesFinal();
 		} else {
+			
+			results = this.finderRepository.search(keyWord, maximumFee,
+					minimumDate, maximumDate);
 
-			if(finder.getCategory() == null) {
-				results = this.finderRepository.search(keyWord, maximumFee,
-						minimumDate, maximumDate);
-			} else {
-				Category category = finder.getCategory();
-				results = this.finderRepository.searchWithCat(keyWord, maximumFee,
-						minimumDate, maximumDate, category.getId());
+			if(finder.getCategory() != null) {
+				results.retainAll(finder.getCategory().getConferences());
 			}
+			
+			
 //			List<Conference> r = new ArrayList<Conference>();
 //			if (keyWord != "") {
 //				r.addAll(this.finderRepository.searchV(keyWord,
@@ -199,8 +203,31 @@ public class FinderService {
 
 		return resultsPageables;
 	}
+	
+	public Collection<Conference> searchAnon (String keyword) {
+		
+		return this.finderRepository.searchAnon(keyword);
+	}
+	
+	public Finder reconstruct (Finder finder, BindingResult binding) {
+		Finder aux;
+		Actor principal = this.utilityService.findByPrincipal();
+		
+		aux = this.findOne(finder.getId());
+		
+		Assert.isTrue(aux.getActor().equals(principal), "not.allowed");
+		
+		finder.setVersion(aux.getVersion());
+		finder.setActor(aux.getActor());
+		finder.setResults(aux.getResults());
+		finder.setSearchMoment(new Date (System.currentTimeMillis() - 1));
 
-	public Collection<Conference> allConferencesFinal() {
+		this.validator.validate(finder, binding);
+		
+		return finder;
+	}
+
+	private Collection<Conference> allConferencesFinal() {
 		return this.finderRepository.allConferencesFinal();
 	}
 	
@@ -211,12 +238,5 @@ public class FinderService {
 		
 		return result;
 	}
-	
-//	public Double RatioFindersEmpty() {
-//		return this.finderRepository.RatioFindersEmpty();
-//	}
-//
-//	public Double[] StatsFinder() {
-//		return this.finderRepository.StatsFinder();
-//	}
+
 }

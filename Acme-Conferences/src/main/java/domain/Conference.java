@@ -11,7 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -21,12 +23,12 @@ public class Conference extends DomainEntity {
 	/* Attributes */
 
 	private String title, acronym, summary, venue;
-	private Date submissionDeadline, notificationDealine, cameraReadyDeadline,
+	private Date submissionDeadline, notificationDeadline, cameraReadyDeadline,
 			startDate, endDate;
 	private Double entryFee;
-	private Boolean isFinal;
-	private Category category;
+	private boolean isFinal;
 	private Administrator administrator;
+	private Category category;
 
 	/* Getters and setters */
 
@@ -52,6 +54,7 @@ public class Conference extends DomainEntity {
 
 	@NotNull
 	@NotBlank
+	@Type(type="text")
 	public String getSummary() {
 		return summary;
 	}
@@ -62,6 +65,7 @@ public class Conference extends DomainEntity {
 
 	@NotNull
 	@NotBlank
+	@Type(type="text")
 	public String getVenue() {
 		return venue;
 	}
@@ -71,6 +75,7 @@ public class Conference extends DomainEntity {
 	}
 
 	@NotNull
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getSubmissionDeadline() {
 		return submissionDeadline;
 	}
@@ -80,15 +85,17 @@ public class Conference extends DomainEntity {
 	}
 
 	@NotNull
-	public Date getNotificationDealine() {
-		return notificationDealine;
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
+	public Date getNotificationDeadline() {
+		return notificationDeadline;
 	}
 
-	public void setNotificationDealine(Date notificationDealine) {
-		this.notificationDealine = notificationDealine;
+	public void setNotificationDeadline(Date notificationDeadline) {
+		this.notificationDeadline = notificationDeadline;
 	}
 
 	@NotNull
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getCameraReadyDeadline() {
 		return cameraReadyDeadline;
 	}
@@ -98,6 +105,7 @@ public class Conference extends DomainEntity {
 	}
 
 	@NotNull
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -107,6 +115,7 @@ public class Conference extends DomainEntity {
 	}
 
 	@NotNull
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -116,6 +125,7 @@ public class Conference extends DomainEntity {
 	}
 
 	@NotNull
+	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Double getEntryFee() {
 		return entryFee;
 	}
@@ -124,24 +134,12 @@ public class Conference extends DomainEntity {
 		this.entryFee = entryFee;
 	}
 
-	@NotNull
-	public Boolean getIsFinal() {
+	public boolean getIsFinal() {
 		return isFinal;
 	}
 
-	public void setIsFinal(Boolean isFinal) {
+	public void setIsFinal(boolean isFinal) {
 		this.isFinal = isFinal;
-	}
-
-	@Valid
-	@NotNull
-	@ManyToOne(optional = false)
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
 	}
 
 	@Valid
@@ -154,4 +152,17 @@ public class Conference extends DomainEntity {
 	public void setAdministrator(Administrator administrator) {
 		this.administrator = administrator;
 	}
+
+	@Valid
+	@NotNull
+	@ManyToOne(optional = false) 
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	
+	
 }

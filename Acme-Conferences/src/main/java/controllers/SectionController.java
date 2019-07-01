@@ -76,8 +76,8 @@ public class SectionController extends AbstractController {
 
 			newSection = this.sectionService.create(activityid);
 
-			res = new ModelAndView("section/create");
-			res.addObject("newSection", newSection);
+			res = new ModelAndView("section/edit");
+			res.addObject("section", newSection);
 			res.addObject("permission", permission);
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
@@ -114,7 +114,7 @@ public class SectionController extends AbstractController {
 
 	// Saving section
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST, params = "save")
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(@Valid Section section, BindingResult binding) {
 		ModelAndView res;
 		Actor principal;
@@ -130,8 +130,9 @@ public class SectionController extends AbstractController {
 						"ADMIN"));
 
 				this.sectionService.save(section);
-				res = new ModelAndView("redirect:/list?activityid="
-						+ section.getActivity().getId());
+				res = new ModelAndView(
+						"redirect:/activity/display.do?activityid="
+								+ section.getActivity().getId());
 			}
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
@@ -141,7 +142,7 @@ public class SectionController extends AbstractController {
 
 	// Deleting section
 
-	@RequestMapping(value = "/delete", method = RequestMethod.POST, params = "delete")
+	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(Section section) {
 		ModelAndView res;
 		Actor principal;
@@ -152,7 +153,7 @@ public class SectionController extends AbstractController {
 					.checkAuthority(principal, "ADMIN"));
 
 			this.sectionService.delete(section);
-			res = new ModelAndView("redirect:/list?activityid="
+			res = new ModelAndView("redirect:/activity/display.do?activityid="
 					+ section.getActivity().getId());
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");

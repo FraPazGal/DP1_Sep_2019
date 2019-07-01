@@ -473,6 +473,10 @@
 				<ref bean="Biology" />
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Computer Science -->
@@ -491,6 +495,10 @@
 			<list>
 				<ref bean="ArtificialIntelligence" />
 				<ref bean="SoftwareEngineering" />
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
 			</list>
 		</property>
 	</bean>
@@ -514,6 +522,11 @@
 				<ref bean="Electronics" />
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference7" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Biology -->
@@ -535,6 +548,10 @@
 				<ref bean="Fungi" />
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Artificial Intelligence -->
@@ -554,6 +571,10 @@
 				<ref bean="DeepLeaning" />
 				<ref bean="Instance-basedLearning" />
 				<ref bean="Regression" />
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
 			</list>
 		</property>
 	</bean>
@@ -578,6 +599,11 @@
 				<ref bean="Tools" />
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference3" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Kinetic -->
@@ -593,6 +619,10 @@
 			<ref bean="Physics" />
 		</property>
 		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
 			<list>
 			</list>
 		</property>
@@ -614,6 +644,10 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Electronics -->
@@ -629,6 +663,10 @@
 			<ref bean="Physics" />
 		</property>
 		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
 			<list>
 			</list>
 		</property>
@@ -650,6 +688,11 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference2" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Plants -->
@@ -666,6 +709,11 @@
 		</property>
 		<property name="childCategories">
 			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference1" />
 			</list>
 		</property>
 	</bean>
@@ -686,6 +734,11 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference4" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Deep Leaning -->
@@ -701,6 +754,10 @@
 			<ref bean="ArtificialIntelligence" />
 		</property>
 		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
 			<list>
 			</list>
 		</property>
@@ -722,6 +779,10 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Regression -->
@@ -738,6 +799,11 @@
 		</property>
 		<property name="childCategories">
 			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference6" />
 			</list>
 		</property>
 	</bean>
@@ -758,6 +824,11 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+				<ref bean="conference5" />
+			</list>
+		</property>
 	</bean>
 
 	<!-- Big Processing -->
@@ -773,6 +844,10 @@
 			<ref bean="SoftwareEngineering" />
 		</property>
 		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
 			<list>
 			</list>
 		</property>
@@ -794,6 +869,10 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- Tools -->
@@ -812,6 +891,10 @@
 			<list>
 			</list>
 		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 	<!-- CONFERENCES -->
@@ -822,14 +905,14 @@
 		<property name="summary" value="PCPE es la más mejor" />
 		<property name="venue" value="C/ No te lo digo, s/n" />
 		<property name="submissionDeadline" value="03/31/2020 23:59" />
-		<property name="notificationDealine" value="06/30/2020 23:59" />
+		<property name="notificationDeadline" value="06/30/2020 23:59" />
 		<property name="cameraReadyDeadline" value="07/31/2020 23:59" />
 		<property name="startDate" value="09/01/2020 09:00" />
 		<property name="endDate" value="09/04/2020 9:00" />
 		<property name="entryFee" value="24.95" />
 		<property name="isFinal" value="true" />
-		<property name="category" ref="Plants" />
 		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="Plants" />
 	</bean>
 
 	<bean id="conference2" class="domain.Conference">
@@ -839,14 +922,14 @@
 		<property name="summary" value="Va a ser de animales y será una conferencia" />
 		<property name="venue" value="Por determinar" />
 		<property name="submissionDeadline" value="03/31/2020 23:59" />
-		<property name="notificationDealine" value="06/30/2020 23:59" />
+		<property name="notificationDeadline" value="06/30/2020 23:59" />
 		<property name="cameraReadyDeadline" value="07/31/2020 23:59" />
 		<property name="startDate" value="09/01/2020 09:00" />
 		<property name="endDate" value="09/04/2020 22:00" />
 		<property name="entryFee" value="15.50" />
 		<property name="isFinal" value="false" />
-		<property name="category" ref="Animals" />
 		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="Animals" />
 	</bean>
 
 	<bean id="conference3" class="domain.Conference">
@@ -856,14 +939,14 @@
 			value="Conferencia que fomenta la inscripción de nuevos estudiantes en la carrega de Ing. del Software" />
 		<property name="venue" value="ETSII" />
 		<property name="submissionDeadline" value="06/20/2019 23:59" />
-		<property name="notificationDealine" value="06/25/2020 23:59" />
+		<property name="notificationDeadline" value="06/25/2020 23:59" />
 		<property name="cameraReadyDeadline" value="06/30/2020 23:59" />
 		<property name="startDate" value="07/01/2020 09:00" />
 		<property name="endDate" value="07/02/2020 22:00" />
 		<property name="entryFee" value="5.75" />
 		<property name="isFinal" value="true" />
-		<property name="category" ref="SoftwareEngineering" />
 		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="SoftwareEngineering" />
 	</bean>
 
 	<bean id="conference4" class="domain.Conference">
@@ -872,14 +955,14 @@
 		<property name="summary" value="Va a ser de fungi y será una conferencia" />
 		<property name="venue" value="Por determinar" />
 		<property name="submissionDeadline" value="01/01/2020 23:59" />
-		<property name="notificationDealine" value="01/02/2020 23:59" />
+		<property name="notificationDeadline" value="01/02/2020 23:59" />
 		<property name="cameraReadyDeadline" value="01/03/2020 23:59" />
 		<property name="startDate" value="01/04/2020 09:00" />
-		<property name="endDate" value="01/04/2020 09:30" />
+		<property name="endDate" value="02/04/2020 09:30" />
 		<property name="entryFee" value="1000.00" />
 		<property name="isFinal" value="false" />
-		<property name="category" ref="Fungi" />
 		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="Fungi" />
 	</bean>
 
 	<bean id="conference5" class="domain.Conference">
@@ -889,14 +972,14 @@
 		<property name="summary" value="Va a ser de Big Data y será una conferencia" />
 		<property name="venue" value="Por determinar" />
 		<property name="submissionDeadline" value="02/01/2020 23:59" />
-		<property name="notificationDealine" value="02/02/2020 23:59" />
+		<property name="notificationDeadline" value="02/02/2020 23:59" />
 		<property name="cameraReadyDeadline" value="02/03/2020 23:59" />
 		<property name="startDate" value="02/04/2020 09:00" />
 		<property name="endDate" value="02/05/2020 22:00" />
 		<property name="entryFee" value="157.0" />
 		<property name="isFinal" value="false" />
-		<property name="category" ref="BigData" />
 		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="BigData" />
 	</bean>
 
 	<bean id="conference6" class="domain.Conference">
@@ -906,14 +989,14 @@
 		<property name="summary" value="Va a ser de regresión y será una conferencia" />
 		<property name="venue" value="Por determinar" />
 		<property name="submissionDeadline" value="03/01/2020 23:59" />
-		<property name="notificationDealine" value="03/02/2020 23:59" />
+		<property name="notificationDeadline" value="03/02/2020 23:59" />
 		<property name="cameraReadyDeadline" value="03/03/2020 23:59" />
 		<property name="startDate" value="03/04/2020 09:00" />
 		<property name="endDate" value="03/05/2020 22:00" />
 		<property name="entryFee" value="157.0" />
 		<property name="isFinal" value="false" />
-		<property name="category" ref="Regression" />
 		<property name="administrator" ref="administrator2" />
+		<property name="category" ref="Regression" />
 	</bean>
 
 	<bean id="conference7" class="domain.Conference">
@@ -922,14 +1005,14 @@
 		<property name="summary" value="Fue una conferencia de Física" />
 		<property name="venue" value="En la facultad de FISICA" />
 		<property name="submissionDeadline" value="05/01/2019 23:59" />
-		<property name="notificationDealine" value="05/02/2019 23:59" />
+		<property name="notificationDeadline" value="05/02/2019 23:59" />
 		<property name="cameraReadyDeadline" value="05/03/2019 23:59" />
 		<property name="startDate" value="05/04/2019 09:00" />
-		<property name="endDate" value="05/05/2019 22:00" />
+		<property name="endDate" value="05/17/2019 22:00" />
 		<property name="entryFee" value="0.99" />
 		<property name="isFinal" value="true" />
-		<property name="category" ref="Physics" />
 		<property name="administrator" ref="administrator2" />
+		<property name="category" ref="Physics" />
 	</bean>
 
 	<!-- ***** CREDITCARD ***** -->
@@ -942,31 +1025,32 @@
 		<property name="expirationYear" value="22" />
 		<property name="CVV" value="177" />
 	</bean>
+
 	<bean id="creditCard2" class="domain.CreditCard">
-		<property name="holder" value="José Gamiz Redondo" />
-		<property name="make" value="VISA" />
-		<property name="number" value="4764042457713154" />
-		<property name="expirationMonth" value="02" />
-		<property name="expirationYear" value="22" />
-		<property name="CVV" value="177" />
+		<property name="holder" value="Carlos Albalat Heredia" />
+		<property name="make" value="MASTERCARD" />
+		<property name="number" value="4544963188930071" />
+		<property name="expirationMonth" value="11" />
+		<property name="expirationYear" value="20" />
+		<property name="CVV" value="366" />
 	</bean>
 
 	<bean id="creditCard3" class="domain.CreditCard">
-		<property name="holder" value="José Gamiz Redondo" />
+		<property name="holder" value="Alberto Ramírez" />
 		<property name="make" value="VISA" />
-		<property name="number" value="4764042457713154" />
-		<property name="expirationMonth" value="02" />
-		<property name="expirationYear" value="22" />
-		<property name="CVV" value="177" />
+		<property name="number" value="4582276213483252" />
+		<property name="expirationMonth" value="01" />
+		<property name="expirationYear" value="28" />
+		<property name="CVV" value="707" />
 	</bean>
 
 	<bean id="creditCard4" class="domain.CreditCard">
-		<property name="holder" value="José Gamiz Redondo" />
-		<property name="make" value="VISA" />
-		<property name="number" value="4764042457713154" />
+		<property name="holder" value="Pepe Viyuela" />
+		<property name="make" value="AMERICAN EXPRESS" />
+		<property name="number" value="4354197982162289" />
 		<property name="expirationMonth" value="02" />
-		<property name="expirationYear" value="22" />
-		<property name="CVV" value="177" />
+		<property name="expirationYear" value="28" />
+		<property name="CVV" value="479" />
 	</bean>
 
 	<bean id="creditCard6" class="domain.CreditCard">
@@ -1214,7 +1298,7 @@
 
 	<bean id="activity1Conference1" class="domain.Activity">
 		<property name="title" value="Presentation of the conference" />
-		<property name="speakersInvolved" value="Too many" />
+		<property name="speakersInvolved" value="Too many, more, and even more" />
 		<property name="type" value="PRESENTATION" />
 		<property name="summary"
 			value="The director will introduce the audience to what is coming next" />
@@ -1349,6 +1433,7 @@
 	<bean id="section1Activity2Conference1" class="domain.Section">
 		<property name="title" value="Some flower" />
 		<property name="summary" value="Identify this flower" />
+		<property name="pictures" value="picture1,picture2,picture3" />
 		<property name="activity" ref="activity2Conference1" />
 	</bean>
 
@@ -1417,81 +1502,45 @@
 
 	<!-- CONFERENCE 1 COMMENTS -->
 
-	<bean id="comment1" class="domain.Comment">
-		<property name="title" value="Very borring" />
-		<property name="body"
-			value="It was very boring, what I usually like is destroy planets, not saving them." />
-		<property name="author" value="Boros" />
-		<property name="publishedDate" value="09/01/2020 22:01" />
-		<property name="conference" ref="conference1" />
-		<property name="writer" ref="administrator1" />
-	</bean>
-
-	<bean id="comment2" class="domain.Comment">
-		<property name="title" value="I think the same as that Boros guy" />
-		<property name="body" value="I also enjoy destroying planets." />
-		<property name="author" value="Frieza" />
-		<property name="publishedDate" value="09/01/2020 22:05" />
-		<property name="conference" ref="conference1" />
-		<property name="writer" ref="reviewer1" />
-	</bean>
-
-	<bean id="comment3" class="domain.Comment">
-		<property name="title" value="What is climate change" />
-		<property name="body" value="I don't know what that is." />
-		<property name="author" value="Ragyo" />
-		<property name="publishedDate" value="09/01/2020 22:15" />
-		<property name="activity" ref="activity3Conference1" />
-		<property name="writer" ref="sponsor1" />
-	</bean>
-
-	<bean id="comment4" class="domain.Comment">
-		<property name="title" value="Climate change doesn't exist" />
-		<property name="body" value="I you don't need to know more Ragyo." />
-		<property name="author" value="King Bradley" />
-		<property name="publishedDate" value="09/01/2020 22:16" />
-		<property name="activity" ref="activity3Conference1" />
-		<property name="writer" ref="author1" />
-	</bean>
-
-	<!-- CONFERENCE 3 COMMENTS -->
-
-	<bean id="comment5" class="domain.Comment">
-		<property name="title" value="Interesting..." />
-		<property name="body"
-			value="I could use this SE thing to spread my teachings" />
-		<property name="author" value="Mozgus" />
-		<property name="publishedDate" value="07/01/2020 22:01" />
-		<property name="conference" ref="conference3" />
-		<property name="writer" ref="administrator2" />
-	</bean>
-
-	<bean id="comment6" class="domain.Comment">
-		<property name="title" value="Kono Dio Da!" />
-		<property name="body" value="Wryyyyy!" />
-		<property name="author" value="Dio" />
-		<property name="publishedDate" value="07/01/2020 22:05" />
-		<property name="conference" ref="conference3" />
-		<property name="writer" ref="reviewer2" />
-	</bean>
-
-	<bean id="comment7" class="domain.Comment">
-		<property name="title" value="Don't like it" />
-		<property name="body" value="I don't like what I cannot understand." />
-		<property name="author" value="Madara" />
-		<property name="publishedDate" value="07/01/2020 22:15" />
-		<property name="activity" ref="activity3Conference3" />
-		<property name="writer" ref="sponsor2" />
-	</bean>
-
-	<bean id="comment8" class="domain.Comment">
-		<property name="title" value="I am Meruem, King of the chimera ants..." />
-		<property name="body" value="...and I approve this." />
-		<property name="author" value="Meruem" />
-		<property name="publishedDate" value="07/01/2020 22:16" />
-		<property name="activity" ref="activity3Conference3" />
-		<property name="writer" ref="author2" />
-	</bean>
+	<!-- <bean id="comment1" class="domain.Comment"> <property name="title" 
+		value="Very borring" /> <property name="body" value="It was very boring, 
+		what I usually like is destroy planets, not saving them." /> <property name="author" 
+		value="Boros" /> <property name="publishedDate" value="09/01/2020 22:01" 
+		/> <property name="conference" ref="conference1" /> <property name="writer" 
+		ref="administrator1" /> </bean> <bean id="comment2" class="domain.Comment"> 
+		<property name="title" value="I think the same as that Boros guy" /> <property 
+		name="body" value="I also enjoy destroying planets." /> <property name="author" 
+		value="Frieza" /> <property name="publishedDate" value="09/01/2020 22:05" 
+		/> <property name="conference" ref="conference1" /> <property name="writer" 
+		ref="reviewer1" /> </bean> <bean id="comment3" class="domain.Comment"> <property 
+		name="title" value="What is climate change" /> <property name="body" value="I 
+		don't know what that is." /> <property name="author" value="Ragyo" /> <property 
+		name="publishedDate" value="09/01/2020 22:15" /> <property name="activity" 
+		ref="activity3Conference1" /> <property name="writer" ref="sponsor1" /> </bean> 
+		<bean id="comment4" class="domain.Comment"> <property name="title" value="Climate 
+		change doesn't exist" /> <property name="body" value="I you don't need to 
+		know more Ragyo." /> <property name="author" value="King Bradley" /> <property 
+		name="publishedDate" value="09/01/2020 22:16" /> <property name="activity" 
+		ref="activity3Conference1" /> <property name="writer" ref="author1" /> </bean> 
+		CONFERENCE 3 COMMENTS <bean id="comment5" class="domain.Comment"> <property 
+		name="title" value="Interesting..." /> <property name="body" value="I could 
+		use this SE thing to spread my teachings" /> <property name="author" value="Mozgus" 
+		/> <property name="publishedDate" value="07/01/2020 22:01" /> <property name="conference" 
+		ref="conference3" /> <property name="writer" ref="administrator2" /> </bean> 
+		<bean id="comment6" class="domain.Comment"> <property name="title" value="Kono 
+		Dio Da!" /> <property name="body" value="Wryyyyy!" /> <property name="author" 
+		value="Dio" /> <property name="publishedDate" value="07/01/2020 22:05" /> 
+		<property name="conference" ref="conference3" /> <property name="writer" 
+		ref="reviewer2" /> </bean> <bean id="comment7" class="domain.Comment"> <property 
+		name="title" value="Don't like it" /> <property name="body" value="I don't 
+		like what I cannot understand." /> <property name="author" value="Madara" 
+		/> <property name="publishedDate" value="07/01/2020 22:15" /> <property name="activity" 
+		ref="activity3Conference3" /> <property name="writer" ref="sponsor2" /> </bean> 
+		<bean id="comment8" class="domain.Comment"> <property name="title" value="I 
+		am Meruem, King of the chimera ants..." /> <property name="body" value="...and 
+		I approve this." /> <property name="author" value="Meruem" /> <property name="publishedDate" 
+		value="07/01/2020 22:16" /> <property name="activity" ref="activity3Conference3" 
+		/> <property name="writer" ref="author2" /> </bean> -->
 
 	<!-- REGISTRATIONS -->
 
@@ -1518,6 +1567,4 @@
 		<property name="conference" ref="conference3" />
 		<property name="creditCard" ref="creditCard9" />
 	</bean>
-
-
 </beans>

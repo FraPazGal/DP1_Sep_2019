@@ -15,6 +15,8 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.URL;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -72,6 +74,7 @@ public class Activity extends DomainEntity {
 		this.usedRoom = usedRoom;
 	}
 
+	@URL
 	public String getAttachement() {
 		return attachement;
 	}
@@ -92,6 +95,7 @@ public class Activity extends DomainEntity {
 	}
 
 	@NotNull
+	@DateTimeFormat(pattern = "dd-MM-yyy hh:mm")
 	public Date getStartMoment() {
 		return startMoment;
 	}

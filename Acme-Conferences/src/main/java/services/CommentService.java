@@ -2,18 +2,19 @@ package services;
 
 import java.util.Collection;
 
-import javax.transaction.Transactional;
-
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.CommentRepository;
+import domain.Activity;
 import domain.Actor;
 import domain.Comment;
+import domain.Conference;
 
 @Transactional
 @Service
@@ -26,15 +27,63 @@ public class CommentService {
 	private UtilityService utilityService;
 
 	@Autowired
+	private ConferenceService conferenceService;
+
+	@Autowired
+	private ActivityService activityService;
+
+	@Autowired
 	private Validator validator;
 
-	public Comment create() {
+	public Comment create(Integer conferenceid, Integer activityid) {
 		Comment res = new Comment();
-		Actor principal = utilityService.findByPrincipal();
+		Actor principal;
+		Conference conference;
+		Activity activity;
 
-		res.setWriter(principal);
 		res.setPublishedDate(LocalDate.now().toDate());
-		res.setAuthor(principal.getUserAccount().getUsername());
+
+		try {
+			if (conferenceid != null) {
+				try {
+					principal = this.utilityService.findByPrincipal();
+					Assert.notNull(principal);
+
+					conference = this.conferenceService.findOne(conferenceid);
+					Assert.notNull(conference);
+
+					res.setWriter(principal);
+					res.setAuthor(principal.getUserAccount().getUsername());
+					res.setConferenceId(conference.getId());
+				} catch (Throwable oops) {
+					conference = this.conferenceService.findOne(conferenceid);
+					Assert.notNull(conference);
+
+					res.setAuthor("[Anonymous]");
+					res.setConferenceId(conference.getId());
+				}
+			} else {
+				try {
+					principal = this.utilityService.findByPrincipal();
+					Assert.notNull(principal);
+
+					activity = this.activityService.findOne(activityid);
+					Assert.notNull(activity);
+
+					res.setWriter(principal);
+					res.setAuthor(principal.getUserAccount().getUsername());
+					res.setActivityId(activity.getId());
+				} catch (Throwable oops) {
+					activity = this.activityService.findOne(activityid);
+					Assert.notNull(activity);
+
+					res.setAuthor("[Anonymous]");
+					res.setActivityId(activity.getId());
+				}
+			}
+		} catch (Throwable oops) {
+
+		}
 
 		return res;
 	}
@@ -47,12 +96,11 @@ public class CommentService {
 		this.commentRepository.delete(comment);
 	}
 
-	public Comment reconstruct(Comment comment, BindingResult binding) {
-		Comment res;
+	public Comment validate(Comment comment, BindingResult binding) {
 
 		try {
-			Assert.isTrue(comment.getConference() != null
-					|| comment.getActivity() != null);
+			Assert.isTrue(comment.getConferenceId() != null
+					|| comment.getActivityId() != null);
 		} catch (Throwable oops) {
 			binding.rejectValue("conference", "conference.error");
 			binding.rejectValue("activity", "activity.error");
@@ -60,14 +108,7 @@ public class CommentService {
 
 		validator.validate(comment, binding);
 
-		if (binding.hasErrors()) {
-			res = comment;
-		} else {
-			res = this.create();
-			res.setTitle(comment.getTitle());
-			res.setBody(comment.getBody());
-		}
-		return res;
+		return comment;
 	}
 
 	public Collection<Comment> getCommentsOfConference(Integer conferenceid) {

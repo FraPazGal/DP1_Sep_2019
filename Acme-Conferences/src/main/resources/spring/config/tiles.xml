@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
-	* tiles.xml 
-	* 
-	* Copyright (C) 2019 Universidad de Sevilla 
-	* 
-	* The use of this project is hereby constrained to the conditions of the 
-	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html 
--->
+<!-- * tiles.xml * * Copyright (C) 2019 Universidad de Sevilla * * The use 
+	of this project is hereby constrained to the conditions of the * TDG Licence, 
+	a copy of which you may download from * http://www.tdg-seville.info/License.html -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -23,8 +18,16 @@
 		<value>/views/welcome/tiles.xml</value>
 
 		<value>/views/administrator/tiles.xml</value>
-		<value>/views/customer/tiles.xml</value>
-		<value>/views/profile/tiles.xml</value>
+
+		<value>/views/conference/tiles.xml</value>
+		<value>/views/finder/tiles.xml</value>
+		<value>/views/sponsorship/tiles.xml</value>
+		<value>/views/registration/tiles.xml</value>
+		<value>/views/category/tiles.xml</value>
+
+		<value>/views/activity/tiles.xml</value>
+		<value>/views/section/tiles.xml</value>
+		<value>/views/comment/tiles.xml</value>
 	</util:list>
 
 </beans>

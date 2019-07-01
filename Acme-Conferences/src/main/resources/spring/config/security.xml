@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
-	* security.xml * * Copyright (C) 2019 Universidad de Sevilla 
-	* 
-	* The use of this project is hereby constrained to the conditions of the 
-	* TDG Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html 
--->
+<!-- * security.xml * * Copyright (C) 2019 Universidad de Sevilla * * The 
+	use of this project is hereby constrained to the conditions of the * TDG 
+	Licence, a copy of which you may download from * http://www.tdg-seville.info/License.html -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:security="http://www.springframework.org/schema/security"
@@ -46,22 +43,38 @@
 		<security:intercept-url pattern="/welcome/index.do"
 			access="permitAll" />
 
-		<security:intercept-url pattern="/administrator/action-1.do"
+		<security:intercept-url pattern="/conference/**"
+			access="permitAll" />
+		<security:intercept-url pattern="/finder/**"
+			access="permitAll" />
+
+		<security:intercept-url pattern="/sponsorship/**"
+			access="hasRole('SPONSOR')" />
+
+		<security:intercept-url pattern="/registration/**"
+			access="hasRole('AUTHOR')" />
+
+		<security:intercept-url pattern="/category/**"
 			access="hasRole('ADMIN')" />
-		<security:intercept-url pattern="/administrator/action-2.do"
+		<security:intercept-url pattern="/statistics/display.do"
 			access="hasRole('ADMIN')" />
 
-		<security:intercept-url pattern="/customer/action-1.do"
-			access="hasRole('CUSTOMER')" />
-		<security:intercept-url pattern="/customer/action-2.do"
-			access="hasRole('CUSTOMER')" />
+		<security:intercept-url pattern="/activity/list.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/activity/listAll.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/activity/display.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/activity/edit.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/activity/create.do"
+			access="hasRole('ADMIN')" />
 
-		<security:intercept-url pattern="/profile/action-1.do"
-			access="isAuthenticated()" />
-		<security:intercept-url pattern="/profile/action-2.do"
-			access="isAuthenticated()" />
-		<security:intercept-url pattern="/profile/action-3.do"
-			access="isAuthenticated()" />
+		<security:intercept-url pattern="/comment/create.do"
+			access="permitAll" />
+
+		<security:intercept-url pattern="/section/**"
+			access="hasRole('ADMIN')" />
 
 		<security:intercept-url pattern="/**"
 			access="hasRole('NONE')" />

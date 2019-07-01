@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.transaction.Transactional;
@@ -53,7 +54,9 @@ public class ActivityService {
 	}
 
 	public Collection<Activity> getActivitiesOfConference(Integer conferenceId) {
-		return this.activityRepository.getActivitiesOfConference(conferenceId);
+		Collection<Activity> activities = this.activityRepository
+				.getActivitiesOfConference(conferenceId);
+		return (activities != null) ? activities : new ArrayList<Activity>();
 	}
 
 	public Activity findOne(Integer activityid) {
