@@ -41,6 +41,8 @@ public class SponsorshipService {
 	@Autowired
 	private Validator validator;
 	
+	// CRUD Methods ------------------------------------------
+	
 	public Sponsorship create() {
 		Actor principal;
 		Sponsorship result;
@@ -235,7 +237,7 @@ public class SponsorshipService {
 			try {
 				if (this.creditCardService.checkIfExpired(s.getCreditCard().getExpirationMonth(), s.getCreditCard().getExpirationYear()))
 					listSponsoships.remove(s);
-			} catch (java.text.ParseException e) {
+			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 

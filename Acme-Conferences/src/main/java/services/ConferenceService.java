@@ -35,7 +35,7 @@ public class ConferenceService {
 	@Autowired
 	private Validator validator;
 	
-	// CRUD Methods
+	// CRUD Methods ------------------------------------------
 	
 	public Conference create() {
 		Actor principal;

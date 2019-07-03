@@ -25,6 +25,8 @@ import forms.SubmissionForm;
 @Controller
 @RequestMapping("/submission")
 public class SubmissionController extends AbstractController {
+	
+	/* Services */
 
 	@Autowired
 	private UtilityService	utilityService;
@@ -35,8 +37,7 @@ public class SubmissionController extends AbstractController {
 	@Autowired
 	private ConferenceService		conferenceService;
 
-	// Display
-
+	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int submissionId) {
 		ModelAndView result;
@@ -67,6 +68,7 @@ public class SubmissionController extends AbstractController {
 		return result;
 	}
 
+	/* Listing */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		final ModelAndView result = new ModelAndView("submission/list");
@@ -99,6 +101,7 @@ public class SubmissionController extends AbstractController {
 		return result;
 	}
 
+	/* Create */
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView createSubmission(@RequestParam final int conferenceId) {
 		ModelAndView res;
@@ -113,6 +116,7 @@ public class SubmissionController extends AbstractController {
 		return res;
 	}
 	
+	/* Edit */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int submissionId) {
 		ModelAndView res;
@@ -139,6 +143,7 @@ public class SubmissionController extends AbstractController {
 		return res;
 	}
 	
+	/* Save */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(SubmissionForm submissionForm, BindingResult binding) {
 		Actor principal;
@@ -175,6 +180,7 @@ public class SubmissionController extends AbstractController {
 		return res;
 	}
 	
+	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int submissionId) {
 		ModelAndView result;
@@ -189,8 +195,7 @@ public class SubmissionController extends AbstractController {
 		return result;
 	}
 
-	// Ancillary methods
-	
+	/* Ancillary methods */
 	protected ModelAndView createEditModelAndView(final SubmissionForm submissionForm) {
 		ModelAndView result;
 

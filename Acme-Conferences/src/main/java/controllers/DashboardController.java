@@ -15,6 +15,7 @@ import domain.Actor;
 @RequestMapping(value = "statistics")
 public class DashboardController extends AbstractController{
 	
+	/* Services */
 	
 	@Autowired
 	private DashboardService dashboardService;	
@@ -22,6 +23,7 @@ public class DashboardController extends AbstractController{
 	@Autowired
 	private UtilityService utilityService;
 	
+	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display() {
 		Actor principal;
@@ -51,13 +53,11 @@ public class DashboardController extends AbstractController{
 			result.addObject("statsCommentsPerActivity",statsCommentsPerActivity);
 			
 		} catch (Throwable oops) {
-			result = new ModelAndView("redirect:/welcome/index.do/");
-			result.addObject("messageCode", "position.commit.error");
-			result.addObject("permission", false);
+			result = new ModelAndView("statistics/display");
+
+			result.addObject("errMsg", oops.getMessage());
 		}
-		
 		return result;
 	}
-	
 }
 

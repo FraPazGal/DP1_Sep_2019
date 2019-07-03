@@ -18,8 +18,12 @@ import domain.Actor;
 @Service
 public class UtilityService {
 
+	// Managed repository ------------------------------------
+	
 	@Autowired
 	private ActorRepository actorRepository;
+	
+	// Other business methods -------------------------------
 
 	public Boolean checkEmail(final String email, final String authority) {
 		Boolean result;

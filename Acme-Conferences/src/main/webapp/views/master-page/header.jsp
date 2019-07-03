@@ -23,6 +23,30 @@
 <div>
 	<ul id="jMenu">
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
+
+		
+		<security:authorize access="permitAll">
+			<li><a class="fNiv"><spring:message
+							code="master.page.conference" /></a>
+					<ul>
+						<li class="arrow"></li>
+							<li><a href="conference/list.do?catalog=future"><spring:message
+										code="master.page.conference.list" /></a></li>
+						<security:authorize access="hasRole('ADMIN')">
+							<li><a href="conference/create.do"><spring:message
+										code="master.page.conference.new" /></a></li>
+						</security:authorize>
+						<security:authorize access="isAuthenticated()">
+							<li><a href="finder/search.do"><spring:message
+										code="master.page.conference.finder" /></a></li>
+						</security:authorize>
+						<security:authorize access="!isAuthenticated()">
+							<li><a href="finder/anon/search.do"><spring:message
+										code="master.page.conference.finder" /></a></li>
+						</security:authorize>
+					</ul></li>
+		</security:authorize>
+		
 		<security:authorize access="hasRole('ADMIN')">
 						
 			<li><a class="fNiv"><spring:message
@@ -74,28 +98,6 @@
 				</ul></li>
 				
 			
-		</security:authorize>
-		
-		<security:authorize access="permitAll">
-			<li><a class="fNiv"><spring:message
-							code="master.page.conference" /></a>
-					<ul>
-						<li class="arrow"></li>
-							<li><a href="conference/list.do?catalog=future"><spring:message
-										code="master.page.conference.list" /></a></li>
-						<security:authorize access="hasRole('ADMIN')">
-							<li><a href="conference/create.do"><spring:message
-										code="master.page.conference.new" /></a></li>
-						</security:authorize>
-						<security:authorize access="isAuthenticated()">
-							<li><a href="finder/search.do"><spring:message
-										code="master.page.conference.finder" /></a></li>
-						</security:authorize>
-						<security:authorize access="!isAuthenticated()">
-							<li><a href="finder/anon/search.do"><spring:message
-										code="master.page.conference.finder" /></a></li>
-						</security:authorize>
-					</ul></li>
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">

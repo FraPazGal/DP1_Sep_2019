@@ -26,6 +26,7 @@ import domain.SystemConfiguration;
 public class CategoryService {
 
 	// Managed repository ------------------------------
+	
 	@Autowired
 	private CategoryRepository categoryRepository;
 
@@ -143,7 +144,7 @@ public class CategoryService {
 		this.categoryRepository.delete(category);
 	}
 
-	// Other business methods
+	// Other business methods -------------------------------
 	
 	public Category reconstruct(Category category, String nameES,
 			String nameEN, BindingResult binding) {

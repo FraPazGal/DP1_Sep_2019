@@ -26,6 +26,8 @@ public class PaperService {
 	@Autowired
 	private UtilityService utilityService;
 	
+	// CRUD Methods ------------------------------------------
+	
 	public Paper create() {
 		Actor principal;
 		Paper result;

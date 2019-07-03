@@ -25,8 +25,8 @@ import domain.Finder;
 @RequestMapping("/finder")
 public class FinderController extends AbstractController {
 
-	// Services
-
+	/* Services */
+	
 	@Autowired
 	private FinderService finderService;
 
@@ -45,7 +45,7 @@ public class FinderController extends AbstractController {
 		super();
 	}
 
-	// DELETE
+	/* Clear finder */
 	@RequestMapping(value = "/search", method = RequestMethod.POST, params = "delete")
 	public ModelAndView delete(final Finder finder, final BindingResult binding) {
 
@@ -61,7 +61,7 @@ public class FinderController extends AbstractController {
 		return result;
 	}
 
-	// search
+	/* Search as a registered user */
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public ModelAndView search() {
 		ModelAndView result;
@@ -98,7 +98,7 @@ public class FinderController extends AbstractController {
 		return result;
 	}
 	
-	// searchAnon
+	/* Anon search */
 	@RequestMapping(value = "/anon/search", method = RequestMethod.GET)
 	public ModelAndView searchAnon(@RequestParam (required = false) String keyWord) {
 		ModelAndView result;
@@ -121,6 +121,7 @@ public class FinderController extends AbstractController {
 		
 	}
 
+	/* Save search */
 	@RequestMapping(value = "/search", method = RequestMethod.POST, params = "save")
 	public ModelAndView search(final Finder finder, BindingResult binding) {
 		ModelAndView result;
@@ -153,8 +154,7 @@ public class FinderController extends AbstractController {
 		return result;
 	}
 
-	// ancillary methods
-
+	/* Ancillary methods */
 	protected ModelAndView createEditModelAndView(final Finder finder) {
 		ModelAndView result;
 

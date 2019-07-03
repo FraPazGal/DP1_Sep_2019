@@ -10,10 +10,16 @@
 <%@taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 
+<security:authorize access="permitAll">
 
 <h1><spring:message	code="conference.list" />
 <jstl:out value="${conference.conference.title}" /></h1>
 	<jstl:choose>
+		<jstl:when test="${errMsg ne null}">
+			<p>
+				<jstl:out value="${errMsg}"/>
+			</p>
+		</jstl:when>
 		<jstl:when test="${isPrincipal eq 'ADMIN'}">
 		
 			<display:table class="displaytag" name="conferences" pagesize="5" 
@@ -184,3 +190,5 @@
 			</display:table>
 		</jstl:otherwise>
 	</jstl:choose>
+	
+</security:authorize>

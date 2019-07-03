@@ -22,9 +22,9 @@
 <security:authorize access="hasRole('ADMIN')">
 
 	<jstl:choose>
-		<jstl:when test="${err}">
+		<jstl:when test="${errMsg ne null}">
 			<p>
-				<jstl:out value="${errMsg.getMessage()}" />
+				<jstl:out value="${errMsg}" />
 			</p>
 		</jstl:when>
 		<jstl:otherwise>
@@ -110,10 +110,4 @@
 		</jstl:otherwise>
 	</jstl:choose>
 
-</security:authorize>
-
-<security:authorize access="!hasRole('ADMIN')">
-		<p>
-			<spring:message	code="sponsorship.not.allowed" /><br>
-		</p>
 </security:authorize>

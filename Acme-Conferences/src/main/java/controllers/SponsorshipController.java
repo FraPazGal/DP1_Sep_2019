@@ -26,6 +26,8 @@ import forms.SponsorshipForm;
 @RequestMapping("/sponsorship")
 public class SponsorshipController extends AbstractController {
 
+	/* Services */
+	
 	@Autowired
 	private UtilityService	utilityService;
 
@@ -35,8 +37,7 @@ public class SponsorshipController extends AbstractController {
 	@Autowired
 	private ConferenceService		conferenceService;
 
-	// Display
-
+	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int sponsorshipId) {
 		ModelAndView result;
@@ -67,6 +68,7 @@ public class SponsorshipController extends AbstractController {
 		return result;
 	}
 
+	/* Listing */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		final ModelAndView result = new ModelAndView("sponsorship/list");
@@ -91,6 +93,7 @@ public class SponsorshipController extends AbstractController {
 		return result;
 	}
 
+	/* Create */
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView createSponsorship() {
 		ModelAndView res;
@@ -103,6 +106,7 @@ public class SponsorshipController extends AbstractController {
 		return res;
 	}
 	
+	/* Edit */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int sponsorshipId) {
 		ModelAndView res;
@@ -128,6 +132,7 @@ public class SponsorshipController extends AbstractController {
 		return res;
 	}
 	
+	/* Save */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(SponsorshipForm editSponsorshipFormObject, BindingResult binding) {
 		Actor principal;
@@ -167,6 +172,7 @@ public class SponsorshipController extends AbstractController {
 		return res;
 	}
 	
+	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int sponsorshipId) {
 		ModelAndView result;
@@ -181,8 +187,7 @@ public class SponsorshipController extends AbstractController {
 		return result;
 	}
 
-	// Ancillary methods
-	
+	/* Ancillary methods */
 	protected ModelAndView createEditModelAndView(final SponsorshipForm sponsorshipForm) {
 		ModelAndView result;
 
