@@ -1,5 +1,5 @@
 <%--
- * submit.tag
+ * textarea.tag
  *
  * Copyright (C) 2019 Universidad de Sevilla
  * 
@@ -24,13 +24,22 @@
 
 <%-- Attributes --%>
 
-<%@ attribute name="name" required="true"%>
+<%@ attribute name="path" required="true"%>
 <%@ attribute name="code" required="true"%>
-<%@ attribute name="onclick" required="false"%>
+<%@ attribute name="readonly" required="false"%>
+<%@ attribute name="cols" required="false"%>
+
+<jstl:if test="${readonly == null}">
+	<jstl:set var="readonly" value="false" />
+</jstl:if>
 
 <%-- Definition --%>
 
-<button type="submit" name="${name}" onclick="${onclick}"
-	class="btn btn-primary">
-	<spring:message code="${code}" />
-</button>
+<div class="form-group">
+	<form:label path="${path}">
+		<spring:message code="${code}" />
+	</form:label>
+	<form:input type="date" path="${path}" readonly="${readonly}"
+		cols="${cols}" />
+	<form:errors path="${path}" cssClass="error" />
+</div>

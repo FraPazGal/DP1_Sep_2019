@@ -12,12 +12,13 @@
 	<legend>
 		<spring:message code="comment.legend" />
 	</legend>
-	<form:form action="comment/edit.do" modelAttribute="comment" id="form">
+	<form:form action="comment/edit.do?id=${id}" modelAttribute="comment"
+		id="form">
 
 		<form:hidden path="id" />
 		<form:hidden path="version" />
-		<form:hidden path="conferenceId" />
-		<form:hidden path="activityId" />
+		<form:hidden path="conference" />
+		<form:hidden path="activity" />
 		<form:hidden path="publishedDate" />
 		<form:hidden path="writer" />
 

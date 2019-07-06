@@ -72,8 +72,15 @@
 
 		<security:intercept-url pattern="/comment/create.do"
 			access="permitAll" />
+		<security:intercept-url pattern="/comment/edit.do"
+			access="permitAll" />
 
 		<security:intercept-url pattern="/section/**"
+			access="hasRole('ADMIN')" />
+
+		<security:intercept-url pattern="/config/admin/display.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/config/admin/edit.do"
 			access="hasRole('ADMIN')" />
 
 		<security:intercept-url pattern="/**"

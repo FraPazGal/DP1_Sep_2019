@@ -22,9 +22,13 @@ public class Comment extends DomainEntity {
 
 	private String title, body, author;
 	private Date publishedDate;
-	private Integer conferenceId;
-	private Integer activityId;
+	private Conference conference;
+	private Activity activity;
 	private Actor writer;
+
+	public Comment() {
+
+	}
 
 	/* Getters and setters */
 
@@ -67,20 +71,24 @@ public class Comment extends DomainEntity {
 		this.publishedDate = publishedDate;
 	}
 
-	public Integer getConferenceId() {
-		return conferenceId;
+	@Valid
+	@ManyToOne(optional = true)
+	public Conference getConference() {
+		return conference;
 	}
 
-	public void setConferenceId(Integer conferenceId) {
-		this.conferenceId = conferenceId;
+	public void setConference(Conference conference) {
+		this.conference = conference;
 	}
 
-	public Integer getActivityId() {
-		return activityId;
+	@Valid
+	@ManyToOne(optional = true)
+	public Activity getActivity() {
+		return activity;
 	}
 
-	public void setActivityId(Integer activityId) {
-		this.activityId = activityId;
+	public void setActivity(Activity activity) {
+		this.activity = activity;
 	}
 
 	@Valid

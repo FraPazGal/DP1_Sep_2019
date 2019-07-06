@@ -62,4 +62,8 @@ public class ActivityService {
 	public Activity findOne(Integer activityid) {
 		return this.activityRepository.findOne(activityid);
 	}
+
+	public void flush() {
+		this.activityRepository.flush();
+	}
 }

@@ -72,15 +72,6 @@
 			</form:label>
 			<form:input path="pictures" id="picturesInput" />
 
-			<%-- <br>
-
-			<span id="newPicture"></span>
-
-			<input type="button" value="<spring:message code='textarea.add'/>"
-				onclick="add()" />
-
-			<br> --%>
-
 			<br>
 
 			<acme:submit code="save" name="save"

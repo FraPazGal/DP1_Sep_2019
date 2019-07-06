@@ -35,7 +35,28 @@ public class CommentService {
 	@Autowired
 	private Validator validator;
 
-	public Comment create(Integer conferenceid, Integer activityid) {
+	public Comment create() {
+		Comment res = new Comment();
+		Actor principal;
+
+		res.setPublishedDate(LocalDate.now().toDate());
+
+		try {
+			principal = this.utilityService.findByPrincipal();
+			Assert.notNull(principal);
+
+			res.setWriter(principal);
+			res.setAuthor(principal.getUserAccount().getUsername());
+		} catch (Throwable oops) {
+			res.setAuthor("[Anonymous]");
+			res.setWriter(null);
+		}
+
+		return res;
+
+	}
+
+	public Comment createComment(Integer conferenceid, Integer activityid) {
 		Comment res = new Comment();
 		Actor principal;
 		Conference conference;
@@ -54,13 +75,13 @@ public class CommentService {
 
 					res.setWriter(principal);
 					res.setAuthor(principal.getUserAccount().getUsername());
-					res.setConferenceId(conference.getId());
+					res.setConference(conference);
 				} catch (Throwable oops) {
 					conference = this.conferenceService.findOne(conferenceid);
 					Assert.notNull(conference);
 
 					res.setAuthor("[Anonymous]");
-					res.setConferenceId(conference.getId());
+					res.setConference(conference);
 				}
 			} else {
 				try {
@@ -72,13 +93,13 @@ public class CommentService {
 
 					res.setWriter(principal);
 					res.setAuthor(principal.getUserAccount().getUsername());
-					res.setActivityId(activity.getId());
+					res.setActivity(activity);
 				} catch (Throwable oops) {
 					activity = this.activityService.findOne(activityid);
 					Assert.notNull(activity);
 
 					res.setAuthor("[Anonymous]");
-					res.setActivityId(activity.getId());
+					res.setActivity(activity);
 				}
 			}
 		} catch (Throwable oops) {
@@ -99,8 +120,8 @@ public class CommentService {
 	public Comment validate(Comment comment, BindingResult binding) {
 
 		try {
-			Assert.isTrue(comment.getConferenceId() != null
-					|| comment.getActivityId() != null);
+			Assert.isTrue(comment.getConference() != null
+					|| comment.getActivity() != null);
 		} catch (Throwable oops) {
 			binding.rejectValue("conference", "conference.error");
 			binding.rejectValue("activity", "activity.error");

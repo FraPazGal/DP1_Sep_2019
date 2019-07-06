@@ -1,7 +1,5 @@
 package controllers;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -27,16 +25,17 @@ public class CommentController extends AbstractController {
 			@RequestParam(required = false) Integer conferenceid,
 			@RequestParam(required = false) Integer activityid) {
 		ModelAndView res;
-		Comment newComment;
+		Comment newComment = this.commentService.create();
 
 		try {
-			if (conferenceid != null)
-				newComment = this.commentService.create(conferenceid, null);
-			else
-				newComment = this.commentService.create(null, activityid);
-
 			res = new ModelAndView("comment/create");
-			res.addObject("newComment", newComment);
+			res.addObject("comment", newComment);
+
+			if (conferenceid != null) {
+				res.addObject("id", conferenceid);
+			} else {
+				res.addObject("id", activityid);
+			}
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
 		}
@@ -44,11 +43,18 @@ public class CommentController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid Comment comment, BindingResult binding) {
+	public ModelAndView save(Comment comment,
+			@RequestParam(required = false) int id, BindingResult binding) {
 		ModelAndView res;
 		Comment validated;
 
 		try {
+
+			try {
+				this.commentService.createComment(id, null);
+			} catch (Throwable oops) {
+				this.commentService.createComment(null, id);
+			}
 
 			validated = this.commentService.validate(comment, binding);
 
@@ -58,14 +64,14 @@ public class CommentController extends AbstractController {
 			} else {
 				this.commentService.save(validated);
 
-				if (validated.getActivityId() != null) {
+				if (validated.getActivity() != null) {
 					res = new ModelAndView(
 							"redirect:activiy/display.do?activityid="
-									+ validated.getActivityId());
+									+ validated.getActivity().getId());
 				} else {
 					res = new ModelAndView(
 							"redirect:conference/display.do?conferenceId="
-									+ validated.getConferenceId());
+									+ validated.getConference().getId());
 				}
 
 			}

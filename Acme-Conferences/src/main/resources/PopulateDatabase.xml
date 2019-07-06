@@ -6,9 +6,7 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="
-    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<!-- USER ACCOUNTS -->
 
@@ -1502,45 +1500,81 @@
 
 	<!-- CONFERENCE 1 COMMENTS -->
 
-	<!-- <bean id="comment1" class="domain.Comment"> <property name="title" 
-		value="Very borring" /> <property name="body" value="It was very boring, 
-		what I usually like is destroy planets, not saving them." /> <property name="author" 
-		value="Boros" /> <property name="publishedDate" value="09/01/2020 22:01" 
-		/> <property name="conference" ref="conference1" /> <property name="writer" 
-		ref="administrator1" /> </bean> <bean id="comment2" class="domain.Comment"> 
-		<property name="title" value="I think the same as that Boros guy" /> <property 
-		name="body" value="I also enjoy destroying planets." /> <property name="author" 
-		value="Frieza" /> <property name="publishedDate" value="09/01/2020 22:05" 
-		/> <property name="conference" ref="conference1" /> <property name="writer" 
-		ref="reviewer1" /> </bean> <bean id="comment3" class="domain.Comment"> <property 
-		name="title" value="What is climate change" /> <property name="body" value="I 
-		don't know what that is." /> <property name="author" value="Ragyo" /> <property 
-		name="publishedDate" value="09/01/2020 22:15" /> <property name="activity" 
-		ref="activity3Conference1" /> <property name="writer" ref="sponsor1" /> </bean> 
-		<bean id="comment4" class="domain.Comment"> <property name="title" value="Climate 
-		change doesn't exist" /> <property name="body" value="I you don't need to 
-		know more Ragyo." /> <property name="author" value="King Bradley" /> <property 
-		name="publishedDate" value="09/01/2020 22:16" /> <property name="activity" 
-		ref="activity3Conference1" /> <property name="writer" ref="author1" /> </bean> 
-		CONFERENCE 3 COMMENTS <bean id="comment5" class="domain.Comment"> <property 
-		name="title" value="Interesting..." /> <property name="body" value="I could 
-		use this SE thing to spread my teachings" /> <property name="author" value="Mozgus" 
-		/> <property name="publishedDate" value="07/01/2020 22:01" /> <property name="conference" 
-		ref="conference3" /> <property name="writer" ref="administrator2" /> </bean> 
-		<bean id="comment6" class="domain.Comment"> <property name="title" value="Kono 
-		Dio Da!" /> <property name="body" value="Wryyyyy!" /> <property name="author" 
-		value="Dio" /> <property name="publishedDate" value="07/01/2020 22:05" /> 
-		<property name="conference" ref="conference3" /> <property name="writer" 
-		ref="reviewer2" /> </bean> <bean id="comment7" class="domain.Comment"> <property 
-		name="title" value="Don't like it" /> <property name="body" value="I don't 
-		like what I cannot understand." /> <property name="author" value="Madara" 
-		/> <property name="publishedDate" value="07/01/2020 22:15" /> <property name="activity" 
-		ref="activity3Conference3" /> <property name="writer" ref="sponsor2" /> </bean> 
-		<bean id="comment8" class="domain.Comment"> <property name="title" value="I 
-		am Meruem, King of the chimera ants..." /> <property name="body" value="...and 
-		I approve this." /> <property name="author" value="Meruem" /> <property name="publishedDate" 
-		value="07/01/2020 22:16" /> <property name="activity" ref="activity3Conference3" 
-		/> <property name="writer" ref="author2" /> </bean> -->
+	<bean id="comment1" class="domain.Comment">
+		<property name="title" value="Very borring" />
+		<property name="body"
+			value="It was very boring, what I usually like is destroy planets, not saving them." />
+		<property name="author" value="Boros" />
+		<property name="publishedDate" value="09/01/2020 22:01" />
+		<property name="conference" ref="conference1" />
+		<property name="writer" ref="administrator1" />
+	</bean>
+	<bean id="comment2" class="domain.Comment">
+		<property name="title" value="I think the same as that Boros guy" />
+		<property name="body" value="I also enjoy destroying planets." />
+		<property name="author" value="Frieza" />
+		<property name="publishedDate" value="09/01/2020 22:05" />
+		<property name="conference" ref="conference1" />
+		<property name="writer" ref="reviewer1" />
+	</bean>
+	<bean id="comment3" class="domain.Comment">
+		<property name="title" value="What is climate change" />
+		<property name="body" value="I 
+		don't know what that is." />
+		<property name="author" value="Ragyo" />
+		<property name="publishedDate" value="09/01/2020 22:15" />
+		<property name="activity" ref="activity3Conference1" />
+		<property name="writer" ref="sponsor1" />
+	</bean>
+	<bean id="comment4" class="domain.Comment">
+		<property name="title" value="Climate 
+		change doesn't exist" />
+		<property name="body" value="I you don't need to 
+		know more Ragyo." />
+		<property name="author" value="King Bradley" />
+		<property name="publishedDate" value="09/01/2020 22:16" />
+		<property name="activity" ref="activity3Conference1" />
+		<property name="writer" ref="author1" />
+	</bean>
+	<!-- CONFERENCE 3 COMMENTS -->
+	<bean id="comment5" class="domain.Comment">
+		<property name="title" value="Interesting..." />
+		<property name="body"
+			value="I could 
+		use this SE thing to spread my teachings" />
+		<property name="author" value="Mozgus" />
+		<property name="publishedDate" value="07/01/2020 22:01" />
+		<property name="conference" ref="conference3" />
+		<property name="writer" ref="administrator2" />
+	</bean>
+	<bean id="comment6" class="domain.Comment">
+		<property name="title" value="Kono 
+		Dio Da!" />
+		<property name="body" value="Wryyyyy!" />
+		<property name="author" value="Dio" />
+		<property name="publishedDate" value="07/01/2020 22:05" />
+		<property name="conference" ref="conference3" />
+		<property name="writer" ref="reviewer2" />
+	</bean>
+	<bean id="comment7" class="domain.Comment">
+		<property name="title" value="Don't like it" />
+		<property name="body" value="I don't 
+		like what I cannot understand." />
+		<property name="author" value="Madara" />
+		<property name="publishedDate" value="07/01/2020 22:15" />
+		<property name="activity" ref="activity3Conference3" />
+		<property name="writer" ref="sponsor2" />
+	</bean>
+	<bean id="comment8" class="domain.Comment">
+		<property name="title" value="I 
+		am Meruem, King of the chimera ants..." />
+		<property name="body" value="...and 
+		I approve this." />
+		<property name="author" value="Meruem" />
+		<property name="publishedDate" value="07/01/2020 22:16" />
+		<property name="activity" ref="activity3Conference3" />
+		<property name="writer" ref="author2" />
+	</bean>
 
 	<!-- REGISTRATIONS -->
 
