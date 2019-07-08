@@ -10,24 +10,19 @@
 
 <tiles-definitions>
 
-	<definition name="administrator/display" extends="master.page">
+	<definition name="reviewer/display" extends="master.page">
 		<put-attribute name="title" value="Ver perfil" />
-		<put-attribute name="body" value="/views/administrator/display.jsp" />
+		<put-attribute name="body" value="/views/reviewer/display.jsp" />
 	</definition>
 
-	<definition name="administrator/register" extends="master.page">
-		<put-attribute name="title" value="Registrar administrador" />
-		<put-attribute name="body" value="/views/administrator/register.jsp" />
+	<definition name="reviewer/register" extends="master.page">
+		<put-attribute name="title" value="Registrar critico" />
+		<put-attribute name="body" value="/views/reviewer/register.jsp" />
 	</definition>
 
-	<definition name="administrator/statistics" extends="master.page">
-		<put-attribute name="body"
-			value="/views/administrator/statistics.jsp" />
-	</definition>
-
-	<definition name="administrator/edit" extends="master.page">
+	<definition name="reviewer/edit" extends="master.page">
 		<put-attribute name="title" value="Editar perfil" />
-		<put-attribute name="body" value="/views/administrator/edit.jsp" />
+		<put-attribute name="body" value="/views/reviewer/edit.jsp" />
 	</definition>
 
 </tiles-definitions>

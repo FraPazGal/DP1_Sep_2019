@@ -10,24 +10,19 @@
 
 <tiles-definitions>
 
-	<definition name="administrator/display" extends="master.page">
+	<definition name="sponsor/display" extends="master.page">
 		<put-attribute name="title" value="View profile" />
-		<put-attribute name="body" value="/views/administrator/display.jsp" />
+		<put-attribute name="body" value="/views/sponsor/display.jsp" />
 	</definition>
 
-	<definition name="administrator/register" extends="master.page">
-		<put-attribute name="title" value="Register admin" />
-		<put-attribute name="body" value="/views/administrator/register.jsp" />
+	<definition name="sponsor/register" extends="master.page">
+		<put-attribute name="title" value="Register sponsor" />
+		<put-attribute name="body" value="/views/sponsor/register.jsp" />
 	</definition>
 
-	<definition name="administrator/statistics" extends="master.page">
-		<put-attribute name="body"
-			value="/views/administrator/statistics.jsp" />
-	</definition>
-
-	<definition name="administrator/edit" extends="master.page">
+	<definition name="sponsor/edit" extends="master.page">
 		<put-attribute name="title" value="Edit profile" />
-		<put-attribute name="body" value="/views/administrator/edit.jsp" />
+		<put-attribute name="body" value="/views/sponsor/edit.jsp" />
 	</definition>
 
 </tiles-definitions>

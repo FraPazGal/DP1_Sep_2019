@@ -18,6 +18,9 @@
 		<value>/views/welcome/tiles.xml</value>
 
 		<value>/views/administrator/tiles.xml</value>
+		<value>/views/sponsor/tiles.xml</value>
+		<value>/views/author/tiles.xml</value>
+		<value>/views/reviewer/tiles.xml</value>
 
 		<value>/views/conference/tiles.xml</value>
 		<value>/views/finder/tiles.xml</value>

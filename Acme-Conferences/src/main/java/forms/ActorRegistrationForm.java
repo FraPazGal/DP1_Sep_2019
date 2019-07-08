@@ -5,33 +5,15 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 
-import domain.Actor;
-
-public class ActorForm {
+public class ActorRegistrationForm {
 
 	/* Attributes */
 
 	private int id, version;
 	private String name, middleName, surname, photo, email, phoneNumber,
-			address;
+			address, username, password;
 
 	/* Getters and setters */
-
-	public ActorForm() {
-
-	}
-
-	public ActorForm(Actor actor) {
-		this.id = actor.getId();
-		this.version = actor.getVersion();
-		this.name = actor.getName();
-		this.middleName = actor.getMiddleName();
-		this.surname = actor.getSurname();
-		this.photo = actor.getPhoto();
-		this.email = actor.getEmail();
-		this.phoneNumber = actor.getPhoneNumber();
-		this.address = actor.getAddress();
-	}
 
 	public int getId() {
 		return id;
@@ -110,6 +92,26 @@ public class ActorForm {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	@NotBlank
+	@NotNull
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	@NotBlank
+	@NotNull
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

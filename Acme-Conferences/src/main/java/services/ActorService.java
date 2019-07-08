@@ -38,4 +38,8 @@ public class ActorService {
 		final Actor result = this.actorRepository.findOne(actorId);
 		return result;
 	}
+
+	public boolean existsUsername(String username) {
+		return !(this.actorRepository.existsUsername(username) != null);
+	}
 }
