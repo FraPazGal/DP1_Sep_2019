@@ -2,11 +2,9 @@ package domain;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -17,6 +15,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
@@ -27,13 +26,14 @@ public class Message extends DomainEntity {
 
 	private Date sendMoment;
 	private String subject, body;
-	private Map<String, String> topic;
+	private String topic;
 	private Collection<Actor> reciever;
 	private Actor sender;
 
 	/* Getters and setters */
 
 	@NotNull
+	@DateTimeFormat(pattern = "dd-MM-yyy hh:mm")
 	public Date getSendMoment() {
 		return sendMoment;
 	}
@@ -63,13 +63,12 @@ public class Message extends DomainEntity {
 	}
 
 	@NotNull
-	@NotEmpty
-	@ElementCollection
-	public Map<String, String> getTopic() {
+	@NotBlank
+	public String getTopic() {
 		return topic;
 	}
 
-	public void setTopic(Map<String, String> topic) {
+	public void setTopic(String topic) {
 		this.topic = topic;
 	}
 

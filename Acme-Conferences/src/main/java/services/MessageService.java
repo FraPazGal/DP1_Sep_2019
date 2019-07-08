@@ -1,18 +1,16 @@
 package services;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.transaction.Transactional;
 
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 
 import repositories.MessageRepository;
+import domain.Actor;
 import domain.Message;
 
 @Transactional
@@ -24,9 +22,6 @@ public class MessageService {
 
 	@Autowired
 	private UtilityService utilityService;
-
-	@Autowired
-	private Validator validator;
 
 	public Message create() {
 		Message res = new Message();
@@ -45,34 +40,16 @@ public class MessageService {
 		this.messageRepository.delete(message);
 	}
 
-	public Message reconstruct(Message message, String topicES, String topicEN,
-			BindingResult binding) {
-		Message res;
+	public Collection<Message> findByPrincipal() {
+		Collection<Message> res = new ArrayList<>();
+		Actor principal = this.utilityService.findByPrincipal();
+		Collection<Message> messages = this.messageRepository.findAll();
 
-		try {
-			Assert.notNull(topicES);
-			Assert.notNull(topicEN);
-			Assert.isTrue(topicEN.trim().length() < 0);
-			Assert.isTrue(topicES.trim().length() < 0);
-		} catch (Throwable oops) {
-			binding.rejectValue("topic", "topic.error");
-		}
-
-		this.validator.validate(message, binding);
-
-		if (binding.hasErrors()) {
-			res = message;
-		} else {
-			res = this.create();
-			res.setSubject(message.getSubject());
-			res.setBody(message.getBody());
-			res.setReciever(message.getReciever());
-
-			Map<String, String> topic = new HashMap<>();
-			topic.put("Español", topicES);
-			topic.put("English", topicEN);
-
-			res.setTopic(topic);
+		for (Message m : messages) {
+			if (m.getReciever().contains(principal)
+					|| m.getSender().getId() == principal.getId()) {
+				res.add(m);
+			}
 		}
 		return res;
 	}

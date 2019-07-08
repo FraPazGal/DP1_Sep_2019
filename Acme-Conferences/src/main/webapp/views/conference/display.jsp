@@ -149,6 +149,12 @@
 		<input type="button"
 			onclick="redirect: location.href = 'activity/create.do?conferenceid=${conference.id}';"
 			value="<spring:message code='activity.create' />" />
+		<input type="button"
+			onclick="redirect: location.href = 'message/createbroadcast.do?type=reg&id=${conference.id}';"
+			value="<spring:message code='broadcast.reg' />" />
+		<input type="button"
+			onclick="redirect: location.href = 'message/createbroadcast.do?type=sub&id=${conference.id}';"
+			value="<spring:message code='broadcast.sub' />" />
 	</jstl:if>
 
 	<jstl:if test="${not empty comments}">

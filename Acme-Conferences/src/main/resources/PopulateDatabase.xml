@@ -1233,13 +1233,7 @@
 		<property name="subject" value="DP" />
 		<property name="body"
 			value="This is the message number one from Frieza to the admins of the system." />
-		<property name="topic">
-			<util:map id="utilmap22" map-class="java.util.HashMap"
-				key-type="java.lang.String" value-type="java.lang.String">
-				<entry key="Español" value="CONSULTA" />
-				<entry key="English" value="INQUIRY" />
-			</util:map>
-		</property>
+		<property name="topic" value="INQUIRY" />
 		<property name="reciever">
 			<list>
 				<ref bean="administrator1" />
@@ -1254,13 +1248,7 @@
 		<property name="subject" value="DP" />
 		<property name="body"
 			value="This is the message number two from Dio to Frieza." />
-		<property name="topic">
-			<util:map id="utilmap23" map-class="java.util.HashMap"
-				key-type="java.lang.String" value-type="java.lang.String">
-				<entry key="Español" value="OTROS" />
-				<entry key="English" value="OTHER" />
-			</util:map>
-		</property>
+		<property name="topic" value="OTHER" />
 		<property name="reciever">
 			<list>
 				<ref bean="reviewer1" />
@@ -1274,13 +1262,7 @@
 		<property name="subject" value="DP" />
 		<property name="body"
 			value="This is the message number two from King Bradley to Ragyo and Madara." />
-		<property name="topic">
-			<util:map id="utilmap24" map-class="java.util.HashMap"
-				key-type="java.lang.String" value-type="java.lang.String">
-				<entry key="Español" value="TEMAS" />
-				<entry key="English" value="TOPICS" />
-			</util:map>
-		</property>
+		<property name="topic" value="TOPICS" />
 		<property name="reciever">
 			<list>
 				<ref bean="sponsor1" />

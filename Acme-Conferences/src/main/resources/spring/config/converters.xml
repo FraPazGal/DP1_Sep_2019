@@ -66,6 +66,8 @@
 		<bean class="converters.SystemConfigurationToStringConverter" />
 		<bean class="converters.StringToSystemConfigurationConverter" />
 
+		<bean class="converters.ActorToStringConverter" />
+		<bean class="converters.StringToActorConverter" />
 	</util:list>
 
 </beans>

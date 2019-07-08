@@ -26,24 +26,24 @@ public class RegistrationService {
 	private RegistrationRepository registrationRepository;
 
 	// Supporting services -----------------------
-	
+
 	@Autowired
 	private UtilityService utilityService;
-	
+
 	@Autowired
 	private CreditCardService creditCardService;
-	
+
 	@Autowired
 	private Validator validator;
 
 	// CRUD Methods ---------------
-	
+
 	public Registration create() {
 		Registration result;
 		Actor principal = this.utilityService.findByPrincipal();
 
 		result = new Registration();
-		result.setAuthor((Author)principal);
+		result.setAuthor((Author) principal);
 
 		return result;
 	}
@@ -68,10 +68,10 @@ public class RegistrationService {
 
 		Assert.notNull(registration);
 		Assert.isTrue(registration.getId() == 0);
-		
+
 		Assert.notNull(registration.getConference());
 		Assert.notNull(registration.getCreditCard());
-		
+
 		principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(registration.getAuthor().equals(principal), "not.allowed");
 
@@ -80,45 +80,44 @@ public class RegistrationService {
 
 		return result;
 	}
-	
-	
+
 	// Ancillary Methods ----------------
-	
+
 	public Collection<Registration> registrationsPerAuthor(int authorId) {
-		
+
 		return this.registrationRepository.registrationsPerAuthor(authorId);
 	}
-	
-	public Registration reconstruct(RegistrationForm form,
-			BindingResult binding) {
-		
+
+	public Registration reconstruct(RegistrationForm form, BindingResult binding) {
+
 		Registration registration = this.create();
-		
-		Assert.isTrue(!this.isAlreadyRegistered(form.getConference().getId(), registration.getAuthor().getId()), "already.registered");
-		
+
+		Assert.isTrue(!this.isAlreadyRegistered(form.getConference().getId(),
+				registration.getAuthor().getId()), "already.registered");
+
 		registration.setConference(form.getConference());
-		
+
 		/* Creating credit card */
 		CreditCard creditCard = this.creditCardService.create();
-		
+
 		creditCard.setHolder(form.getHolder());
 		creditCard.setMake(form.getMake());
 		creditCard.setNumber(form.getNumber());
 		creditCard.setExpirationMonth(form.getExpirationMonth());
 		creditCard.setExpirationYear(form.getExpirationYear());
 		creditCard.setCVV(form.getCVV());
-		
+
 		this.validator.validate(creditCard, binding);
-		
+
 		if (!binding.hasErrors()) {
 			CreditCard saved;
 			saved = this.creditCardService.save(creditCard);
-			
+
 			registration.setCreditCard(saved);
 		}
-		
+
 		this.validator.validate(registration, binding);
-		
+
 		try {
 			Assert.notNull(form.getConference(), "no.conferences");
 		} catch (Throwable oops) {
@@ -160,10 +159,15 @@ public class RegistrationService {
 		}
 		return registration;
 	}
-	
+
 	public boolean isAlreadyRegistered(int conferenceId, int actorId) {
 
-		return this.registrationRepository.isAlreadyRegistered(conferenceId, actorId);
+		return this.registrationRepository.isAlreadyRegistered(conferenceId,
+				actorId);
+	}
+
+	public Collection<Actor> findActorsRegisteredTo(Integer id) {
+		return this.registrationRepository.findActorsRegisteredTo(id);
 	}
 
 }

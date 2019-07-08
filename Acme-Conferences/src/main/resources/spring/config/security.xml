@@ -83,6 +83,17 @@
 		<security:intercept-url pattern="/config/admin/edit.do"
 			access="hasRole('ADMIN')" />
 
+		<security:intercept-url pattern="/message/list.do"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/message/create.do"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/message/send.do"
+			access="isAuthenticated()" />
+		<security:intercept-url pattern="/message/createbroadcast.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/message/broadcast.do"
+			access="hasRole('ADMIN')" />
+
 		<security:intercept-url pattern="/**"
 			access="hasRole('NONE')" />
 

@@ -92,7 +92,7 @@ public class ConferenceController extends AbstractController {
 					"conference/display.do?conferenceId=" + conferenceId);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/welcome/index.do");
-			result.addObject("messageCode", "conference.commit.error");
+			result.addObject("messageCode", "conference.commit.error"); 
 			result.addObject("permission", false);
 		}
 		return result;
@@ -340,7 +340,7 @@ public class ConferenceController extends AbstractController {
 				isPrincipal = false;
 		}
 
-		result = new ModelAndView("conference/edit");
+		result = new ModelAndView("conference/edit"); 
 		result.addObject("conference", conference);
 		result.addObject("categories", categories);
 		result.addObject("isPrincipal", isPrincipal);

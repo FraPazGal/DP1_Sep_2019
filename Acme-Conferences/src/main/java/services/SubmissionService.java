@@ -22,23 +22,23 @@ import forms.SubmissionForm;
 @Transactional
 @Service
 public class SubmissionService {
-	
+
 	// Managed repository ------------------------------------
-	
+
 	@Autowired
 	private SubmissionRepository submissionRepository;
-	
+
 	// Supporting services -----------------------------------
-	
+
 	@Autowired
 	private UtilityService utilityService;
-	
+
 	@Autowired
 	private PaperService paperService;
-	
+
 	@Autowired
 	private Validator validator;
-	
+
 	public Submission create() {
 		Actor principal;
 		Submission result;
@@ -69,7 +69,7 @@ public class SubmissionService {
 
 		return result;
 	}
-	
+
 	public Submission save(final Submission submission) {
 		Actor principal;
 		Submission result;
@@ -80,17 +80,20 @@ public class SubmissionService {
 		Assert.notNull(submission.getAuthor());
 		Assert.notNull(submission.getConference());
 		Assert.notNull(submission.getPaper());
-		
+
 		principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(principal.equals(submission.getAuthor()));
-		
-		Assert.isTrue(submission.getSubmissionMoment().before(submission.getConference().getSubmissionDeadline()), "submissionDeadline.limit");
-		
+
+		Assert.isTrue(
+				submission.getSubmissionMoment().before(
+						submission.getConference().getSubmissionDeadline()),
+				"submissionDeadline.limit");
+
 		result = this.submissionRepository.save(submission);
 
 		return result;
 	}
-	
+
 	public void delete(final Submission submission) {
 		Actor principal;
 
@@ -102,59 +105,64 @@ public class SubmissionService {
 
 		this.submissionRepository.delete(submission.getId());
 	}
-	
+
 	// Other business methods -------------------------------
-	
+
 	public void flush() {
 		this.submissionRepository.flush();
 	}
-	
-	public Submission reconstruct(SubmissionForm form,
-			BindingResult binding) {
-		
+
+	public Submission reconstruct(SubmissionForm form, BindingResult binding) {
+
 		Date now = new Date(System.currentTimeMillis() - 1);
 		Submission submission = this.create();
-		
+
 		/* Creating paper */
 		Paper paper = this.paperService.create();
-		
-		if(form.getId() == 0) {
+
+		if (form.getId() == 0) {
 			paper.setTitle(form.getTitleP());
 			paper.setAuthors(form.getAuthorsP());
 			paper.setSummary(form.getSummaryP());
 			paper.setPaperDocument(form.getPaperDocumentP());
-		
+
 		} else {
 			paper.setTitle(form.getTitlePCR());
 			paper.setAuthors(form.getAuthorsPCR());
 			paper.setSummary(form.getSummaryPCR());
 			paper.setPaperDocument(form.getPaperDocumentPCR());
 		}
-		
+
 		this.validator.validate(paper, binding);
-		
+
 		if (!binding.hasErrors()) {
 			Paper saved;
 			saved = this.paperService.save(paper);
-			
-			if(form.getId() != 0) {
+
+			if (form.getId() != 0) {
 				submission = this.findOne(form.getId());
-				Assert.isTrue(submission.getStatus() == "ACCEPTED", "submission.not.accepted");
+				Assert.isTrue(submission.getStatus() == "ACCEPTED",
+						"submission.not.accepted");
 				submission.setCameraReadyPaper(paper);
 			} else {
 				submission.setConference(form.getConference());
 				submission.setPaper(saved);
 			}
 		}
-		
-		Assert.isTrue(submission.getSubmissionMoment().before(submission.getConference().getSubmissionDeadline()), "submissionDeadline.limit");
-		Assert.isTrue(now.before(submission.getConference().getCameraReadyDeadline()), "cameraReadyDeadline.limit");
-		
+
+		Assert.isTrue(
+				submission.getSubmissionMoment().before(
+						submission.getConference().getSubmissionDeadline()),
+				"submissionDeadline.limit");
+		Assert.isTrue(
+				now.before(submission.getConference().getCameraReadyDeadline()),
+				"cameraReadyDeadline.limit");
+
 		this.validator.validate(submission, binding);
-		
+
 		return submission;
 	}
-	
+
 	private String generateTicker(Actor author) {
 		String uniqueTicker = null;
 		String nameInitial, middleNameInitial, surnameInitial, alphaNum, initials;
@@ -162,7 +170,8 @@ public class SubmissionService {
 
 		nameInitial = author.getName().substring(0, 1);
 		surnameInitial = author.getSurname().substring(0, 1);
-		middleNameInitial = author.getMiddleName().isEmpty() ? "X" : author.getMiddleName().substring(0, 1);
+		middleNameInitial = author.getMiddleName().isEmpty() ? "X" : author
+				.getMiddleName().substring(0, 1);
 
 		while (unique == false) {
 			alphaNum = this.randomString();
@@ -190,9 +199,13 @@ public class SubmissionService {
 		return stringBuilder.toString();
 
 	}
-	
+
 	public Submission findSubByPaper(int paperId) {
-		
+
 		return this.submissionRepository.findSubByPaper(paperId);
+	}
+
+	public Collection<Actor> findActorsWithSubmitions(Integer id) {
+		return this.submissionRepository.findActorsWithSubmitions(id);
 	}
 }

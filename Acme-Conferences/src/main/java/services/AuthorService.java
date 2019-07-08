@@ -2,6 +2,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -87,5 +88,9 @@ public class AuthorService {
 		validator.validate(res, binding);
 
 		return res;
+	}
+
+	public List<Author> findAll() {
+		return (List<Author>) this.authorRepository.findAll();
 	}
 }

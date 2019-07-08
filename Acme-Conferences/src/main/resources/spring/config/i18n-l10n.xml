@@ -29,6 +29,7 @@
 		<value>/views/section/messages</value>
 		<value>/views/comment/messages</value>
 		<value>/views/sytemconfiguration/messages</value>
+		<value>/views/message/messages</value>
 	</util:list>
 
 </beans>
