@@ -35,7 +35,7 @@ public class ConferenceService {
 	@Autowired
 	private Validator validator;
 
-	// CRUD Methods
+	// CRUD Methods ------------------------------------------
 
 	public Conference create() {
 		Actor principal;
@@ -287,6 +287,11 @@ public class ConferenceService {
 	public Collection<Conference> conferencesRegisteredTo(Integer authorId) {
 
 		return this.conferenceRepository.conferencesRegisteredTo(authorId);
+	}
+
+	public Collection<Conference> conferencesSubmittedTo(Integer authorId) {
+
+		return this.conferenceRepository.conferencesSubmittedTo(authorId);
 	}
 
 }

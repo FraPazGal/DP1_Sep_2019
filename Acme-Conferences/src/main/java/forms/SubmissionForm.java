@@ -41,10 +41,10 @@ public class SubmissionForm {
 		this.authorsP = submission.getPaper().getAuthors();
 		this.summaryP = submission.getPaper().getSummary();
 		this.paperDocumentP = submission.getPaper().getPaperDocument();
-		this.titlePCR = submission.getCameraReadyPaper().getTitle();
-		this.authorsPCR = submission.getCameraReadyPaper().getAuthors();
-		this.summaryPCR = submission.getCameraReadyPaper().getSummary();
-		this.paperDocumentPCR = submission.getCameraReadyPaper().getPaperDocument();
+//		this.titlePCR = submission.getCameraReadyPaper().getTitle();
+//		this.authorsPCR = submission.getCameraReadyPaper().getAuthors();
+//		this.summaryPCR = submission.getCameraReadyPaper().getSummary();
+//		this.paperDocumentPCR = submission.getCameraReadyPaper().getPaperDocument();
 	}
 
 	/* Getters and Setters*/

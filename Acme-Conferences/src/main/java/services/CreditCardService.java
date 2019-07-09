@@ -3,6 +3,7 @@ package services;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
@@ -19,12 +20,18 @@ import domain.CreditCard;
 @Transactional
 @Service
 public class CreditCardService {
-
+	
+	// Managed repository ------------------------------------
+	
 	@Autowired
 	private CreditCardRepository  creditCardRepository;
 	
+	// Supporting services -----------------------------------
+	
 	@Autowired
 	private UtilityService utilityService;
+	
+	// CRUD Methods ------------------------------------------
 	
 	public CreditCard create() {
 		Actor principal;
@@ -87,21 +94,13 @@ public class CreditCardService {
 		this.creditCardRepository.delete(creditCard.getId());
 	}
 		
-	/**
-	 * 
-	 * Checks if the date of the credit card is expired
-	 * 
-	 * @param expirationMonth
-	 * @param expirationYear
-	 * 
-	 * @return boolean
-	 * @throws ParseException
-	 **/
+	// Other business methods -------------------------------
+	
 	public boolean checkIfExpired(Integer expirationMonth,
 			Integer expirationYear) throws ParseException {
 
 		boolean res = false;
-
+		
 		String expiration = ((expirationMonth.toString().length() == 1) ? "0"
 				+ expirationMonth.toString() : expirationMonth.toString())
 				+ ((expirationYear.toString().length() == 1) ? "0"
@@ -110,25 +109,20 @@ public class CreditCardService {
 		DateFormat date = new SimpleDateFormat("MMyy");
 
 		Date expiryDate = date.parse(expiration);
+		
+		Calendar expDate = Calendar.getInstance();
+		expDate.setTime(expiryDate);
+		expDate.add(Calendar.MONTH, 1);
+		expDate.add(Calendar.DAY_OF_MONTH, -1);
+
 		Date currentDate = new Date();
 
-		if (currentDate.after(expiryDate))
+		if (currentDate.after(expDate.getTime()))
 			res = true;
 
 		return res;
 	}
 
-	/**
-	 * 
-	 * Checks if the string passed as parameter is a valid credit card number.
-	 * This method was obtained by some research through the Internet. According
-	 * to the Luhn algorithm, the last digit in the credit card number is a
-	 * checksum.
-	 * 
-	 * @param mumber
-	 * @return boolean
-	 * 
-	 **/
 	public boolean checkCreditCardNumber(String number) {
 		int sum = 0;
 		boolean alternate = false;
@@ -145,10 +139,4 @@ public class CreditCardService {
 		}
 		return (sum % 10 == 0);
 	}
-	
-	
-	
-/*	public void deleteCreditCardPerSponsorship(CreditCard c){
-		this.creditCardRepository.delete(c);
-	}*/
 }

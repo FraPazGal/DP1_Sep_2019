@@ -30,7 +30,7 @@
 		<form:hidden path="id" />
 		
 		<acme:textbox code="finder.keyWord" path="keyWord" size="50px" /><br/> <br/>
-		<acme:textbox code="finder.maximumFee" path="maximumFee" size="50px" /><br/> <br/>
+		<acme:textbox code="finder.maximumFee" path="maximumFee" size="50px" placeholder="price.placeholder"/><br/> <br/>
 		<acme:textbox code="finder.minimumDate" path="minimumDate" size="50px" placeholder="date.placeholder"/><br/> <br/>
 		<acme:textbox code="finder.maximumDate" path="maximumDate" size="50px" placeholder="date.placeholder"/><br/> <br/>
 		<spring:message code="conference.category" />

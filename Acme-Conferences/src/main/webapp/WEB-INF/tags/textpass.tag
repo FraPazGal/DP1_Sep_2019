@@ -30,7 +30,6 @@
 <%@ attribute name="size" required="false" %>
 <%@ attribute name="placeholder" required="false" %>
 <%@ attribute name="readonly" required="false" %>
-<%@ attribute name="password" required="false" %>
 
 <jstl:if test="${readonly == null}">
 	<jstl:set var="readonly" value="false" />
@@ -46,13 +45,7 @@
 	<form:label path="${path}">
 		<spring:message code="${code}" />
 	</form:label>	
-	<jstl:if test="${password eq null }">
-		<form:input path="${path}" readonly="${readonly}" size="${size }"
-			placeholder="${place}"/>	
-	</jstl:if>
-	<jstl:if test="${password eq true }">
-		<form:password path="${path}" size="${size }"
-			placeholder="${place}"/>	
-	</jstl:if>
+	<form:input path="${path}" readonly="${readonly}" size="${size }"
+		placeholder="${place}"/>	
 	<form:errors path="${path}" cssClass="error" />
 </div>	

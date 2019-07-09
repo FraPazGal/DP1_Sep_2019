@@ -18,8 +18,11 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<p>Oops! You don't have access to this resource.</p>
 
-<p>
+<div style=" margin-top: 2%; margin-bottom: 2%; text-align: center;"><img alt="Error" src="../images/sadface.png" height="150px" /></div>
+<p style=" text-align: center; font-size: 30">Oops! You don't have access to this resource.</p>
+
+<p style="text-align: center; font-size: 18">
 	<a href="<spring:url value='/' />">Return to the welcome page</a>
 <p>
+

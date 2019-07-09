@@ -41,6 +41,8 @@ public class SponsorshipService {
 	@Autowired
 	private Validator validator;
 	
+	// CRUD Methods ------------------------------------------
+	
 	public Sponsorship create() {
 		Actor principal;
 		Sponsorship result;
@@ -152,21 +154,6 @@ public class SponsorshipService {
 		
 		this.validator.validate(creditCard, binding);
 		
-		if (!binding.hasErrors()) {
-			CreditCard saved;
-			saved = this.creditCardService.save(creditCard);
-			
-			sponsorship.setCreditCard(saved);
-		}
-		
-		this.validator.validate(sponsorship, binding);
-		
-		try {
-			Assert.notNull(form.getConferences(), "no.conferences");
-		} catch (Throwable oops) {
-			binding.rejectValue("conferences", "conferences.error");
-		}
-
 		/* Credit card */
 		if (form.getNumber() != null) {
 			try {
@@ -200,6 +187,16 @@ public class SponsorshipService {
 				}
 			}
 		}
+		
+		if (!binding.hasErrors()) {
+			CreditCard saved;
+			saved = this.creditCardService.save(creditCard);
+			
+			sponsorship.setCreditCard(saved);
+		}
+		
+		this.validator.validate(sponsorship, binding);
+
 		return sponsorship;
 	}
 	
@@ -240,7 +237,7 @@ public class SponsorshipService {
 			try {
 				if (this.creditCardService.checkIfExpired(s.getCreditCard().getExpirationMonth(), s.getCreditCard().getExpirationYear()))
 					listSponsoships.remove(s);
-			} catch (java.text.ParseException e) {
+			} catch (Throwable e) {
 				e.printStackTrace();
 			}
 

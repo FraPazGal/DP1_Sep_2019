@@ -12,9 +12,13 @@
 
 
 <security:authorize access="hasRole('ADMIN')">
-
-	<jstl:choose>
-		<jstl:when test="${isPrincipal}">
+<jstl:choose>
+	<jstl:when test="${errMsg ne null}">
+		<p>
+			<jstl:out value="${errMsg}"/>
+		</p>
+	</jstl:when>
+	<jstl:otherwise>
 		<h1><spring:message	code="conference.title.edit" /></h1>
 		<form:form modelAttribute="conference" action="conference/edit.do"
 			id="form">
@@ -25,7 +29,7 @@
 			
 				<acme:textbox code="conference.title" path="title" size="100px" /><br/> <br/>
 				<acme:textbox code="conference.acronym" path="acronym" size="100px" /><br/> <br/>
-				<acme:textarea code="conference.summary" path="summary" /><br/> <br/>
+				<acme:textarea code="conference.summary" path="summary" cols="80px" rows="4"/><br/> <br/>
 				<acme:textbox code="conference.venue" path="venue" size="100px" /><br/> <br/>
 				<acme:textbox code="conference.entryFee" path="entryFee" size="100px" /><br/> <br/>
 				
@@ -58,7 +62,7 @@
 				<acme:textbox code="conference.cameraReadyDeadline" path="cameraReadyDeadline" size="100px" /><br/> <br/>
 				<acme:textbox code="conference.startDate" path="startDate" size="100px" /><br/> <br/>
 				<acme:textbox code="conference.endDate" path="endDate" size="100px" /><br/> <br/>
-
+	
 			</jstl:if>
 			
 			<acme:submit code="conference.save.draft" name="save" />&nbsp;
@@ -69,11 +73,6 @@
 			<br />
 	
 		</form:form>
-		</jstl:when>		
-	<jstl:otherwise>
-		<p>
-			<spring:message	code="conference.not.allowed" /><br>
-		</p>
 	</jstl:otherwise>
 	</jstl:choose>
 </security:authorize>

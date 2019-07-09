@@ -39,6 +39,8 @@ public class SubmissionService {
 	@Autowired
 	private Validator validator;
 
+	// CRUD Methods ------------------------------------------
+
 	public Submission create() {
 		Actor principal;
 		Submission result;
@@ -117,6 +119,15 @@ public class SubmissionService {
 		Date now = new Date(System.currentTimeMillis() - 1);
 		Submission submission = this.create();
 
+		Assert.isTrue(form.getConference().getIsFinal(), "wrong.conference");
+		Assert.isTrue(
+				submission.getSubmissionMoment().before(
+						form.getConference().getSubmissionDeadline()),
+				"submissionDeadline.limit");
+		Assert.isTrue(
+				now.before(form.getConference().getCameraReadyDeadline()),
+				"cameraReadyDeadline.limit");
+
 		/* Creating paper */
 		Paper paper = this.paperService.create();
 
@@ -126,40 +137,80 @@ public class SubmissionService {
 			paper.setSummary(form.getSummaryP());
 			paper.setPaperDocument(form.getPaperDocumentP());
 
+			try {
+				Assert.isTrue(!paper.getTitle().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("titleP", "empty.string");
+			}
+
+			try {
+				Assert.isTrue(!paper.getAuthors().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("authorsP", "empty.string");
+			}
+
+			try {
+				Assert.isTrue(!paper.getSummary().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("summaryP", "empty.string");
+			}
+
+			try {
+				Assert.isTrue(!paper.getPaperDocument().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("paperDocumentP", "empty.string");
+			}
+
 		} else {
 			paper.setTitle(form.getTitlePCR());
 			paper.setAuthors(form.getAuthorsPCR());
 			paper.setSummary(form.getSummaryPCR());
 			paper.setPaperDocument(form.getPaperDocumentPCR());
-		}
 
-		this.validator.validate(paper, binding);
+			try {
+				Assert.isTrue(!paper.getTitle().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("titlePCR", "empty.string");
+			}
 
-		if (!binding.hasErrors()) {
-			Paper saved;
-			saved = this.paperService.save(paper);
+			try {
+				Assert.isTrue(!paper.getAuthors().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("authorsPCR", "empty.string");
+			}
 
-			if (form.getId() != 0) {
-				submission = this.findOne(form.getId());
-				Assert.isTrue(submission.getStatus() == "ACCEPTED",
-						"submission.not.accepted");
-				submission.setCameraReadyPaper(paper);
-			} else {
-				submission.setConference(form.getConference());
-				submission.setPaper(saved);
+			try {
+				Assert.isTrue(!paper.getSummary().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("summaryPCR", "empty.string");
+			}
+
+			try {
+				Assert.isTrue(!paper.getPaperDocument().isEmpty());
+			} catch (Throwable oops) {
+				binding.rejectValue("paperDocumentPCR", "empty.string");
 			}
 		}
 
-		Assert.isTrue(
-				submission.getSubmissionMoment().before(
-						submission.getConference().getSubmissionDeadline()),
-				"submissionDeadline.limit");
-		Assert.isTrue(
-				now.before(submission.getConference().getCameraReadyDeadline()),
-				"cameraReadyDeadline.limit");
+		if (!binding.hasErrors()) {
+			Paper saved;
 
-		this.validator.validate(submission, binding);
+			if (form.getId() != 0) {
+				submission = this.findOne(form.getId());
+				Assert.isTrue(submission.getStatus().equals("ACCEPTED"),
+						"submission.not.accepted");
 
+				saved = this.paperService.save(paper);
+
+				submission.setCameraReadyPaper(saved);
+			} else {
+				saved = this.paperService.save(paper);
+
+				submission.setConference(form.getConference());
+				submission.setPaper(saved);
+			}
+			this.validator.validate(submission, binding);
+		}
 		return submission;
 	}
 
@@ -170,7 +221,7 @@ public class SubmissionService {
 
 		nameInitial = author.getName().substring(0, 1);
 		surnameInitial = author.getSurname().substring(0, 1);
-		middleNameInitial = author.getMiddleName().isEmpty() ? "X" : author
+		middleNameInitial = author.getMiddleName() == null ? "X" : author
 				.getMiddleName().substring(0, 1);
 
 		while (unique == false) {
@@ -208,4 +259,10 @@ public class SubmissionService {
 	public Collection<Actor> findActorsWithSubmitions(Integer id) {
 		return this.submissionRepository.findActorsWithSubmitions(id);
 	}
+
+	public Collection<Submission> submissionsPerAuthor(int authorId) {
+
+		return this.submissionRepository.submissionsPerAuthor(authorId);
+	}
+
 }

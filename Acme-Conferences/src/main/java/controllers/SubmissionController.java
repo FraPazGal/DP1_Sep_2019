@@ -14,52 +14,52 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ConferenceService;
-import services.SponsorshipService;
+import services.SubmissionService;
 import services.UtilityService;
 import domain.Actor;
+import domain.Author;
 import domain.Conference;
-import domain.Sponsor;
-import domain.Sponsorship;
-import forms.SponsorshipForm;
+import domain.Submission;
+import forms.SubmissionForm;
 
 @Controller
-@RequestMapping("/sponsorship")
-public class SponsorshipController extends AbstractController {
-
-	/* Services */
+@RequestMapping("/submission")
+public class SubmissionController extends AbstractController {
 	
+	/* Services */
+
 	@Autowired
 	private UtilityService	utilityService;
 
 	@Autowired
-	private SponsorshipService		sponsorshipService;
+	private SubmissionService		submissionService;
 	
 	@Autowired
 	private ConferenceService		conferenceService;
 
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam final int sponsorshipId) {
+	public ModelAndView display(@RequestParam final int submissionId) {
 		ModelAndView result;
-		Sponsorship sponsorship;
+		Submission submission;
 		boolean isPrincipal = false;
 		Actor principal;
 
 		try {
-			sponsorship = this.sponsorshipService.findOne(sponsorshipId);
+			submission = this.submissionService.findOne(submissionId);
 			try {
 				principal = this.utilityService.findByPrincipal();
-				if (sponsorship.getSponsor().equals((Sponsor) principal)) {
+				if (submission.getAuthor().equals((Author) principal)) {
 						isPrincipal = true;
 				}
 			} catch (final Throwable oops) {
 				System.out.println(oops.getMessage());
 			}
 
-			result = new ModelAndView("sponsorship/display");
-			result.addObject("sponsorship", sponsorship);
+			result = new ModelAndView("submission/display");
+			result.addObject("submission", submission);
 			result.addObject("isPrincipal", isPrincipal);
-			result.addObject("requestURI", "sponsorship/display.do?sponsorshipId=" + sponsorshipId);
+			result.addObject("requestURI", "submission/display.do?submissionId=" + submissionId);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/welcome/index.do/");
 			result.addObject("messageCode", "position.commit.error");
@@ -71,19 +71,27 @@ public class SponsorshipController extends AbstractController {
 	/* Listing */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
-		final ModelAndView result = new ModelAndView("sponsorship/list");
-		Collection<Sponsorship> sponsorships = new ArrayList<>();
+		final ModelAndView result = new ModelAndView("submission/list");
+		Collection<Submission> submissions = new ArrayList<>();
 		Actor principal = null;
 		String isPrincipal = null;
 
 		try {
 			principal = this.utilityService.findByPrincipal();
-			if (this.utilityService.checkAuthority(principal, "SPONSOR")) {
-				sponsorships = this.sponsorshipService.sponsorshipsPerSponsor(principal.getId());
-				isPrincipal = "SPONSOR";
+			if (this.utilityService.checkAuthority(principal, "AUTHOR")) {
+				submissions = this.submissionService.submissionsPerAuthor(principal.getId());
+				isPrincipal = "AUTHOR";
 			}
+			
+			
+			//TODO: listado de submissions para un reviewer
+			
+//			if (this.utilityService.checkAuthority(principal, "REVIEWER")) {
+//				submissions = this.submissionService.submissionsPerReviewer(principal.getId());
+//				isPrincipal = "REVIEWER";
+//			}
 						
-			result.addObject("sponsorships", sponsorships);
+			result.addObject("submissions", submissions);
 			result.addObject("isPrincipal", isPrincipal);
 
 		} catch (final Throwable oops) {
@@ -95,12 +103,14 @@ public class SponsorshipController extends AbstractController {
 
 	/* Create */
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView createSponsorship() {
+	public ModelAndView createSubmission(@RequestParam final int conferenceId) {
 		ModelAndView res;
+		Conference conference = this.conferenceService.findOne(conferenceId);
 
-		final SponsorshipForm sponsorshipForm = new SponsorshipForm();
+		final SubmissionForm submissionForm = new SubmissionForm();
+		submissionForm.setConference(conference);
 
-		res = this.createEditModelAndView(sponsorshipForm);
+		res = this.createEditModelAndView(submissionForm);
 		res.addObject("isPrincipal", true);
 
 		return res;
@@ -108,23 +118,24 @@ public class SponsorshipController extends AbstractController {
 	
 	/* Edit */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int sponsorshipId) {
+	public ModelAndView edit(@RequestParam final int submissionId) {
 		ModelAndView res;
-		Sponsorship sponsorship;
+		Submission submission;
 		Actor principal = this.utilityService.findByPrincipal();
 		boolean isPrincipal = false;
 		
 		try {
-			sponsorship = this.sponsorshipService.findOne(sponsorshipId);
+			submission = this.submissionService.findOne(submissionId);
 			
-			if(sponsorship.getSponsor().equals((Sponsor) principal)) {
+			if(submission.getAuthor().equals((Author) principal)) {
 				isPrincipal = true;
 			}
 
-			final SponsorshipForm editSponsorshipFormObject = new SponsorshipForm(sponsorship);
+			final SubmissionForm submissionForm = new SubmissionForm(submission);
 
-			res = this.createEditModelAndView(editSponsorshipFormObject);
+			res = this.createEditModelAndView(submissionForm);
 			res.addObject("isPrincipal", isPrincipal);
+			res.addObject("cameraReady", true);
 		} catch (final Throwable oops) {
 			res = new ModelAndView("redirect:list.do");
 		}
@@ -134,35 +145,32 @@ public class SponsorshipController extends AbstractController {
 	
 	/* Save */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView edit(SponsorshipForm editSponsorshipFormObject, BindingResult binding) {
+	public ModelAndView edit(SubmissionForm submissionForm, BindingResult binding) {
 		Actor principal;
 		ModelAndView res;
 		boolean isPrincipal = false;
 
 		try {
 			principal = this.utilityService.findByPrincipal();
-			Sponsorship sponsorship = new Sponsorship();
-			sponsorship = this.sponsorshipService.create();
-
-			sponsorship = this.sponsorshipService.reconstruct(editSponsorshipFormObject, binding);
+			Submission submission = this.submissionService.reconstruct(submissionForm, binding);
 			
 			if (binding.hasErrors()) {
-				res = this.createEditModelAndView(editSponsorshipFormObject);
+				res = this.createEditModelAndView(submissionForm);
 				res.addObject("isPrincipal", true);
 			}
 			else
 				try {
-					Assert.isTrue(sponsorship.getSponsor().equals((Sponsor) principal), "not.allowed");
+					Assert.isTrue(submission.getAuthor().equals((Author) principal), "not.allowed");
 
-					this.sponsorshipService.save(sponsorship);
+					this.submissionService.save(submission);
 
 					res = new ModelAndView("redirect:list.do");
 
 				} catch (final Throwable oops) {
-					if(sponsorship.getSponsor().equals((Sponsor)principal)) {
+					if(submission.getAuthor().equals((Author)principal)) {
 						isPrincipal = true;
 					}
-					res = this.createEditModelAndView(editSponsorshipFormObject, "sponsorship.commit.error");
+					res = this.createEditModelAndView(submissionForm, "submission.commit.error");
 					res.addObject("isPrincipal", isPrincipal);
 
 				}
@@ -174,11 +182,11 @@ public class SponsorshipController extends AbstractController {
 	
 	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int sponsorshipId) {
+	public ModelAndView delete(@RequestParam final int submissionId) {
 		ModelAndView result;
 		try {
-			final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
-			this.sponsorshipService.delete(sponsorship);
+			final Submission submission = this.submissionService.findOne(submissionId);
+			this.submissionService.delete(submission);
 			result = new ModelAndView("redirect:list.do");
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:/welcome/index.do");
@@ -188,20 +196,20 @@ public class SponsorshipController extends AbstractController {
 	}
 
 	/* Ancillary methods */
-	protected ModelAndView createEditModelAndView(final SponsorshipForm sponsorshipForm) {
+	protected ModelAndView createEditModelAndView(final SubmissionForm submissionForm) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(sponsorshipForm, null);
+		result = this.createEditModelAndView(submissionForm, null);
 
 		return result;
 	}
 
-	protected ModelAndView createEditModelAndView(final SponsorshipForm sponsorshipForm, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final SubmissionForm submissionForm, final String messageCode) {
 		ModelAndView result;
 		Collection<Conference> conferences = this.conferenceService.publishedConferences();
 		
-		result = new ModelAndView("sponsorship/edit");
-		result.addObject("sponsorshipForm", sponsorshipForm);
+		result = new ModelAndView("submission/edit");
+		result.addObject("submissionForm", submissionForm);
 		result.addObject("message", messageCode);
 		result.addObject("conferences", conferences);
 

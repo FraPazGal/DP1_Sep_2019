@@ -16,7 +16,7 @@ public class DashboardService {
 	@Autowired
 	private DashboardRepository dashboardRepository;
 	
-	// Supporting services -----------------------
+	// Other business methods -------------------------------
 	
 	public Double[] StatsSubmissionsPerConference() {
 		return this.dashboardRepository.statsSubmissionsPerConference();

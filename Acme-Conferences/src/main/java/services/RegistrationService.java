@@ -1,6 +1,7 @@
 package services;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -21,11 +22,12 @@ import forms.RegistrationForm;
 @Transactional
 public class RegistrationService {
 
-	// Managed repository ------------------------------
+	// Managed repository ------------------------------------
+
 	@Autowired
 	private RegistrationRepository registrationRepository;
 
-	// Supporting services -----------------------
+	// Supporting services -----------------------------------
 
 	@Autowired
 	private UtilityService utilityService;
@@ -36,7 +38,7 @@ public class RegistrationService {
 	@Autowired
 	private Validator validator;
 
-	// CRUD Methods ---------------
+	// CRUD Methods ------------------------------------------
 
 	public Registration create() {
 		Registration result;
@@ -81,7 +83,7 @@ public class RegistrationService {
 		return result;
 	}
 
-	// Ancillary Methods ----------------
+	// Other business methods -------------------------------
 
 	public Collection<Registration> registrationsPerAuthor(int authorId) {
 
@@ -94,7 +96,11 @@ public class RegistrationService {
 
 		Assert.isTrue(!this.isAlreadyRegistered(form.getConference().getId(),
 				registration.getAuthor().getId()), "already.registered");
-
+		Assert.isTrue(form.getConference().getIsFinal(), "wrong.conference");
+		Assert.isTrue(
+				form.getConference().getStartDate()
+						.after(new Date(System.currentTimeMillis() - 1)),
+				"wrong.conference");
 		registration.setConference(form.getConference());
 
 		/* Creating credit card */

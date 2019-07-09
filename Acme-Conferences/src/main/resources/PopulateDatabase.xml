@@ -1177,12 +1177,21 @@
 		<property name="status" value="ACCEPTED" />
 		<property name="submissionMoment" value="04/21/2019 17:14" />
 		<property name="author" ref="author2" />
-		<property name="conference" ref="conference7" />
+		<property name="conference" ref="conference3" />
 		<property name="paper" ref="paper3" />
 		<property name="cameraReadyPaper" ref="paper3cr" />
 	</bean>
-
+	
 	<bean id="submission4" class="domain.Submission">
+		<property name="ticker" value="STN-LO0I" />
+		<property name="status" value="ACCEPTED" />
+		<property name="submissionMoment" value="06/15/2019 17:14" />
+		<property name="author" ref="author2" />
+		<property name="conference" ref="conference3" />
+		<property name="paper" ref="paper5" />
+	</bean>
+
+	<bean id="submission5" class="domain.Submission">
 		<property name="ticker" value="NJH-8OU6" />
 		<property name="status" value="REJECTED" />
 		<property name="submissionMoment" value="04/30/2019 11:47" />

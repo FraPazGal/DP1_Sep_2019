@@ -24,9 +24,7 @@
 		<input type="text" name="nameES" id="nameES"
 			value="${category.title.get('Español')}"
 			placeholder="<spring:message code='category.edit.placeholder.es' />"
-			required style="width: 25%">
-
-		<form:errors cssClass="error" path="title" />
+			style="width: 25%">
 		<br />
 		<br />
 
@@ -36,7 +34,8 @@
 		<input type="text" name="nameEN" id="nameEN"
 			value="${category.title.get('English')}"
 			placeholder="<spring:message code='category.edit.placeholder.en' />"
-			required style="width: 25%">
+			style="width: 25%">
+			<br><br>
 		<form:errors cssClass="error" path="title" />
 		<br />
 		<br />
@@ -65,10 +64,9 @@
 		<acme:submit code="category.save" name="save"/>&nbsp;
 
 		<acme:cancel code="category.cancel" url="category/list.do"/><br/><br/>
-		<form:errors cssClass="error" code="${message}" />
 	</form:form>
 
-	<script>
+	<!-- <script>
 		$('#form1 input[type=text]')
 				.on(
 						'change invalid',
@@ -78,10 +76,10 @@
 
 							if (!textfield.validity.valid) {
 								textfield
-										.setCustomValidity('<spring:message code='not.blank' />');
+										.setCustomValidity("<spring:message code='not.blank' />");
 							}
 						});
-	</script>
+	</script> -->
 </security:authorize>
 
 <security:authorize access="!hasRole('ADMIN')">

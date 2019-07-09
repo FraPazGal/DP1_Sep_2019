@@ -26,6 +26,7 @@ import domain.SystemConfiguration;
 public class CategoryService {
 
 	// Managed repository ------------------------------
+	
 	@Autowired
 	private CategoryRepository categoryRepository;
 
@@ -143,13 +144,20 @@ public class CategoryService {
 		this.categoryRepository.delete(category);
 	}
 
-	// Other business methods
+	// Other business methods -------------------------------
 	
 	public Category reconstruct(Category category, String nameES,
 			String nameEN, BindingResult binding) {
 		Category res = this.create();
 		Map<String,String> aux = new HashMap<String,String>();
-
+		
+		try {
+			Assert.isTrue(!nameEN.isEmpty(), "no.both.names");
+			Assert.isTrue(!nameES.isEmpty(), "no.both.names");
+		} catch (Throwable oops) {
+			binding.rejectValue("title", "no.both.names");
+		}
+		
 		aux.put("Español", nameES);
 		aux.put("English", nameEN);
 		

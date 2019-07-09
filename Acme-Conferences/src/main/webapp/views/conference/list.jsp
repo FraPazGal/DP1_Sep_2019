@@ -10,10 +10,16 @@
 <%@taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 
+<security:authorize access="permitAll">
 
 <h1><spring:message	code="conference.list" />
 <jstl:out value="${conference.conference.title}" /></h1>
 	<jstl:choose>
+		<jstl:when test="${errMsg ne null}">
+			<p>
+				<jstl:out value="${errMsg}"/>
+			</p>
+		</jstl:when>
 		<jstl:when test="${isPrincipal eq 'ADMIN'}">
 		
 			<display:table class="displaytag" name="conferences" pagesize="5" 
@@ -136,6 +142,20 @@
 							</a>
 						</jstl:if>
 					</display:column>
+					
+					<display:column>
+						<jstl:set var="contains" value="false" />
+						<jstl:forEach var="conf" items="${conferencesSubmittedTo}">
+						  <jstl:if test="${conf eq conference}">
+						    <jstl:set var="contains" value="true" />
+						  </jstl:if>
+						</jstl:forEach>
+						<jstl:if test="${!contains}">
+							<a href="submission/create.do?conferenceId=${conference.id}"> <spring:message
+									code="conference.submission" />
+							</a>
+						</jstl:if>
+					</display:column>
 				
 				</jstl:if>
 			</display:table>
@@ -170,3 +190,5 @@
 			</display:table>
 		</jstl:otherwise>
 	</jstl:choose>
+	
+</security:authorize>

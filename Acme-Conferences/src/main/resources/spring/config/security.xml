@@ -43,21 +43,60 @@
 		<security:intercept-url pattern="/welcome/index.do"
 			access="permitAll" />
 
-		<security:intercept-url pattern="/conference/**"
+		<security:intercept-url pattern="/conference/list.do"
 			access="permitAll" />
-		<security:intercept-url pattern="/finder/**"
+		<security:intercept-url pattern="/conference/display.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/conference/create.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/conference/edit.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/conference/delete.do"
+			access="hasRole('ADMIN')" />
+
+		<security:intercept-url pattern="/finder/search.do"
 			access="permitAll" />
 
-		<security:intercept-url pattern="/sponsorship/**"
+		<security:intercept-url pattern="/sponsorship/list.do"
+			access="hasRole('SPONSOR')" />
+		<security:intercept-url pattern="/sponsorship/display"
+			access="hasRole('SPONSOR')" />
+		<security:intercept-url pattern="/sponsorship/create.do"
+			access="hasRole('SPONSOR')" />
+		<security:intercept-url pattern="/sponsorship/edit.do"
+			access="hasRole('SPONSOR')" />
+		<security:intercept-url pattern="/sponsorship/delete.do"
 			access="hasRole('SPONSOR')" />
 
-		<security:intercept-url pattern="/registration/**"
+		<security:intercept-url pattern="/registration/display.do"
+			access="hasRole('AUTHOR')" />
+		<security:intercept-url pattern="/registration/list.do"
+			access="hasRole('AUTHOR')" />
+		<security:intercept-url pattern="/registration/create.do"
+			access="hasRole('AUTHOR')" />
+		<security:intercept-url pattern="/registration/edit.do"
 			access="hasRole('AUTHOR')" />
 
-		<security:intercept-url pattern="/category/**"
+		<security:intercept-url pattern="/category/list.do"
 			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/category/create.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/category/edit.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/category/delete.do"
+			access="hasRole('ADMIN')" />
+
 		<security:intercept-url pattern="/statistics/display.do"
 			access="hasRole('ADMIN')" />
+
+		<security:intercept-url pattern="/submission/edit.do"
+			access="hasRole('AUTHOR')" />
+		<security:intercept-url pattern="/submission/create.do"
+			access="hasRole('AUTHOR')" />
+		<security:intercept-url pattern="/submission/list.do"
+			access="hasAnyRole('REVIEWER','AUTHOR')" />
+		<security:intercept-url pattern="/submission/display.do"
+			access="hasAnyRole('REVIEWER','AUTHOR')" />
 
 		<security:intercept-url pattern="/administrator/display.do"
 			access="hasRole('ADMIN')" />

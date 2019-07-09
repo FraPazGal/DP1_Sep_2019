@@ -23,11 +23,11 @@ import domain.Finder;
 @Service
 public class FinderService {
 
-	// Managed repository ------------------------------
+	// Managed repository ------------------------------------
 	@Autowired
 	private FinderRepository finderRepository;
 
-	// Supporting services -----------------------
+	// Supporting services -----------------------------------
 
 	@Autowired
 	private UtilityService utilityService;
@@ -39,7 +39,7 @@ public class FinderService {
 	private Validator validator;
 
 
-	// CRUD Methods -------------------
+	// CRUD Methods ------------------------------------------
 
 	public Finder create() {
 		Finder result;
@@ -174,19 +174,7 @@ public class FinderService {
 			if(finder.getCategory() != null) {
 				results.retainAll(finder.getCategory().getConferences());
 			}
-			
-			
-//			List<Conference> r = new ArrayList<Conference>();
-//			if (keyWord != "") {
-//				r.addAll(this.finderRepository.searchV(keyWord,
-//						maximumDuration, minimumRating, maximumRating));
-//
-//				for (Conference f : r) {
-//					if (!results.contains(f)) {
-//						results.add(f);
-//					}
-//				}
-//			}
+
 		}
 		int count = 0;
 
