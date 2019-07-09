@@ -1,5 +1,7 @@
 package services;
 
+import java.util.Collection;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +76,9 @@ public class ReviewService {
 			res = this.create(report);
 		}
 		return res;
+	}
+	
+	public Collection<Report> findMyReports(Integer id){
+		return this.reportRepository.findMyReports(id);
 	}
 }
