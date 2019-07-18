@@ -260,9 +260,29 @@ public class SubmissionService {
 		return this.submissionRepository.findActorsWithSubmitions(id);
 	}
 
+	public Collection<Submission> submissionsPerReviewer(int reviewerId) {
+
+		return this.submissionRepository.submissionsPerReviewer(reviewerId);
+	}
+	
 	public Collection<Submission> submissionsPerAuthor(int authorId) {
 
 		return this.submissionRepository.submissionsPerAuthor(authorId);
+	}
+	
+	private Collection<Submission> submissionsAssigned() {
+
+		return this.submissionRepository.submissionsAssigned();
+	}
+	
+	public Collection<Submission> submissionsToAssign() {
+		Collection<Submission> result = this.findAll();
+		Collection<Submission> assigned = this.submissionsAssigned();
+		
+		result.removeAll(assigned);
+		
+		return result;
+		
 	}
 
 }

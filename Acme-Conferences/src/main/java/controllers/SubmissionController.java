@@ -83,13 +83,15 @@ public class SubmissionController extends AbstractController {
 				isPrincipal = "AUTHOR";
 			}
 			
+			if (this.utilityService.checkAuthority(principal, "REVIEWER")) {
+				submissions = this.submissionService.submissionsPerReviewer(principal.getId());
+				isPrincipal = "REVIEWER";
+			}
 			
-			//TODO: listado de submissions para un reviewer
-			
-//			if (this.utilityService.checkAuthority(principal, "REVIEWER")) {
-//				submissions = this.submissionService.submissionsPerReviewer(principal.getId());
-//				isPrincipal = "REVIEWER";
-//			}
+			if (this.utilityService.checkAuthority(principal, "ADMIN")) {
+				submissions = this.submissionService.submissionsToAssign();
+				isPrincipal = "ADMIN";
+			}
 						
 			result.addObject("submissions", submissions);
 			result.addObject("isPrincipal", isPrincipal);
