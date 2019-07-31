@@ -60,25 +60,17 @@ public class SponsorshipService {
 	}
 
 	public Collection<Sponsorship> findAll() {
-		Collection<Sponsorship> result;
-		result = this.sponsorshipRepository.findAll();
-
-		return result;
+		return this.sponsorshipRepository.findAll();
 	}
 
 	public Sponsorship findOne(final int sponsorshipId) {
-		Sponsorship result;
-		result = this.sponsorshipRepository.findOne(sponsorshipId);
-
-		return result;
+		return this.sponsorshipRepository.findOne(sponsorshipId);
 	}
 	
 	public Sponsorship save(final Sponsorship sponsorship) {
-		Actor principal;
 		Sponsorship result;
 
-		principal = this.utilityService.findByPrincipal();
-		
+		Actor principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(this.utilityService.checkAuthority(principal, "SPONSOR") ,
 				"not.allowed");
 		
@@ -154,20 +146,8 @@ public class SponsorshipService {
 		
 		this.validator.validate(creditCard, binding);
 		
-		/* Credit card */
-		if (form.getNumber() != null) {
-			try {
-				Assert.isTrue(this.creditCardService
-						.checkCreditCardNumber(creditCard.getNumber()),
-						"card.number.error");
-			} catch (Throwable oops) {
-				binding.rejectValue("number", "number.error");
-			}
-		}
-
-		if (creditCard.getExpirationMonth() != null
-				&& creditCard.getExpirationYear() != null) {
-
+		if(!binding.hasErrors()) {
+			/* Credit card */
 			try {
 				Assert.isTrue(
 						!this.creditCardService.checkIfExpired(
@@ -177,43 +157,26 @@ public class SponsorshipService {
 			} catch (Throwable oops) {
 				binding.rejectValue("expirationMonth", "card.date.error");
 			}
-
-			if (form.getCVV() != null) {
-				try {
-					Assert.isTrue(form.getCVV() < 999 && form.getCVV() > 100,
-							"CVV.error");
-				} catch (Throwable oops) {
-					binding.rejectValue("CVV", "CVV.error");
-				}
+			
+			if (!binding.hasErrors()) {
+				CreditCard saved;
+				saved = this.creditCardService.save(creditCard);
+				
+				sponsorship.setCreditCard(saved);
 			}
 		}
 		
-		if (!binding.hasErrors()) {
-			CreditCard saved;
-			saved = this.creditCardService.save(creditCard);
-			
-			sponsorship.setCreditCard(saved);
-		}
-		
 		this.validator.validate(sponsorship, binding);
-
+		
 		return sponsorship;
 	}
 	
 	public Collection<Sponsorship> sponsorshipsPerConference(int conferenceId) {
-		Collection<Sponsorship> res = new ArrayList<>();
-		
-		res = this.sponsorshipRepository.sponsorshipsPerConference(conferenceId);
-		
-		return res;
+		 return this.sponsorshipRepository.sponsorshipsPerConference(conferenceId);
 	}
 
 	public Collection<Sponsorship> sponsorshipsPerSponsor(int sponsorId) {
-		Collection<Sponsorship> res = new ArrayList<>();
-		
-		res = this.sponsorshipRepository.sponsorshipsPerSponsor(sponsorId);
-		
-		return res;
+		return this.sponsorshipRepository.sponsorshipsPerSponsor(sponsorId);
 	}
 	
 	public Sponsorship findBanner(int conferenceId) {
@@ -223,7 +186,6 @@ public class SponsorshipService {
 		if(!sponsorships.isEmpty()) {
 			result = this.randomBanner(sponsorships);
 		}
-		
 		return result;
 	}
 	

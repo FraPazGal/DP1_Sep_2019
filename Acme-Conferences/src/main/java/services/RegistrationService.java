@@ -94,8 +94,7 @@ public class RegistrationService {
 
 		Registration registration = this.create();
 
-		Assert.isTrue(!this.isAlreadyRegistered(form.getConference().getId(),
-				registration.getAuthor().getId()), "already.registered");
+		Assert.isTrue(!this.isAlreadyRegistered(form.getConference().getId(), registration.getAuthor().getId()), "already.registered");
 		Assert.isTrue(form.getConference().getIsFinal(), "wrong.conference");
 		Assert.isTrue(
 				form.getConference().getStartDate()
@@ -114,55 +113,32 @@ public class RegistrationService {
 		creditCard.setCVV(form.getCVV());
 
 		this.validator.validate(creditCard, binding);
-
+		
 		if (!binding.hasErrors()) {
-			CreditCard saved;
-			saved = this.creditCardService.save(creditCard);
+			/* Credit card */
+			if (creditCard.getExpirationMonth() != null
+					&& creditCard.getExpirationYear() != null) {
 
-			registration.setCreditCard(saved);
+				try {
+					Assert.isTrue(
+							!this.creditCardService.checkIfExpired(
+									creditCard.getExpirationMonth(),
+									creditCard.getExpirationYear()),
+							"card.date.error");
+				} catch (Throwable oops) {
+					binding.rejectValue("expirationMonth", "card.date.error");
+				}
+			}
+			if (!binding.hasErrors()) {
+				CreditCard saved;
+				saved = this.creditCardService.save(creditCard);
+
+				registration.setCreditCard(saved);
+			}
 		}
 
 		this.validator.validate(registration, binding);
-
-		try {
-			Assert.notNull(form.getConference(), "no.conferences");
-		} catch (Throwable oops) {
-			binding.rejectValue("conference", "conferences.error");
-		}
-
-		/* Credit card */
-		if (form.getNumber() != null) {
-			try {
-				Assert.isTrue(this.creditCardService
-						.checkCreditCardNumber(creditCard.getNumber()),
-						"card.number.error");
-			} catch (Throwable oops) {
-				binding.rejectValue("number", "number.error");
-			}
-		}
-
-		if (creditCard.getExpirationMonth() != null
-				&& creditCard.getExpirationYear() != null) {
-
-			try {
-				Assert.isTrue(
-						!this.creditCardService.checkIfExpired(
-								creditCard.getExpirationMonth(),
-								creditCard.getExpirationYear()),
-						"card.date.error");
-			} catch (Throwable oops) {
-				binding.rejectValue("expirationMonth", "card.date.error");
-			}
-
-			if (form.getCVV() != null) {
-				try {
-					Assert.isTrue(form.getCVV() < 999 && form.getCVV() > 100,
-							"CVV.error");
-				} catch (Throwable oops) {
-					binding.rejectValue("CVV", "CVV.error");
-				}
-			}
-		}
+		
 		return registration;
 	}
 

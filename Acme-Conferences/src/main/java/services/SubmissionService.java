@@ -59,17 +59,11 @@ public class SubmissionService {
 	}
 
 	public Collection<Submission> findAll() {
-		Collection<Submission> result;
-		result = this.submissionRepository.findAll();
-
-		return result;
+		return this.submissionRepository.findAll();
 	}
 
 	public Submission findOne(final int submissionId) {
-		Submission result;
-		result = this.submissionRepository.findOne(submissionId);
-
-		return result;
+		return this.submissionRepository.findOne(submissionId);
 	}
 
 	public Submission save(final Submission submission) {
@@ -84,7 +78,7 @@ public class SubmissionService {
 		Assert.notNull(submission.getPaper());
 
 		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(principal.equals(submission.getAuthor()));
+		Assert.isTrue(principal.equals(submission.getAuthor()), "not.allowed");
 
 		Assert.isTrue(
 				submission.getSubmissionMoment().before(
@@ -252,7 +246,6 @@ public class SubmissionService {
 	}
 
 	public Submission findSubByPaper(int paperId) {
-
 		return this.submissionRepository.findSubByPaper(paperId);
 	}
 
@@ -261,17 +254,14 @@ public class SubmissionService {
 	}
 
 	public Collection<Submission> submissionsPerReviewer(int reviewerId) {
-
 		return this.submissionRepository.submissionsPerReviewer(reviewerId);
 	}
 	
 	public Collection<Submission> submissionsPerAuthor(int authorId) {
-
 		return this.submissionRepository.submissionsPerAuthor(authorId);
 	}
 	
 	private Collection<Submission> submissionsAssigned() {
-
 		return this.submissionRepository.submissionsAssigned();
 	}
 	
@@ -282,7 +272,15 @@ public class SubmissionService {
 		result.removeAll(assigned);
 		
 		return result;
-		
 	}
-
+	
+	public boolean checkPrincipal(Author author) {
+		boolean result = false;
+		Actor principal = this.utilityService.findByPrincipal();
+		if(principal.equals(author)) {
+			result = true;
+		}
+		
+		return result;
+	}
 }

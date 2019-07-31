@@ -12,6 +12,11 @@
 <security:authorize access="hasAnyRole('AUTHOR','REVIEWER')">
 <h1><spring:message	code="submission.title.list" /></h1>
 <jstl:choose>
+	<jstl:when test="${errMsg ne null}">
+		<p>
+			<jstl:out value="${errMsg}" />
+		</p>
+	</jstl:when>
 	<jstl:when test="${isPrincipal == 'AUTHOR' }">
 		<display:table class="displaytag" name="submissions" pagesize="5" 
 			requestURI="submission/list.do" id="submission" style="width: 90%;">
@@ -81,16 +86,9 @@
 		</display:table>
 	</jstl:when>
 	<jstl:otherwise>
-	
+		<p>
+			<spring:message	code="registration.not.allowed" /><br>
+		</p>
 	</jstl:otherwise>
 </jstl:choose>
-
-
-	
-
-</security:authorize>
-<security:authorize access="!hasAnyRole('AUTHOR','REVIEWER')">
-	<p>
-		<spring:message	code="submission.not.allowed" /><br>
-	</p>
 </security:authorize>

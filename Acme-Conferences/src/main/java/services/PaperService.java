@@ -42,17 +42,11 @@ public class PaperService {
 	}
 
 	public Collection<Paper> findAll() {
-		Collection<Paper> result;
-		result = this.paperRepository.findAll();
-
-		return result;
+		return this.paperRepository.findAll();
 	}
 
 	public Paper findOne(final int paperId) {
-		Paper result;
-		result = this.paperRepository.findOne(paperId);
-
-		return result;
+		return this.paperRepository.findOne(paperId);
 	}
 	
 	public Paper save(final Paper paper) {

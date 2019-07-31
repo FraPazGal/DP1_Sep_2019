@@ -13,6 +13,11 @@
 <security:authorize access="hasRole('SPONSOR')">
 
 	<jstl:choose>
+		<jstl:when test="${errMsg ne null}">
+			<p>
+				<jstl:out value="${errMsg}"/>
+			</p>
+		</jstl:when>
 		<jstl:when test="${isPrincipal}">
 			<h1><spring:message	code="sponsorship.title.edit" /></h1>
 			<form:form modelAttribute="sponsorshipForm" action="sponsorship/edit.do"
@@ -39,16 +44,10 @@
 			</form:form>
 		</jstl:when>
 	
-	<jstl:otherwise>
-		<p>
-			<spring:message	code="sponsorship.not.allowed" /><br>
-		</p>
-	</jstl:otherwise>
+		<jstl:otherwise>
+			<p>
+				<spring:message	code="sponsorship.not.allowed" /><br>
+			</p>
+		</jstl:otherwise>
 	</jstl:choose>
-</security:authorize>
-
-<security:authorize access="!hasRole('SPONSOR')">
-		<p>
-			<spring:message	code="sponsorship.not.allowed" /><br>
-		</p>
 </security:authorize>

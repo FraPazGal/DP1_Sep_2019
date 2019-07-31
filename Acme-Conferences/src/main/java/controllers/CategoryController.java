@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CategoryService;
-import services.UtilityService;
-import domain.Actor;
 import domain.Category;
 
 @Controller
@@ -26,22 +24,15 @@ public class CategoryController extends AbstractController {
 	@Autowired
 	private CategoryService categoryService;
 
-	@Autowired
-	private UtilityService utilityService;
 
 	/* Listing */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
-		Actor principal;
 		Collection<Category> categories;
 
 		try {
-			principal = this.utilityService.findByPrincipal();
-			Assert.isTrue(this.utilityService.checkAuthority(principal,
-					"ADMIN"));
-
-			categories = this.categoryService.findAll();
+			categories = this.categoryService.findAllAsAdmin();
 
 			result = new ModelAndView("category/list");
 			result.addObject("categories", categories);
@@ -55,23 +46,16 @@ public class CategoryController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
-		Actor principal;
-		Category category;
-		Collection<Category> categories;
 		
 		try {
-			principal = this.utilityService.findByPrincipal();
-			Assert.isTrue(this.utilityService.checkAuthority(principal,
-					"ADMIN"));
-
-			category = this.categoryService.create();
+			Category category = this.categoryService.create();
 			
-			categories = this.categoryService.findAll();
+			Collection<Category> categories = this.categoryService.findAll();
 
 			result = this.createEditModelAndView(category);
 			result.addObject("categories", categories);
 		} catch (Throwable oops) {
-			result = new ModelAndView("category/list");
+			result = new ModelAndView("redirect:list.do");
 
 			result.addObject("errMsg", oops.getMessage());
 		}
@@ -82,19 +66,17 @@ public class CategoryController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int categoryId) {
 		ModelAndView result;
-		Category category;
-		Collection<Category> categories;
 
 		try {
-			category = this.categoryService.findOne(categoryId);
+			Category category = this.categoryService.findOne(categoryId);
 			Assert.notNull(category);
 			
-			categories = this.categoryService.findAll();
+			Collection<Category> categories = this.categoryService.findAll();
 
 			result = this.createEditModelAndView(category);
 			result.addObject("categories", categories);
 		} catch (Throwable oops) {
-			result = new ModelAndView("category/list");
+			result = new ModelAndView("redirect:list.do");
 
 			result.addObject("errMsg", oops.getMessage());
 		}
@@ -107,14 +89,9 @@ public class CategoryController extends AbstractController {
 			@RequestParam("nameES") String nameES,
 			@RequestParam("nameEN") String nameEN, BindingResult binding) {
 		ModelAndView res;
-		Actor principal;
-		Category reconstructed;
 		
 		try {
-			principal = this.utilityService.findByPrincipal();
-			Assert.isTrue(this.utilityService.checkAuthority(principal,
-					"ADMIN"));
-			reconstructed = this.categoryService.reconstruct(category, nameES,
+			Category reconstructed = this.categoryService.reconstruct(category, nameES,
 					nameEN, binding);
 			
 			if (binding.hasErrors()) {
@@ -138,36 +115,20 @@ public class CategoryController extends AbstractController {
 	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int categoryId) {
-		ModelAndView result;
-		Actor principal;
-		boolean canBeDeleted = true;
-		
+		ModelAndView result = new ModelAndView("redirect:list.do");
 		try {
-			principal = this.utilityService.findByPrincipal();
-			Assert.isTrue(this.utilityService.checkAuthority(principal,
-					"ADMIN"));
-			
 			Category toDelete = this.categoryService.findOne(categoryId);
 			
-			Assert.isTrue(canBeDeleted);
-			
 			this.categoryService.delete(toDelete);
-			result = new ModelAndView("redirect:list.do");
 		} catch (final Throwable oops) {
-			result = new ModelAndView("category/list");
-
-			result.addObject("errMsg", "category.cannot.delete");
+			result.addObject("errMsg", oops.getMessage());
 		}
 		return result;
 	}
 	
 	/* Ancillary methods */
 	protected ModelAndView createEditModelAndView(Category category) {
-		ModelAndView res;
-
-		res = createEditModelAndView(category, null);
-
-		return res;
+		return createEditModelAndView(category, null);
 	}
 
 	protected ModelAndView createEditModelAndView(Category category,

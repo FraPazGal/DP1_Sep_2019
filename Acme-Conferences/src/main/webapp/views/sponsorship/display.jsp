@@ -8,11 +8,15 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-
-
-<jstl:choose>
-<jstl:when test="${isPrincipal }">
 <security:authorize access="hasAnyRole('SPONSOR')">
+<jstl:choose>
+<jstl:when test="${errMsg ne null}">
+		<p>
+			<jstl:out value="${errMsg}" />
+		</p>
+</jstl:when>
+<jstl:when test="${isPrincipal }">
+
 
 <h1><spring:message code="sponsorship.title.display" /></h1>
 <table class="displayStyle">
@@ -59,10 +63,6 @@
 	
 </table>
 
-</security:authorize>
-	
-<security:authorize access="hasRole('SPONSOR')">
-
 <h2><spring:message code="sponsorship.display.conferences" /></h2>
 <display:table class="displaytag" name="${sponsorship.conferences}" pagesize="5" 
 		requestURI="sponsorship/display.do" id="conference">
@@ -86,19 +86,13 @@
 		value="<spring:message code="sponsorship.back" />"
 		onclick="window.history.back()" />
 
-</security:authorize>
-
-<security:authorize access="!hasRole('SPONSOR')">
-		<p>
-			<spring:message	code="sponsorship.not.allowed" /><br>
-		</p>
-</security:authorize>
 </jstl:when>
 <jstl:otherwise>
-
 <p>
 	<spring:message	code="sponsorship.not.allowed" /><br>
 </p>
 
 </jstl:otherwise>
 </jstl:choose>
+
+</security:authorize>

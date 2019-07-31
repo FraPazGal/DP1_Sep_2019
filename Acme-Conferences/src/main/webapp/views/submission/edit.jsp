@@ -11,8 +11,12 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <security:authorize access="hasAnyRole('AUTHOR','REVIEWER')">
-
 	<jstl:choose>
+		<jstl:when test="${errMsg ne null}">
+			<p>
+				<jstl:out value="${errMsg}" />
+			</p>
+		</jstl:when>
 		<jstl:when test="${isPrincipal and !cameraReady}">
 			<h1><spring:message	code="submission.title.paper" /></h1>
 			<form:form modelAttribute="submissionForm" action="submission/edit.do"
@@ -58,10 +62,4 @@
 		</p>
 	</jstl:otherwise>
 	</jstl:choose>
-</security:authorize>
-
-<security:authorize access="!hasAnyRole('AUTHOR','REVIEWER')">
-		<p>
-			<spring:message	code="submission.not.allowed" /><br>
-		</p>
 </security:authorize>

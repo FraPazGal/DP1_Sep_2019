@@ -55,11 +55,14 @@
 			access="hasRole('ADMIN')" />
 
 		<security:intercept-url pattern="/finder/search.do"
-			access="permitAll" />
+			access="isAuthenticated()" />
+			
+		<security:intercept-url pattern="/finder/anon/search.do"
+			access="!isAuthenticated()" />
 
 		<security:intercept-url pattern="/sponsorship/list.do"
 			access="hasRole('SPONSOR')" />
-		<security:intercept-url pattern="/sponsorship/display"
+		<security:intercept-url pattern="/sponsorship/display.do"
 			access="hasRole('SPONSOR')" />
 		<security:intercept-url pattern="/sponsorship/create.do"
 			access="hasRole('SPONSOR')" />
