@@ -31,7 +31,7 @@
 				<acme:textbox code="conference.acronym" path="acronym" size="100px" /><br/> <br/>
 				<acme:textarea code="conference.summary" path="summary" cols="80px" rows="4"/><br/> <br/>
 				<acme:textbox code="conference.venue" path="venue" size="100px" /><br/> <br/>
-				<acme:textbox code="conference.entryFee" path="entryFee" size="100px" /><br/> <br/>
+				<acme:textbox code="conference.entryFee" path="entryFee" size="100px" placeholder="price.placeholder"/><br/> <br/>
 				
 				<spring:message code="conference.category" />
 				<jstl:if test="${!conference.isFinal || conference.id == 0}">
@@ -57,19 +57,19 @@
 					</jstl:choose>
 				</jstl:if>
 				<br>
-				<acme:textbox code="conference.submissionDeadline" path="submissionDeadline" size="100px" /><br/> <br/>
-				<acme:textbox code="conference.notificationDeadline" path="notificationDeadline" size="100px" /><br/> <br/>
-				<acme:textbox code="conference.cameraReadyDeadline" path="cameraReadyDeadline" size="100px" /><br/> <br/>
-				<acme:textbox code="conference.startDate" path="startDate" size="100px" /><br/> <br/>
-				<acme:textbox code="conference.endDate" path="endDate" size="100px" /><br/> <br/>
+				<acme:textbox code="conference.submissionDeadline" path="submissionDeadline" size="100px" placeholder="date.placeholder"/><br/> <br/>
+				<acme:textbox code="conference.notificationDeadline" path="notificationDeadline" size="100px" placeholder="date.placeholder"/><br/> <br/>
+				<acme:textbox code="conference.cameraReadyDeadline" path="cameraReadyDeadline" size="100px" placeholder="date.placeholder"/><br/> <br/>
+				<acme:textbox code="conference.startDate" path="startDate" size="100px" placeholder="date.placeholder"/><br/> <br/>
+				<acme:textbox code="conference.endDate" path="endDate" size="100px" placeholder="date.placeholder"/><br/> <br/>
 	
 			</jstl:if>
 			
-			<acme:submit code="conference.save.draft" name="save" />&nbsp;
+			<acme:submit code="mp.save.draft" name="save" />&nbsp;
 			<jstl:if test="${!conference.isFinal}">
-				<acme:submit code="conference.saveFinal" name="saveFinal" />&nbsp;
+				<acme:submit code="mp.saveFinal" name="saveFinal" />&nbsp;
 			</jstl:if>
-			<acme:cancel url="conference/list.do?catalog=unpublished" code="conference.cancel" />
+			<acme:cancel url="conference/list.do?catalog=unpublished" code="mp.cancel" />
 			<br />
 	
 		</form:form>

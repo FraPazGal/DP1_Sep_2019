@@ -21,7 +21,9 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
+
 <h1><spring:message code="finder.title" /></h1>
+<spring:message code="date.dateFormat" var="format" /> 
 
 <jstl:choose>
 	<jstl:when test="${errMsg ne null}">
@@ -31,12 +33,13 @@
 	</jstl:when>
 	<jstl:otherwise>
 		<security:authorize access="isAuthenticated()">
-		
+			
 			<form:form action="finder/search.do" modelAttribute="finder" id="form">
 		
 				<form:hidden path="id" />
 				
 				<acme:textbox code="finder.keyWord" path="keyWord" size="50px" /><br/> <br/>
+				
 				<acme:textbox code="finder.maximumFee" path="maximumFee" size="50px" placeholder="price.placeholder"/><br/> <br/>
 				<acme:textbox code="finder.minimumDate" path="minimumDate" size="50px" placeholder="date.placeholder"/><br/> <br/>
 				<acme:textbox code="finder.maximumDate" path="maximumDate" size="50px" placeholder="date.placeholder"/><br/> <br/>
@@ -77,7 +80,7 @@
 			&#160;
 				<jstl:if test="${finder.id!=0}">
 					<input type="submit" name="delete" id="delete"
-						value='<spring:message code="finder.delete"/>' />
+						value='<spring:message code="mp.clear"/>' />
 				</jstl:if>
 		
 			</form:form>
@@ -99,20 +102,20 @@
 						<fmt:formatNumber maxFractionDigits="2" value="${row.entryFee }" />
 					</display:column>
 					<display:column titleKey="conference.submissionDeadline" sortable="true">
-						<jstl:out value="${row.submissionDeadline}" />
+						<fmt:formatDate	pattern="${format }" value="${row.submissionDeadline}" />
 					</display:column>
 					<display:column titleKey="conference.startDate" sortable="true">
-						<jstl:out value="${row.startDate}" />
+						<fmt:formatDate	pattern="${format }" value="${row.startDate}" />
 					</display:column>
 					<display:column titleKey="conference.endDate" sortable="true">
-						<jstl:out value="${row.endDate}" />
+						<fmt:formatDate	pattern="${format }" value="${row.endDate}" />
 					</display:column>
 		
 					<!-- Action links -->
 		
 					<display:column>
 						<a href="conference/display.do?conferenceId=${row.id}"> <spring:message
-								code="conference.display" />
+								code="mp.display" />
 						</a>
 					</display:column>
 				</display:table>
@@ -152,20 +155,20 @@
 						<fmt:formatNumber maxFractionDigits="2" value="${row.entryFee }" />
 					</display:column>
 					<display:column titleKey="conference.submissionDeadline" sortable="true">
-						<jstl:out value="${row.submissionDeadline}" />
+						<fmt:formatDate	pattern="${format }" value="${row.submissionDeadline}" />
 					</display:column>
 					<display:column titleKey="conference.startDate" sortable="true">
-						<jstl:out value="${row.startDate}" />
+						<fmt:formatDate	pattern="${format }" value="${row.startDate}" />
 					</display:column>
 					<display:column titleKey="conference.endDate" sortable="true">
-						<jstl:out value="${row.endDate}" />
+						<fmt:formatDate	pattern="${format }" value="${row.endDate}" />
 					</display:column>
 		
 					<!-- Action links -->
 		
 					<display:column>
 						<a href="conference/display.do?conferenceId=${row.id}"> <spring:message
-								code="conference.display" />
+								code="mp.display" />
 						</a>
 					</display:column>
 				</display:table>

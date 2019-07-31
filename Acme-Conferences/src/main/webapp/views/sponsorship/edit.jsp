@@ -31,14 +31,14 @@
 				<acme:multipleSelect items="${conferences}" itemLabel="title" code="sponsorship.conferences" path="conferences"/><br>
 				
 				<acme:textbox code="sponsorship.holder" path="holder" size="100px" /><br> <br>
-				<acme:textbox code="sponsorship.make" path="make" size="100px" /><br> <br>
-				<acme:textbox code="sponsorship.number" path="number" size="100px" /><br> <br>
-				<acme:textbox code="sponsorship.expirationMonth" path="expirationMonth" size="100px" /><br> <br>
-				<acme:textbox code="sponsorship.expirationYear" path="expirationYear" size="100px" /><br> <br>
-				<acme:textbox code="sponsorship.CVV" path="CVV" size="100px" /><br> <br>
+				<acme:textbox code="sponsorship.make" path="make" size="100px" placeholder="make.placeholder"/><br> <br>
+				<acme:textbox code="sponsorship.number" path="number" size="100px" placeholder="ccnumber.placeholder"/><br> <br>
+				<acme:textbox code="sponsorship.expirationMonth" path="expirationMonth" size="100px" placeholder="expirationMonth.placeholder"/><br> <br>
+				<acme:textbox code="sponsorship.expirationYear" path="expirationYear" size="100px" placeholder="expirationMonth.placeholder"/><br> <br>
+				<acme:textbox code="sponsorship.CVV" path="CVV" size="100px" placeholder="cvv.placeholder"/><br> <br>
 				
-				<acme:submit code="sponsorship.save" name="save" />&nbsp;
-				<acme:cancel url="sponsorship/list.do" code="sponsorship.cancel" />
+				<acme:submit code="mp.save" name="save" />&nbsp;
+				<acme:cancel url="sponsorship/list.do" code="mp.cancel" />
 				<br />
 		
 			</form:form>

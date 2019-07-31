@@ -13,17 +13,29 @@ import domain.Conference;
 public interface ConferenceRepository extends
 		JpaRepository<Conference, Integer> {
 	
-	@Query("select c from Conference c where datediff(?1,c.submissionDeadline)<=5 and datediff(?1,c.submissionDeadline)>=5 and c.isFinal = true")
+	@Query("select c from Conference c where datediff(c.submissionDeadline, ?1)<=5 and datediff(c.submissionDeadline,?1)>0 and c.isFinal = true")
 	Collection<Conference> findSubmissionLastFive(Date toCompare);
 	
-	@Query("select c from Conference c where datediff(c.notificationDeadline, ?1)<=5 and datediff(c.notificationDeadline, ?1)>=5 and c.isFinal = true")
+	@Query("select c from Conference c where datediff(c.submissionDeadline,?1)=0 and c.isFinal = true")
+	Collection<Conference> findSubmissionLastZero(Date toCompare);
+	
+	@Query("select c from Conference c where datediff(c.notificationDeadline, ?1)<=5 and datediff(c.notificationDeadline,?1)>0 and c.isFinal = true")
 	Collection<Conference> findNotificationInFive(Date toCompare);
 	
-	@Query("select c from Conference c where datediff(c.cameraReadyDeadline, ?1)<=5 and datediff(c.cameraReadyDeadline, ?1)>=5 and c.isFinal = true")
+	@Query("select c from Conference c where datediff(c.notificationDeadline, ?1)=0 and c.isFinal = true")
+	Collection<Conference> findNotificationInZero(Date toCompare);
+	
+	@Query("select c from Conference c where datediff(c.cameraReadyDeadline, ?1)<=5 and datediff(c.cameraReadyDeadline,?1)>0 and c.isFinal = true")
 	Collection<Conference> findCameraInFive(Date toCompare);
 	
-	@Query("select c from Conference c where datediff(c.startDate, ?1)<=5 and datediff(c.startDate, ?1)>=5 and c.isFinal = true")
+	@Query("select c from Conference c where datediff(c.cameraReadyDeadline, ?1)=0 and c.isFinal = true")
+	Collection<Conference> findCameraInZero(Date toCompare);
+	
+	@Query("select c from Conference c where datediff(c.startDate, ?1)<=5 and datediff(c.startDate,?1)>0 and c.isFinal = true")
 	Collection<Conference> findStartInFive(Date toCompare);
+	
+	@Query("select c from Conference c where datediff(c.startDate, ?1)=0 and c.isFinal = true")
+	Collection<Conference> findStartInZero(Date toCompare);
 	
 	@Query("select c from Conference c where c.isFinal = true")
 	Collection<Conference> publishedConferences();

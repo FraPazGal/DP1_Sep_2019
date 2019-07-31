@@ -30,8 +30,8 @@
 				<acme:textarea code="submission.paper.summary" path="summaryP" cols="80px" rows="4" /><br> <br>
 				<acme:textarea code="submission.paper.paperDocument" path="paperDocumentP" cols="80px" rows="8" /><br> <br>
 				
-				<acme:submit code="submission.save" name="save" />&nbsp;
-				<acme:cancel url="submission/list.do" code="submission.cancel" />
+				<acme:submit code="mp.save" name="save" />&nbsp;
+				<acme:cancel url="submission/list.do" code="mp.cancel" />
 				<br />
 		
 			</form:form>
@@ -49,8 +49,8 @@
 				<acme:textarea code="submission.paper.summary" path="summaryPCR" cols="80px" rows="4" /><br> <br>
 				<acme:textarea code="submission.paper.paperDocument" path="paperDocumentPCR" cols="80px" rows="8" /><br> <br>
 				
-				<acme:submit code="submission.save" name="save" />&nbsp;
-				<acme:cancel url="submission/list.do" code="submission.cancel" />
+				<acme:submit code="mp.save" name="save" />&nbsp;
+				<acme:cancel url="submission/list.do" code="mp.cancel" />
 				<br />
 		
 			</form:form>

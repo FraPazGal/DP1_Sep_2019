@@ -25,26 +25,21 @@
 			<jstl:out value="${registration.conference.venue}" />
 		</display:column>
 		
+		<spring:message code="date.dateFormat" var="format" />
 		<display:column titleKey="conference.startDate" sortable="true">
-			<jstl:out value="${registration.conference.startDate}" />
+			<fmt:formatDate pattern="${format }" value="${registration.conference.startDate}" />
 		</display:column>
 		
 		<display:column titleKey="conference.endDate" sortable="true">
-			<jstl:out value="${registration.conference.endDate}" />
+			<fmt:formatDate pattern="${format }" value="${registration.conference.endDate}" />
 		</display:column>
 		
 		<display:column>
 			<a href="registration/display.do?registrationId=${registration.id}"> <spring:message
-					code="registration.display" />
+					code="mp.display" />
 			</a>
 		</display:column>
 		
 	</display:table>
 	
-</security:authorize>
-
-<security:authorize access="!hasAnyRole('AUTHOR')">
-	<p>
-		<spring:message	code="registration.not.allowed" /><br>
-	</p>
 </security:authorize>

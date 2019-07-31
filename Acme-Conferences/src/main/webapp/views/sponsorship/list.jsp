@@ -35,19 +35,19 @@
 				
 				<display:column>
 					<a href="sponsorship/display.do?sponsorshipId=${sponsorship.id}"> <spring:message
-							code="sponsorship.display" />
+							code="mp.display" />
 					</a>
 				</display:column>
 				
 				<display:column>
 					<a href="sponsorship/edit.do?sponsorshipId=${sponsorship.id}"> <spring:message
-							code="sponsorship.edit" />
+							code="mp.edit" />
 					</a>
 				</display:column>
 				
 				<display:column>
 					<a href="sponsorship/delete.do?sponsorshipId=${sponsorship.id}"> <spring:message
-							code="sponsorship.delete" />
+							code="mp.delete" />
 					</a>
 				</display:column>
 			</display:table>

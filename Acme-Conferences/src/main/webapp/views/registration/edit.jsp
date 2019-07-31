@@ -27,14 +27,14 @@
 			<form:hidden path="conference" />
 			
 			<acme:textbox code="registration.holder" path="holder" size="100px" /><br> <br>
-			<acme:textbox code="registration.make" path="make" size="100px" /><br> <br>
-			<acme:textbox code="registration.number" path="number" size="100px" /><br> <br>
-			<acme:textbox code="registration.expirationMonth" path="expirationMonth" size="100px" /><br> <br>
-			<acme:textbox code="registration.expirationYear" path="expirationYear" size="100px" /><br> <br>
-			<acme:textbox code="registration.CVV" path="CVV" size="100px" /><br> <br>
+			<acme:textbox code="registration.make" path="make" size="100px" placeholder="make.placeholder"/><br> <br>
+			<acme:textbox code="registration.number" path="number" size="100px" placeholder="ccnumber.placeholder"/><br> <br>
+			<acme:textbox code="registration.expirationMonth" path="expirationMonth" size="100px" placeholder="expirationMonth.placeholder"/><br> <br>
+			<acme:textbox code="registration.expirationYear" path="expirationYear" size="100px" placeholder="expirationMonth.placeholder"/><br> <br>
+			<acme:textbox code="registration.CVV" path="CVV" size="100px" placeholder="cvv.placeholder"/><br> <br>
 			
-			<acme:submit code="registration.save" name="save" />&nbsp;
-			<acme:cancel url="registration/list.do" code="registration.cancel" />
+			<acme:submit code="mp.save" name="save" />&nbsp;
+			<acme:cancel url="registration/list.do" code="mp.cancel" />
 			<br/>
 	
 		</form:form>

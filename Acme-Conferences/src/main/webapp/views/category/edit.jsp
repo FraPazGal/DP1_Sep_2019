@@ -61,29 +61,8 @@
 			</jstl:choose>
 		</jstl:if>
 		<br>
-		<acme:submit code="category.save" name="save"/>&nbsp;
+		<acme:submit code="mp.save" name="save"/>&nbsp;
 
-		<acme:cancel code="category.cancel" url="category/list.do"/><br/><br/>
+		<acme:cancel code="mp.cancel" url="category/list.do"/><br/><br/>
 	</form:form>
-
-	<!-- <script>
-		$('#form1 input[type=text]')
-				.on(
-						'change invalid',
-						function() {
-							var textfield = $(this).get(0);
-							textfield.setCustomValidity('');
-
-							if (!textfield.validity.valid) {
-								textfield
-										.setCustomValidity("<spring:message code='not.blank' />");
-							}
-						});
-	</script> -->
-</security:authorize>
-
-<security:authorize access="!hasRole('ADMIN')">
-		<p>
-			<spring:message	code="category.not.allowed" /><br>
-		</p>
 </security:authorize>

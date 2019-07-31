@@ -196,47 +196,70 @@ public class ConferenceService {
 	}
 
 	public Collection<Conference> findSubmissionLastFive() {
-		Collection<Conference> result = new ArrayList<>();
+		Collection<Conference> lastFive, auxConf;
 		Calendar hello = Calendar.getInstance();
+		Calendar auxCal = Calendar.getInstance();
 		hello.add(Calendar.DAY_OF_MONTH, -5);
 		Date toCompare = hello.getTime();
+		Date now = auxCal.getTime();
 
-		result = this.conferenceRepository.findSubmissionLastFive(toCompare);
-
-		return result;
+		lastFive = this.conferenceRepository.findSubmissionLastFive(toCompare);
+		auxConf = this.conferenceRepository.findSubmissionLastZero(toCompare);
+		
+		for(Conference c : auxConf) {
+			if(c.getSubmissionDeadline().after(now)) {
+				lastFive.add(c);
+			}
+		}
+		return lastFive;
 	}
 
 	public Collection<Conference> findNotificationInFive() {
-		Collection<Conference> result = new ArrayList<>();
-		Calendar hello = Calendar.getInstance();
-		hello.add(Calendar.DAY_OF_MONTH, -5);
-		Date toCompare = hello.getTime();
+		Collection<Conference> inFive, auxConf;
+		Calendar cal = Calendar.getInstance();
+		Date now = cal.getTime();
 
-		result = this.conferenceRepository.findNotificationInFive(toCompare);
-
-		return result;
+		inFive = this.conferenceRepository.findNotificationInFive(now);
+		auxConf = this.conferenceRepository.findNotificationInZero(now);
+		
+		for(Conference c : auxConf) {
+			if(c.getSubmissionDeadline().before(now)) {
+				inFive.add(c);
+			}
+		}
+		return inFive;
 	}
 
 	public Collection<Conference> findCameraInFive() {
-		Collection<Conference> result = new ArrayList<>();
-		Calendar hello = Calendar.getInstance();
-		hello.add(Calendar.DAY_OF_MONTH, -5);
-		Date toCompare = hello.getTime();
+		Collection<Conference> inFive, auxConf;
+		Calendar cal = Calendar.getInstance();
+		Date now = cal.getTime();
 
-		result = this.conferenceRepository.findCameraInFive(toCompare);
-
-		return result;
+		inFive = this.conferenceRepository.findCameraInFive(now);
+		auxConf = this.conferenceRepository.findCameraInZero(now);
+		
+		for(Conference c : auxConf) {
+			if(c.getSubmissionDeadline().before(now)) {
+				inFive.add(c);
+			}
+		}
+		return inFive;
 	}
 
 	public Collection<Conference> findStartInFive() {
-		Collection<Conference> result = new ArrayList<>();
-		Calendar hello = Calendar.getInstance();
-		hello.add(Calendar.DAY_OF_MONTH, -5);
-		Date toCompare = hello.getTime();
+		Collection<Conference> inFive, auxConf;
+		Calendar cal = Calendar.getInstance();
+		Date now = cal.getTime();
 
-		result = this.conferenceRepository.findStartInFive(toCompare);
-
-		return result;
+		inFive = this.conferenceRepository.findStartInFive(now);
+		auxConf = this.conferenceRepository.findStartInZero(now);
+		
+		for(Conference c : auxConf) {
+			if(c.getSubmissionDeadline().before(now)) {
+				inFive.add(c);
+			}
+		}
+		return inFive;
 	}
 
 	public Collection<Conference> publishedConferences() {

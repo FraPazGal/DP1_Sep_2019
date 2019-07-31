@@ -77,13 +77,13 @@
 	
 	<display:column >
 		<a href="conference/display.do?conferenceId=${conference.id}"> <spring:message
-				code="sponsorship.display" />
+				code="mp.display" />
 		</a>
 	</display:column>
 </display:table>
 
 	<input type="button" name="back"
-		value="<spring:message code="sponsorship.back" />"
+		value="<spring:message code="mp.back" />"
 		onclick="window.history.back()" />
 
 </jstl:when>

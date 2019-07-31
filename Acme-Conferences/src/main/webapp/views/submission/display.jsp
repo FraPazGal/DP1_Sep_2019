@@ -7,6 +7,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <security:authorize access="hasAnyRole('AUTHOR','REVIEWER')">
 <jstl:choose>
@@ -46,8 +47,11 @@
 			</tr>
 			
 			<tr>
+			<spring:message code="date.dateFormat" var="format" /> 
 				<td><strong> <spring:message code="submission.submissionMoment" /> : </strong></td>
-				<td><jstl:out value="${submission.submissionMoment}"/></td>
+				<td>
+					<fmt:formatDate	pattern="${format }" value="${submission.submissionMoment}" />
+				</td>
 			</tr>
 			
 			<tr>
@@ -115,7 +119,7 @@
 		</jstl:if>
 		
 			<input type="button" name="back"
-				value="<spring:message code="submission.back" />"
+				value="<spring:message code="mp.back" />"
 				onclick="window.history.back()" />
 	
 	</jstl:when>
