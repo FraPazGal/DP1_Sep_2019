@@ -24,35 +24,35 @@
 	<ul id="jMenu">
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
 
-		
+
 		<security:authorize access="permitAll">
 			<li><a class="fNiv"><spring:message
-							code="master.page.conference" /></a>
-					<ul>
-						<li class="arrow"></li>
-						<security:authorize access="!hasRole('ADMIN')">
-							<li><a href="conference/list.do?catalog=future"><spring:message
-										code="master.page.conference.list" /></a></li>
-						</security:authorize>
-						<security:authorize access="hasRole('ADMIN')">
-							<li><a href="conference/list.do?catalog=unpublished"><spring:message
-										code="master.page.conference.list" /></a></li>
-							<li><a href="conference/create.do"><spring:message
-										code="master.page.conference.new" /></a></li>
-						</security:authorize>
-						<security:authorize access="isAuthenticated()">
-							<li><a href="finder/search.do"><spring:message
-										code="master.page.conference.finder" /></a></li>
-						</security:authorize>
-						<security:authorize access="!isAuthenticated()">
-							<li><a href="finder/anon/search.do"><spring:message
-										code="master.page.conference.finder" /></a></li>
-						</security:authorize>
-					</ul></li>
+						code="master.page.conference" /></a>
+				<ul>
+					<li class="arrow"></li>
+					<security:authorize access="!hasRole('ADMIN')">
+						<li><a href="conference/list.do?catalog=future"><spring:message
+									code="master.page.conference.list" /></a></li>
+					</security:authorize>
+					<security:authorize access="hasRole('ADMIN')">
+						<li><a href="conference/list.do?catalog=unpublished"><spring:message
+									code="master.page.conference.list" /></a></li>
+						<li><a href="conference/create.do"><spring:message
+									code="master.page.conference.new" /></a></li>
+					</security:authorize>
+					<security:authorize access="isAuthenticated()">
+						<li><a href="finder/search.do"><spring:message
+									code="master.page.conference.finder" /></a></li>
+					</security:authorize>
+					<security:authorize access="!isAuthenticated()">
+						<li><a href="finder/anon/search.do"><spring:message
+									code="master.page.conference.finder" /></a></li>
+					</security:authorize>
+				</ul></li>
 		</security:authorize>
-		
+
 		<security:authorize access="hasRole('ADMIN')">
-						
+
 			<li><a class="fNiv"><spring:message
 						code="master.page.categories" /></a>
 				<ul>
@@ -62,10 +62,10 @@
 					<li><a href="category/create.do"><spring:message
 								code="master.page.categories.new" /></a></li>
 				</ul></li>
-				
-			
+
+
 		</security:authorize>
-		
+
 		<security:authorize access="hasRole('SPONSOR')">
 			<li><a class="fNiv"><spring:message
 						code="master.page.sponsorship" /></a>
@@ -76,10 +76,10 @@
 					<li><a href="sponsorship/create.do"><spring:message
 								code="master.page.sponsorship.new" /></a></li>
 				</ul></li>
-				
-			
+
+
 		</security:authorize>
-		
+
 		<security:authorize access="hasRole('AUTHOR')">
 			<li><a class="fNiv"><spring:message
 						code="master.page.registration" /></a>
@@ -88,10 +88,10 @@
 					<li><a href="registration/list.do"><spring:message
 								code="master.page.registration.list" /></a></li>
 				</ul></li>
-				
-			
+
+
 		</security:authorize>
-		
+
 		<security:authorize access="hasAnyRole('AUTHOR', 'REVIEWER')">
 			<li><a class="fNiv"><spring:message
 						code="master.page.submission" /></a>
@@ -100,19 +100,38 @@
 					<li><a href="submission/list.do"><spring:message
 								code="master.page.submission.list" /></a></li>
 				</ul></li>
-				
-			
+
+
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
 		</security:authorize>
-		
+
 		<security:authorize access="hasRole('ADMIN')">
-			
+
 			<li><a href="statistics/display.do"><spring:message
 						code="master.page.administrator.statistics" /></a></li>
+		</security:authorize>
+
+		<security:authorize access="isAuthenticated()">
+			<li><a class="fNiv"> <spring:message
+						code="master.page.message" />
+			</a>
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="message/list.do"><spring:message
+								code="master.page.message.list" /> </a></li>
+					<li><a href="message/create.do"><spring:message
+								code="master.page.message.create" /> </a></li>
+					<security:authorize access="hasRole('ADMIN')">
+						<li><a href="message/createbroadcast.do?type=aut"><spring:message
+									code="master.page.message.broadcast.authors" /> </a></li>
+						<li><a href="message/createbroadcast.do?type=aut"><spring:message
+									code="master.page.message.broadcast.all" /> </a></li>
+					</security:authorize>
+				</ul></li>
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">

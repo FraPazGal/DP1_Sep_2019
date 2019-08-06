@@ -1181,7 +1181,7 @@
 		<property name="paper" ref="paper3" />
 		<property name="cameraReadyPaper" ref="paper3cr" />
 	</bean>
-	
+
 	<bean id="submission4" class="domain.Submission">
 		<property name="ticker" value="STN-LO0I" />
 		<property name="status" value="ACCEPTED" />
@@ -1237,7 +1237,7 @@
 
 	<!-- MESSAGES -->
 
-	<bean id="message1" class="domain.Message">
+	<bean id="message1" class="domain.Mensaje">
 		<property name="sendMoment" value="03/15/2019 23:59:59" />
 		<property name="subject" value="DP" />
 		<property name="body"
@@ -1252,7 +1252,7 @@
 		<property name="sender" ref="reviewer1" />
 	</bean>
 
-	<bean id="message2" class="domain.Message">
+	<bean id="message2" class="domain.Mensaje">
 		<property name="sendMoment" value="04/23/2019 15:55:51" />
 		<property name="subject" value="DP" />
 		<property name="body"
@@ -1266,7 +1266,7 @@
 		<property name="sender" ref="reviewer2" />
 	</bean>
 
-	<bean id="message3" class="domain.Message">
+	<bean id="message3" class="domain.Mensaje">
 		<property name="sendMoment" value="04/23/2019 08:23:15" />
 		<property name="subject" value="DP" />
 		<property name="body"

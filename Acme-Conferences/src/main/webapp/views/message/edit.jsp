@@ -21,18 +21,19 @@
 			<form:hidden path="sendMoment" />
 			<form:hidden path="sender" />
 
-			<acme:textbox code="mensaje.subject" path="subject" />
+			<acme:textbox code="mensaje.subject" path="subject" required="true" />
 
 			<br>
 
-			<acme:textarea code="mensaje.body" path="body" />
+			<acme:textarea code="mensaje.body" path="body" required="true" />
 
 			<br>
 
 			<spring:message code="mensaje.topic" />
 			<jstl:choose>
 				<jstl:when test="${pageContext.response.locale.language == 'es'}">
-					<form:select path="topic" name="topics" style="width:200px;">
+					<form:select required="true" path="topic" name="topics"
+						style="width:200px;">
 						<jstl:forEach var="topic" items="${topics.get('Español')}">
 							<option value="${topic}">
 								<jstl:out value="${topic}" />
@@ -43,7 +44,8 @@
 					<br>
 				</jstl:when>
 				<jstl:otherwise>
-					<form:select path="topic" name="topics" style="width:200px;">
+					<form:select required="true" path="topic" name="topics"
+						style="width:200px;">
 						<jstl:forEach var="topic" items="${topics.get('English')}">
 							<option value="${topic}">
 								<jstl:out value="${topic}" />
@@ -57,17 +59,22 @@
 
 			<br>
 
-			<form:select path="reciever">
+			<form:select path="reciever" required="true">
 				<form:options items="${actors}" itemLabel="userAccount.username" />
 			</form:select>
-
+			<br>
+			<form:errors path="reciever" cssClass="error" />
+			<br>
 			<br>
 
 			<acme:submit code="save" name="save" />&nbsp;
 
 			<acme:cancel code="cancel" url="message/list.do" />
 
-			<br />
+			<br>
+
+			<form:errors path="sender" cssClass="error" />
+
 		</form:form>
 	</fieldset>
 

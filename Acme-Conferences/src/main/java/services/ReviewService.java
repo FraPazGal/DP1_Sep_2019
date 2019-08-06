@@ -131,7 +131,9 @@ public class ReviewService {
 			int i = 0;
 			for (Reviewer r : reviewers) {
 				if (!this.reviewerService.isReviewing(r.getId())) {
-					this.create(r.getId(), s.getId());
+					Report report = this.create(r.getId(), s.getId());
+					this.save(report);
+					this.reportRepository.flush();
 					i++;
 					if (i == 3)
 						break;

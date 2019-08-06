@@ -5,16 +5,16 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.StringUtils;
 
 import repositories.MessageRepository;
-import domain.Message;
+import domain.Mensaje;
 
-public class StringToMessageConverter implements Converter<String, Message> {
+public class StringToMessageConverter implements Converter<String, Mensaje> {
 
 	@Autowired
 	MessageRepository messageRepository;
 
 	@Override
-	public Message convert(final String text) {
-		Message result;
+	public Mensaje convert(final String text) {
+		Mensaje result;
 
 		int id;
 
