@@ -53,17 +53,11 @@ public class ConferenceService {
 	}
 
 	public Collection<Conference> findAll() {
-		Collection<Conference> result;
-		result = this.conferenceRepository.findAll();
-
-		return result;
+		return this.conferenceRepository.findAll();
 	}
 
 	public Conference findOne(final int conferenceId) {
-		Conference result;
-		result = this.conferenceRepository.findOne(conferenceId);
-
-		return result;
+		return this.conferenceRepository.findOne(conferenceId);
 	}
 
 	public Conference save(final Conference conference) {
@@ -124,55 +118,11 @@ public class ConferenceService {
 			aux = this.findOne(conference.getId());
 			Assert.isTrue(!aux.getIsFinal(), "conference.final");
 			Assert.isTrue(aux.getAdministrator().equals(
-					(Administrator) principal));
+					(Administrator) principal), "not.allowed");
 
 			result.setId(aux.getId());
 			result.setVersion(aux.getVersion());
 			result.setAdministrator(aux.getAdministrator());
-		}
-
-		try {
-			Assert.isTrue(
-					conference.getSubmissionDeadline().before(
-							conference.getNotificationDeadline()),
-					"submission.before.notification");
-		} catch (final Exception e) {
-			binding.rejectValue("submissionDeadline",
-					"submission.before.notification");
-		}
-
-		try {
-			Assert.isTrue(
-					conference.getNotificationDeadline().before(
-							conference.getCameraReadyDeadline()),
-					"notification.before.camera");
-		} catch (final Exception e) {
-			binding.rejectValue("notificationDealine",
-					"notification.before.camera");
-		}
-
-		try {
-			Assert.isTrue(
-					conference.getCameraReadyDeadline().before(
-							conference.getStartDate()), "camera.before.start");
-		} catch (final Exception e) {
-			binding.rejectValue("cameraReadyDeadline", "camera.before.start");
-		}
-
-		try {
-			Assert.isTrue(
-					conference.getStartDate().before(conference.getEndDate()),
-					"start.before.end");
-		} catch (final Exception e) {
-			binding.rejectValue("startDate", "start.before.end");
-		}
-
-		try {
-			Date now = new Date(System.currentTimeMillis() - 1);
-			Assert.isTrue(conference.getSubmissionDeadline().after(now),
-					"submission.after.now");
-		} catch (final Exception e) {
-			binding.rejectValue("submissionDeadline", "submission.after.now");
 		}
 
 		result.setTitle(conference.getTitle());
@@ -189,6 +139,53 @@ public class ConferenceService {
 
 		this.validator.validate(result, binding);
 
+		if(!binding.hasErrors()) {
+			
+			try {
+				Assert.isTrue(
+						conference.getSubmissionDeadline().before(
+								conference.getNotificationDeadline()),
+						"submission.before.notification");
+			} catch (final Exception e) {
+				binding.rejectValue("submissionDeadline",
+						"submission.before.notification");
+			}
+
+			try {
+				Assert.isTrue(
+						conference.getNotificationDeadline().before(
+								conference.getCameraReadyDeadline()),
+						"notification.before.camera");
+			} catch (final Exception e) {
+				binding.rejectValue("notificationDeadline",
+						"notification.before.camera");
+			}
+
+			try {
+				Assert.isTrue(
+						conference.getCameraReadyDeadline().before(
+								conference.getStartDate()), "camera.before.start");
+			} catch (final Exception e) {
+				binding.rejectValue("cameraReadyDeadline", "camera.before.start");
+			}
+
+			try {
+				Assert.isTrue(
+						conference.getStartDate().before(conference.getEndDate()),
+						"start.before.end");
+			} catch (final Exception e) {
+				binding.rejectValue("startDate", "start.before.end");
+			}
+
+			try {
+				Date now = new Date(System.currentTimeMillis() - 1);
+				Assert.isTrue(conference.getSubmissionDeadline().after(now),
+						"submission.after.now");
+			} catch (final Exception e) {
+				binding.rejectValue("submissionDeadline", "submission.after.now");
+			}
+		}
+		
 		this.flush();
 
 		return result;
@@ -199,47 +196,70 @@ public class ConferenceService {
 	}
 
 	public Collection<Conference> findSubmissionLastFive() {
-		Collection<Conference> result = new ArrayList<>();
+		Collection<Conference> lastFive, auxConf;
 		Calendar hello = Calendar.getInstance();
+		Calendar auxCal = Calendar.getInstance();
 		hello.add(Calendar.DAY_OF_MONTH, -5);
 		Date toCompare = hello.getTime();
+		Date now = auxCal.getTime();
 
-		result = this.conferenceRepository.findSubmissionLastFive(toCompare);
-
-		return result;
+		lastFive = this.conferenceRepository.findSubmissionLastFive(toCompare);
+		auxConf = this.conferenceRepository.findSubmissionLastZero(toCompare);
+		
+		for(Conference c : auxConf) {
+			if(c.getSubmissionDeadline().after(now)) {
+				lastFive.add(c);
+			}
+		}
+		return lastFive;
 	}
 
 	public Collection<Conference> findNotificationInFive() {
-		Collection<Conference> result = new ArrayList<>();
-		Calendar hello = Calendar.getInstance();
-		hello.add(Calendar.DAY_OF_MONTH, -5);
-		Date toCompare = hello.getTime();
+		Collection<Conference> inFive, auxConf;
+		Calendar cal = Calendar.getInstance();
+		Date now = cal.getTime();
 
-		result = this.conferenceRepository.findNotificationInFive(toCompare);
-
-		return result;
+		inFive = this.conferenceRepository.findNotificationInFive(now);
+		auxConf = this.conferenceRepository.findNotificationInZero(now);
+		
+		for(Conference c : auxConf) {
+			if(c.getSubmissionDeadline().before(now)) {
+				inFive.add(c);
+			}
+		}
+		return inFive;
 	}
 
 	public Collection<Conference> findCameraInFive() {
-		Collection<Conference> result = new ArrayList<>();
-		Calendar hello = Calendar.getInstance();
-		hello.add(Calendar.DAY_OF_MONTH, -5);
-		Date toCompare = hello.getTime();
+		Collection<Conference> inFive, auxConf;
+		Calendar cal = Calendar.getInstance();
+		Date now = cal.getTime();
 
-		result = this.conferenceRepository.findCameraInFive(toCompare);
-
-		return result;
+		inFive = this.conferenceRepository.findCameraInFive(now);
+		auxConf = this.conferenceRepository.findCameraInZero(now);
+		
+		for(Conference c : auxConf) {
+			if(c.getSubmissionDeadline().before(now)) {
+				inFive.add(c);
+			}
+		}
+		return inFive;
 	}
 
 	public Collection<Conference> findStartInFive() {
-		Collection<Conference> result = new ArrayList<>();
-		Calendar hello = Calendar.getInstance();
-		hello.add(Calendar.DAY_OF_MONTH, -5);
-		Date toCompare = hello.getTime();
+		Collection<Conference> inFive, auxConf;
+		Calendar cal = Calendar.getInstance();
+		Date now = cal.getTime();
 
-		result = this.conferenceRepository.findStartInFive(toCompare);
-
-		return result;
+		inFive = this.conferenceRepository.findStartInFive(now);
+		auxConf = this.conferenceRepository.findStartInZero(now);
+		
+		for(Conference c : auxConf) {
+			if(c.getSubmissionDeadline().before(now)) {
+				inFive.add(c);
+			}
+		}
+		return inFive;
 	}
 
 	public Collection<Conference> publishedConferences() {

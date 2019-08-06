@@ -16,7 +16,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 
 <div>
-	<a href="#"><img src="${banner}" alt="Acme-Films Co., Inc."
+	<a href="#"><img src="${banner}" alt="Acme-Conferences Co., Inc."
 		style="margin-bottom: 0.5em;" /></a>
 </div>
 
@@ -30,9 +30,13 @@
 							code="master.page.conference" /></a>
 					<ul>
 						<li class="arrow"></li>
+						<security:authorize access="!hasRole('ADMIN')">
 							<li><a href="conference/list.do?catalog=future"><spring:message
 										code="master.page.conference.list" /></a></li>
+						</security:authorize>
 						<security:authorize access="hasRole('ADMIN')">
+							<li><a href="conference/list.do?catalog=unpublished"><spring:message
+										code="master.page.conference.list" /></a></li>
 							<li><a href="conference/create.do"><spring:message
 										code="master.page.conference.new" /></a></li>
 						</security:authorize>

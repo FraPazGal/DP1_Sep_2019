@@ -47,17 +47,11 @@ public class CreditCardService {
 	}
 
 	public Collection<CreditCard> findAll() {
-		Collection<CreditCard> result;
-		result = this.creditCardRepository.findAll();
-
-		return result;
+		return this.creditCardRepository.findAll();
 	}
 
 	public CreditCard findOne(final int creditCardId) {
-		CreditCard result;
-		result = this.creditCardRepository.findOne(creditCardId);
-
-		return result;
+		return this.creditCardRepository.findOne(creditCardId);
 	}
 	
 	public CreditCard save(final CreditCard creditCard) {
@@ -121,22 +115,5 @@ public class CreditCardService {
 			res = true;
 
 		return res;
-	}
-
-	public boolean checkCreditCardNumber(String number) {
-		int sum = 0;
-		boolean alternate = false;
-		for (int i = number.length() - 1; i >= 0; i--) {
-			int n = Integer.parseInt(number.substring(i, i + 1));
-			if (alternate) {
-				n *= 2;
-				if (n > 9) {
-					n = (n % 10) + 1;
-				}
-			}
-			sum += n;
-			alternate = !alternate;
-		}
-		return (sum % 10 == 0);
 	}
 }

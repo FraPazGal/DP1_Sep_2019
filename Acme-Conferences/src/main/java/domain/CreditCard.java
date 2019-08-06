@@ -7,6 +7,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
@@ -44,6 +45,7 @@ public class CreditCard extends DomainEntity {
 
 	@NotNull
 	@NotBlank
+	@CreditCardNumber
 	public String getNumber() {
 		return number;
 	}

@@ -10,6 +10,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <security:authorize access="permitAll">
+<spring:message code="date.dateFormat" var="format" />
 
 	<jstl:choose>
 
@@ -85,7 +86,7 @@
 						<td><strong> <spring:message
 									code="conference.submissionDeadline" /> :
 						</strong></td>
-						<td><spring:message code="date.dateFormat" var="format" /> <span><fmt:formatDate
+						<td> <span><fmt:formatDate
 									pattern="${format }" value="${conference.submissionDeadline}" /></span></td>
 					</tr>
 
@@ -213,7 +214,7 @@
 			</jstl:if>
 
 			<input type="button" name="back"
-				value="<spring:message code="conference.back" />"
+				value="<spring:message code="mp.back" />"
 				onclick="window.history.back()" />
 
 

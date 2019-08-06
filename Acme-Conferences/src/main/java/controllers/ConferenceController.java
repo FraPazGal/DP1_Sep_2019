@@ -181,7 +181,7 @@ public class ConferenceController extends AbstractController {
 			}
 
 		} catch (final Throwable oops) {
-			result = new ModelAndView("conference/list");
+			result = new ModelAndView("redirect:list.do?catalog=unpublished");
 
 			result.addObject("errMsg", oops.getMessage());
 		}
@@ -198,7 +198,7 @@ public class ConferenceController extends AbstractController {
 			result = this.createEditModelAndView(conference);
 
 		} catch (final Throwable oops) {
-			result = new ModelAndView("conference/list");
+			result = new ModelAndView("redirect:list.do?catalog=unpublished");
 
 			result.addObject("errMsg", oops.getMessage());
 		}
@@ -225,7 +225,7 @@ public class ConferenceController extends AbstractController {
 			result = this.createEditModelAndView(conference);
 
 		} catch (final Throwable oops) {
-			result = new ModelAndView("conference/list");
+			result = new ModelAndView("redirect:list.do?catalog=unpublished");
 
 			result.addObject("errMsg", oops.getMessage());
 		}
@@ -291,7 +291,7 @@ public class ConferenceController extends AbstractController {
 					result.addObject("errMsg", oops.getMessage());
 				}
 		} catch (final Throwable oops) {
-			result = this.createEditModelAndView(conference);
+			result = this.createEditModelAndView(conference, oops.getMessage());
 		}
 		return result;
 	}
@@ -299,15 +299,13 @@ public class ConferenceController extends AbstractController {
 	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int conferenceId) {
-		ModelAndView result;
+		ModelAndView result = new ModelAndView("redirect:list.do?catalog=unpublished");
 		try {
 			final Conference conference = this.conferenceService
 					.findOne(conferenceId);
 			this.conferenceService.delete(conference);
-			result = new ModelAndView("redirect:list.do?catalog=unpublished");
 
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:list.do?catalog=unpublished");
 			result.addObject("errMsg", oops.getMessage());
 		}
 		return result;
@@ -315,11 +313,7 @@ public class ConferenceController extends AbstractController {
 
 	/* Ancillary methods */
 	protected ModelAndView createEditModelAndView(final Conference conference) {
-		ModelAndView result;
-
-		result = this.createEditModelAndView(conference, null);
-
-		return result;
+		return this.createEditModelAndView(conference, null);
 	}
 
 	protected ModelAndView createEditModelAndView(final Conference conference,

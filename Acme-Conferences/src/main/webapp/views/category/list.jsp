@@ -20,7 +20,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 <security:authorize access="hasRole('ADMIN')">
-
+<h1><spring:message	code="category.title.list" /></h1>
 	<jstl:choose>
 		<jstl:when test="${errMsg ne null}">
 			<p>
@@ -28,7 +28,7 @@
 			</p>
 		</jstl:when>
 		<jstl:otherwise>
-			<h1><spring:message	code="category.title.list" /></h1>
+			
 			<display:table style="width: 80%" class="displaytag" name="categories" pagesize="5" 
 				requestURI="category/list.do" id="category">
 
@@ -91,7 +91,7 @@
 				<display:column style="width: 10%">
 					<jstl:if test="${not empty category.parentCategory}">
 						<a href="category/edit.do?categoryId=${category.id}"><spring:message
-								code="category.edit" /></a>
+								code="mp.edit" /></a>
 					</jstl:if>
 				</display:column>
 				
@@ -99,7 +99,7 @@
 				<display:column style="width: 10%">
 					<jstl:if test="${not empty category.parentCategory}">
 						<a href="category/delete.do?categoryId=${category.id}"><spring:message
-								code="category.delete" /></a>
+								code="mp.delete" /></a>
 					</jstl:if>
 				</display:column>
 				

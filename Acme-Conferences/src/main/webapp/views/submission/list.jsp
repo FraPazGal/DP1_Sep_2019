@@ -11,7 +11,14 @@
 
 <security:authorize access="hasAnyRole('AUTHOR','REVIEWER')">
 <h1><spring:message	code="submission.title.list" /></h1>
+<spring:message code="date.dateFormat" var="format" /> 
+
 <jstl:choose>
+	<jstl:when test="${errMsg ne null}">
+		<p>
+			<jstl:out value="${errMsg}" />
+		</p>
+	</jstl:when>
 	<jstl:when test="${isPrincipal == 'AUTHOR' }">
 		<display:table class="displaytag" name="submissions" pagesize="5" 
 			requestURI="submission/list.do" id="submission" style="width: 90%;">
@@ -39,7 +46,7 @@
 			</display:column>
 			
 			<display:column titleKey="submission.submissionMoment" sortable="true">
-				<jstl:out value="${submission.submissionMoment}" />
+				<fmt:formatDate	pattern="${format }" value="${submission.submissionMoment}" />
 			</display:column>
 			
 			<display:column titleKey="submission.conference" sortable="true">
@@ -57,16 +64,16 @@
 			</display:column>
 			
 			<display:column titleKey="submission.conference.notification.deadline" sortable="true">
-				<jstl:out value="${submission.conference.notificationDeadline}" />
+				<fmt:formatDate	pattern="${format }" value="${submission.conference.notificationDeadline}" />
 			</display:column>
 			
 			<display:column titleKey="submission.conference.cameraReady.deadline" sortable="true">
-				<jstl:out value="${submission.conference.cameraReadyDeadline}" />
+				<fmt:formatDate	pattern="${format }" value="${submission.conference.cameraReadyDeadline}" />
 			</display:column>
 			
 			<display:column>
 				<a href="submission/display.do?submissionId=${submission.id}"> <spring:message
-						code="submission.display" />
+						code="mp.display" />
 				</a>
 			</display:column>
 			
@@ -81,16 +88,9 @@
 		</display:table>
 	</jstl:when>
 	<jstl:otherwise>
-	
+		<p>
+			<spring:message	code="submission.not.allowed" /><br>
+		</p>
 	</jstl:otherwise>
 </jstl:choose>
-
-
-	
-
-</security:authorize>
-<security:authorize access="!hasAnyRole('AUTHOR','REVIEWER')">
-	<p>
-		<spring:message	code="submission.not.allowed" /><br>
-	</p>
 </security:authorize>

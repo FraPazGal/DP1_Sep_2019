@@ -52,19 +52,11 @@ public class FinderService {
 	}
 
 	public Finder findOne(final int finderId) {
-		Finder result;
-
-		result = this.finderRepository.findOne(finderId);
-
-		return result;
+		return this.finderRepository.findOne(finderId);
 	}
 
 	public Collection<Finder> findAll() {
-		Collection<Finder> result;
-		result = this.finderRepository.findAll();
-
-		return result;
-
+		return this.finderRepository.findAll();
 	}
 
 	public Finder save(Finder finder) {
@@ -121,7 +113,7 @@ public class FinderService {
 		maxLivedMoment = DateUtils.addHours(new Date(System.currentTimeMillis() - 1), -timeChachedFind);
 		if (finder.getSearchMoment().before(maxLivedMoment)) {
 
-			finder.setResults(null);
+			finder.setResults(new ArrayList<Conference>());
 			finder.setKeyWord(null);
 			finder.setMaximumFee(null);
 			finder.setSearchMoment(null);
@@ -129,7 +121,7 @@ public class FinderService {
 			finder.setMaximumDate(null);
 			finder.setCategory(null);
 
-			this.finderRepository.save(finder);
+			this.save(finder);
 		}
 	}
 
@@ -140,6 +132,7 @@ public class FinderService {
 		Double maximumFee;
 		Date minimumDate, maximumDate, aux;
 		int nResults;
+		int count = 0;
 
 		Collection<Conference> resultsPageables = new ArrayList<Conference>();
 
@@ -176,7 +169,6 @@ public class FinderService {
 			}
 
 		}
-		int count = 0;
 
 		for (Conference p : results) {
 			resultsPageables.add(p);
@@ -225,6 +217,23 @@ public class FinderService {
 		result = this.finderRepository.findFinderByActorId(actorId);
 		
 		return result;
+	}
+	
+	public Finder checkIfExpired() {
+		Date maxLivedMoment = new Date();
+		Actor principal = this.utilityService.findByPrincipal();
+		Finder finder = this.findFinderByActorId(principal.getId());
+		
+		
+		if (finder.getSearchMoment() != null) {
+			final int timeChachedFind = this.systemConfigurationService.findMySystemConfiguration().getTimeResultsCached();
+			maxLivedMoment = DateUtils.addHours(maxLivedMoment, -timeChachedFind);
+
+			if (finder.getSearchMoment().before(maxLivedMoment))
+				this.deleteExpiredFinder(finder);
+		}
+		
+		return finder;
 	}
 
 }

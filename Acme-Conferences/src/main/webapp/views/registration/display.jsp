@@ -89,7 +89,7 @@
 		</table>
 		
 			<input type="button" name="back"
-				value="<spring:message code="registration.back" />"
+				value="<spring:message code="mp.back" />"
 				onclick="window.history.back()" />
 		
 	</jstl:otherwise>

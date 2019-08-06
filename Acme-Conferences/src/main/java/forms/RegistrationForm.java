@@ -44,6 +44,7 @@ public class RegistrationForm {
 	}
 
 	@Valid 
+	@NotNull
 	public Conference getConference() {
 		return conference;
 	}

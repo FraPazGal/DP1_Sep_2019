@@ -64,21 +64,11 @@ public class CategoryService {
 	}
 	
 	public Category findOne(final int categoryId) {
-		Category result;
-
-		result = this.categoryRepository.findOne(categoryId);
-		Assert.notNull(result);
-
-		return result;
+		return this.categoryRepository.findOne(categoryId);
 	}
 
 	public Collection<Category> findAll() {
-		Collection<Category> result;
-
-		result = this.categoryRepository.findAll();
-		Assert.notNull(result);
-
-		return result;
+		return this.categoryRepository.findAll();
 	}
 	
 	public Category save(final Category category) {
@@ -151,6 +141,9 @@ public class CategoryService {
 		Category res = this.create();
 		Map<String,String> aux = new HashMap<String,String>();
 		
+		Actor principal = this.utilityService.findByPrincipal();
+		Assert.isTrue(this.utilityService.checkAuthority(principal,
+				"ADMIN"));
 		try {
 			Assert.isTrue(!nameEN.isEmpty(), "no.both.names");
 			Assert.isTrue(!nameES.isEmpty(), "no.both.names");
@@ -254,6 +247,14 @@ public class CategoryService {
 			collCon.add(conference);
 			cat.setConferences(collCon);
 		}
+	}
+	
+	public Collection<Category> findAllAsAdmin() {
+		Actor principal = this.utilityService.findByPrincipal();
+		Assert.isTrue(this.utilityService.checkAuthority(principal,
+				"ADMIN"));
+
+		return this.categoryRepository.findAll();
 	}
 }
 

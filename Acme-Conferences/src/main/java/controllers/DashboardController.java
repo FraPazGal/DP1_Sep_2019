@@ -12,7 +12,7 @@ import services.UtilityService;
 import domain.Actor;
 
 @Controller
-@RequestMapping(value = "statistics")
+@RequestMapping("/statistics")
 public class DashboardController extends AbstractController{
 	
 	/* Services */
@@ -27,7 +27,7 @@ public class DashboardController extends AbstractController{
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display() {
 		Actor principal;
-		ModelAndView result = null;
+		ModelAndView result = new ModelAndView("administrator/statistics");;
 		
 		try {
 			principal = this.utilityService.findByPrincipal();
@@ -41,9 +41,6 @@ public class DashboardController extends AbstractController{
 			Double [] statsCommentsPerConference = this.dashboardService.StatsCommentsPerConference();
 			Double [] statsCommentsPerActivity = this.dashboardService.StatsCommentsPerActivity();
 			
-			result = new ModelAndView("administrator/statistics");
-
-			result.addObject("requestURI", "statistics/display.do");
 			result.addObject("statsSubmissionsPerConference",statsSubmissionsPerConference);
 			result.addObject("statsRegistrationsPerConference",statsRegistrationsPerConference);
 			result.addObject("statsConferenceFees",statsConferenceFees);
@@ -53,8 +50,6 @@ public class DashboardController extends AbstractController{
 			result.addObject("statsCommentsPerActivity",statsCommentsPerActivity);
 			
 		} catch (Throwable oops) {
-			result = new ModelAndView("statistics/display");
-
 			result.addObject("errMsg", oops.getMessage());
 		}
 		return result;

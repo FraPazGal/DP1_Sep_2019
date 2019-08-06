@@ -11,8 +11,12 @@
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <security:authorize access="hasAnyRole('AUTHOR','REVIEWER')">
-
 	<jstl:choose>
+		<jstl:when test="${errMsg ne null}">
+			<p>
+				<jstl:out value="${errMsg}" />
+			</p>
+		</jstl:when>
 		<jstl:when test="${isPrincipal and !cameraReady}">
 			<h1><spring:message	code="submission.title.paper" /></h1>
 			<form:form modelAttribute="submissionForm" action="submission/edit.do"
@@ -26,8 +30,8 @@
 				<acme:textarea code="submission.paper.summary" path="summaryP" cols="80px" rows="4" /><br> <br>
 				<acme:textarea code="submission.paper.paperDocument" path="paperDocumentP" cols="80px" rows="8" /><br> <br>
 				
-				<acme:submit code="submission.save" name="save" />&nbsp;
-				<acme:cancel url="submission/list.do" code="submission.cancel" />
+				<acme:submit code="mp.save" name="save" />&nbsp;
+				<acme:cancel url="submission/list.do" code="mp.cancel" />
 				<br />
 		
 			</form:form>
@@ -45,8 +49,8 @@
 				<acme:textarea code="submission.paper.summary" path="summaryPCR" cols="80px" rows="4" /><br> <br>
 				<acme:textarea code="submission.paper.paperDocument" path="paperDocumentPCR" cols="80px" rows="8" /><br> <br>
 				
-				<acme:submit code="submission.save" name="save" />&nbsp;
-				<acme:cancel url="submission/list.do" code="submission.cancel" />
+				<acme:submit code="mp.save" name="save" />&nbsp;
+				<acme:cancel url="submission/list.do" code="mp.cancel" />
 				<br />
 		
 			</form:form>
@@ -58,10 +62,4 @@
 		</p>
 	</jstl:otherwise>
 	</jstl:choose>
-</security:authorize>
-
-<security:authorize access="!hasAnyRole('AUTHOR','REVIEWER')">
-		<p>
-			<spring:message	code="submission.not.allowed" /><br>
-		</p>
 </security:authorize>

@@ -18,6 +18,10 @@
 <div>
 	<ul id="jSubMenu">
 		<security:authorize access="permitAll">
+			<security:authorize access="hasRole('ADMIN')">
+				<li><a href="conference/list.do?catalog=unpublished"><spring:message
+								code="conference.conference.list.unpublished" /></a></li>
+			</security:authorize>
 			<li><a href="conference/list.do?catalog=future"><spring:message
 						code="conference.conference.list.future" /></a></li>
 						
@@ -43,9 +47,6 @@
 								
 					<li><a href="conference/list.do?catalog=5org"><spring:message
 								code="conference.conference.list.5organised" /></a></li>
-								
-					<li><a href="conference/list.do?catalog=unpublished"><spring:message
-								code="conference.conference.list.unpublished" /></a></li>
 				</ul></li>
 				
 			</security:authorize>

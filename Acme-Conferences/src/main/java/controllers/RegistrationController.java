@@ -52,7 +52,7 @@ public class RegistrationController extends AbstractController {
 				result.addObject("registration", registration);
 			}
 		} catch (final Throwable oops) {
-			result = new ModelAndView("registration/list");
+			result = new ModelAndView("redirect:list.do");
 
 			result.addObject("errMsg", oops.getMessage());
 		}
@@ -89,7 +89,7 @@ public class RegistrationController extends AbstractController {
 
 			result = this.createEditModelAndView(registrationForm);
 		} catch (Throwable oops) {
-			result = new ModelAndView("registration/list");
+			result = new ModelAndView("redirect:list.do");
 
 			result.addObject("errMsg", oops.getMessage());
 		}
@@ -115,7 +115,7 @@ public class RegistrationController extends AbstractController {
 			}
 			
 		} catch (final Throwable oops) {
-			result = new ModelAndView("registration/list");
+			result = new ModelAndView("redirect:list.do");
 
 			result.addObject("errMsg", oops.getMessage());
 		}
@@ -144,11 +144,7 @@ public class RegistrationController extends AbstractController {
 	
 	/* Ancillary methods */
 	protected ModelAndView createEditModelAndView(final RegistrationForm registrationForm) {
-		ModelAndView result;
-
-		result = this.createEditModelAndView(registrationForm, null);
-
-		return result;
+		return this.createEditModelAndView(registrationForm, null);
 	}
 
 	protected ModelAndView createEditModelAndView(final RegistrationForm registrationForm, final String messageCode) {

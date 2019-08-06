@@ -18,5 +18,5 @@
 <hr />
 
 <b>Copyright &copy; <fmt:formatDate value="${date}" pattern="yyyy" />
-	Acme-Shout Co., Inc.
+	Acme-Conferences Co., Inc.
 </b>

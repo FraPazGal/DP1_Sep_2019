@@ -6,7 +6,6 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,23 +46,16 @@ public class SubmissionController extends AbstractController {
 
 		try {
 			submission = this.submissionService.findOne(submissionId);
-			try {
-				principal = this.utilityService.findByPrincipal();
-				if (submission.getAuthor().equals((Author) principal)) {
-						isPrincipal = true;
-				}
-			} catch (final Throwable oops) {
-				System.out.println(oops.getMessage());
+			principal = this.utilityService.findByPrincipal();
+			if (submission.getAuthor().equals((Author) principal) || 
+					this.utilityService.checkAuthority(principal, "REVIEWER")) {
+					isPrincipal = true;
 			}
-
 			result = new ModelAndView("submission/display");
 			result.addObject("submission", submission);
 			result.addObject("isPrincipal", isPrincipal);
-			result.addObject("requestURI", "submission/display.do?submissionId=" + submissionId);
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/welcome/index.do/");
-			result.addObject("messageCode", "position.commit.error");
-			result.addObject("permission", false);
+			result = new ModelAndView("redirect:../welcome/index.do/");
 		}
 		return result;
 	}
@@ -83,13 +75,15 @@ public class SubmissionController extends AbstractController {
 				isPrincipal = "AUTHOR";
 			}
 			
+			if (this.utilityService.checkAuthority(principal, "REVIEWER")) {
+				submissions = this.submissionService.submissionsPerReviewer(principal.getId());
+				isPrincipal = "REVIEWER";
+			}
 			
-			//TODO: listado de submissions para un reviewer
-			
-//			if (this.utilityService.checkAuthority(principal, "REVIEWER")) {
-//				submissions = this.submissionService.submissionsPerReviewer(principal.getId());
-//				isPrincipal = "REVIEWER";
-//			}
+			if (this.utilityService.checkAuthority(principal, "ADMIN")) {
+				submissions = this.submissionService.submissionsToAssign();
+				isPrincipal = "ADMIN";
+			}
 						
 			result.addObject("submissions", submissions);
 			result.addObject("isPrincipal", isPrincipal);
@@ -104,22 +98,29 @@ public class SubmissionController extends AbstractController {
 	/* Create */
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView createSubmission(@RequestParam final int conferenceId) {
-		ModelAndView res;
-		Conference conference = this.conferenceService.findOne(conferenceId);
+		ModelAndView result = null;
+		try {
+			Conference conference = this.conferenceService.findOne(conferenceId);
 
-		final SubmissionForm submissionForm = new SubmissionForm();
-		submissionForm.setConference(conference);
+			SubmissionForm submissionForm = new SubmissionForm();
+			submissionForm.setConference(conference);
+			
+			result = this.createEditModelAndView(submissionForm);
+			result.addObject("isPrincipal", true);
 
-		res = this.createEditModelAndView(submissionForm);
-		res.addObject("isPrincipal", true);
+		} catch (final Throwable oops) {
+			result = new ModelAndView("redirect:list.do");
 
-		return res;
+			result.addObject("errMsg", oops.getMessage());
+		}
+
+		return result;
 	}
 	
 	/* Edit */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int submissionId) {
-		ModelAndView res;
+		ModelAndView result;
 		Submission submission;
 		Actor principal = this.utilityService.findByPrincipal();
 		boolean isPrincipal = false;
@@ -130,78 +131,60 @@ public class SubmissionController extends AbstractController {
 			if(submission.getAuthor().equals((Author) principal)) {
 				isPrincipal = true;
 			}
-
 			final SubmissionForm submissionForm = new SubmissionForm(submission);
 
-			res = this.createEditModelAndView(submissionForm);
-			res.addObject("isPrincipal", isPrincipal);
-			res.addObject("cameraReady", true);
+			result = this.createEditModelAndView(submissionForm);
+			result.addObject("isPrincipal", isPrincipal);
+			result.addObject("cameraReady", true);
+			
 		} catch (final Throwable oops) {
-			res = new ModelAndView("redirect:list.do");
-		}
+			result = new ModelAndView("redirect:list.do");
 
-		return res;
+			result.addObject("errMsg", oops.getMessage());
+		}
+		return result;
 	}
 	
 	/* Save */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView edit(SubmissionForm submissionForm, BindingResult binding) {
-		Actor principal;
-		ModelAndView res;
-		boolean isPrincipal = false;
-
+		ModelAndView result = new ModelAndView("redirect:list.do");
 		try {
-			principal = this.utilityService.findByPrincipal();
 			Submission submission = this.submissionService.reconstruct(submissionForm, binding);
 			
 			if (binding.hasErrors()) {
-				res = this.createEditModelAndView(submissionForm);
-				res.addObject("isPrincipal", true);
+				result = this.createEditModelAndView(submissionForm);
+				result.addObject("isPrincipal", true);
 			}
-			else
-				try {
-					Assert.isTrue(submission.getAuthor().equals((Author) principal), "not.allowed");
+			else {
+				this.submissionService.save(submission);
+			}
 
-					this.submissionService.save(submission);
-
-					res = new ModelAndView("redirect:list.do");
-
-				} catch (final Throwable oops) {
-					if(submission.getAuthor().equals((Author)principal)) {
-						isPrincipal = true;
-					}
-					res = this.createEditModelAndView(submissionForm, "submission.commit.error");
-					res.addObject("isPrincipal", isPrincipal);
-
-				}
 		} catch (final Throwable oops) {
-			res = new ModelAndView("redirect:list.do");
+			result = new ModelAndView("redirect:list.do");
+
+			result.addObject("errMsg", oops.getMessage());
 		}
-		return res;
+		return result;
 	}
 	
 	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int submissionId) {
-		ModelAndView result;
+		ModelAndView result = new ModelAndView("redirect:list.do");
 		try {
 			final Submission submission = this.submissionService.findOne(submissionId);
 			this.submissionService.delete(submission);
-			result = new ModelAndView("redirect:list.do");
+			
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:/welcome/index.do");
-			result.addObject("messageCode", oops.getMessage());
+			result.addObject("errMsg", oops.getMessage());
 		}
 		return result;
 	}
 
 	/* Ancillary methods */
 	protected ModelAndView createEditModelAndView(final SubmissionForm submissionForm) {
-		ModelAndView result;
-
-		result = this.createEditModelAndView(submissionForm, null);
-
-		return result;
+		return this.createEditModelAndView(submissionForm, null);
 	}
 
 	protected ModelAndView createEditModelAndView(final SubmissionForm submissionForm, final String messageCode) {
@@ -210,7 +193,7 @@ public class SubmissionController extends AbstractController {
 		
 		result = new ModelAndView("submission/edit");
 		result.addObject("submissionForm", submissionForm);
-		result.addObject("message", messageCode);
+		result.addObject("errMsg", messageCode);
 		result.addObject("conferences", conferences);
 
 		return result;
