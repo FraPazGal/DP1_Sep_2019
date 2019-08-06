@@ -16,6 +16,7 @@ import repositories.ReviewerRepository;
 import security.Authority;
 import security.UserAccount;
 import domain.Actor;
+import domain.Report;
 import domain.Reviewer;
 import forms.ActorForm;
 import forms.ActorRegistrationForm;
@@ -267,6 +268,12 @@ public class ReviewerService {
 
 	public void flush() {
 		this.reviewerRepository.flush();
+	}
+
+	public boolean isReviewing(Integer reviewerid) {
+		Collection<Report> reports = this.reviewerRepository
+				.isReviewing(reviewerid);
+		return (reports == null || reports.size() == 0);
 	}
 
 }

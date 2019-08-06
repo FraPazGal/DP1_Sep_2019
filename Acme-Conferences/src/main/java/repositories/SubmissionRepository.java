@@ -15,11 +15,13 @@ public interface SubmissionRepository extends
 
 	@Query("select s from Submission s where s.paper.id = ?1 or s.cameraReadyPaper.id = ?1")
 	Submission findSubByPaper(int paperId);
-	
+
 	@Query("select s from Submission s where s.author.id = ?1")
 	Collection<Submission> submissionsPerAuthor(int auhtorId);
 
 	@Query("select s.author from Submission s where s.conference.id = ?1")
 	Collection<Actor> findActorsWithSubmitions(Integer id);
 
+	@Query("select s from Submission s where s.conference.id = ?1")
+	Collection<Submission> findConferenceSubmitions(Integer id);
 }

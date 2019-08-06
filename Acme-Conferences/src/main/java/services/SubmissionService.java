@@ -265,4 +265,8 @@ public class SubmissionService {
 		return this.submissionRepository.submissionsPerAuthor(authorId);
 	}
 
+	public Collection<Submission> findConferenceSubmitions(Integer id) {
+		return this.submissionRepository.findConferenceSubmitions(id);
+	}
+
 }
