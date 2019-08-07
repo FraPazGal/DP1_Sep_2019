@@ -109,14 +109,16 @@ public class SponsorController extends AbstractController {
 
 		ModelAndView res;
 
-		Sponsor sponsor = new Sponsor();
-		sponsor = this.sponsorService.create();
+		Sponsor sponsor = this.sponsorService.reconstruct(registerFormObject,
+				binding);
 
-		sponsor = this.sponsorService.reconstruct(registerFormObject, binding);
+		if (binding.hasErrors()) {
 
-		if (binding.hasErrors())
-			res = this.createRegisterModelAndView(registerFormObject);
-		else
+			res = new ModelAndView("sponsor/register");
+			res.addObject("registerFormObject", registerFormObject);
+			res.addObject("binding", binding);
+
+		} else {
 			try {
 
 				this.sponsorService.save(sponsor);
@@ -128,6 +130,7 @@ public class SponsorController extends AbstractController {
 						"sponsor.commit.error");
 
 			}
+		}
 		return res;
 	}
 
@@ -169,14 +172,15 @@ public class SponsorController extends AbstractController {
 					&& this.actorService.findOne(this.utilityService
 							.findByPrincipal().getId()) != null);
 
-			Sponsor sponsor = new Sponsor();
-			sponsor = this.sponsorService.create();
-
-			sponsor = this.sponsorService.reconstruct(editionFormObject,
-					binding);
+			Sponsor sponsor = this.sponsorService.reconstruct(
+					editionFormObject, binding);
 
 			if (binding.hasErrors()) {
-				res = this.createEditModelAndView(editionFormObject);
+
+				res = new ModelAndView("administrator/edit");
+				res.addObject("editionFormObject", editionFormObject);
+				res.addObject("binding", binding);
+
 			} else {
 				try {
 					this.sponsorService.save(sponsor);

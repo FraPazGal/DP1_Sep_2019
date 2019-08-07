@@ -24,6 +24,12 @@
 	<ul id="jMenu">
 		<!-- Do not forget the "fNiv" class for the first level links !! -->
 
+		<security:authorize access="hasRole('ADMIN')">
+
+			<li><a class="fNiv"
+				href="administrator/administrator/register.do"><spring:message
+						code="master.page.register.admin" /></a>
+		</security:authorize>
 
 		<security:authorize access="permitAll">
 			<li><a class="fNiv"><spring:message
@@ -62,7 +68,6 @@
 					<li><a href="category/create.do"><spring:message
 								code="master.page.categories.new" /></a></li>
 				</ul></li>
-
 
 		</security:authorize>
 
@@ -107,6 +112,23 @@
 		<security:authorize access="isAnonymous()">
 			<li><a class="fNiv" href="security/login.do"><spring:message
 						code="master.page.login" /></a></li>
+
+			<li><a class="fNiv"><spring:message
+						code="master.page.register" /></a>
+
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="author/register.do"><spring:message
+								code="master.page.register.author" /></a></li>
+
+					<li><a href="sponsor/register.do"><spring:message
+								code="master.page.register.sponsor" /></a></li>
+
+					<li><a href="reviewer/register.do"><spring:message
+								code="master.page.register.reviewer" /></a></li>
+
+				</ul></li>
+
 		</security:authorize>
 
 		<security:authorize access="hasRole('ADMIN')">
@@ -141,6 +163,33 @@
 			</a>
 				<ul>
 					<li class="arrow"></li>
+					<security:authorize access="hasRole('ADMIN')">
+						<li><a href="administrator/display.do"><spring:message
+									code="master.page.profile" /> </a></li>
+						<li><a href="administrator/administrator/edit.do"><spring:message
+									code="master.page.profile.edit" /> </a></li>
+					</security:authorize>
+
+					<security:authorize access="hasRole('AUTHOR')">
+						<li><a href="author/display.do"><spring:message
+									code="master.page.profile" /> </a></li>
+						<li><a href="author/author/edit.do"><spring:message
+									code="master.page.profile.edit" /> </a></li>
+					</security:authorize>
+
+					<security:authorize access="hasRole('SPONSOR')">
+						<li><a href="sponsor/display.do"><spring:message
+									code="master.page.profile" /> </a></li>
+						<li><a href="sponsor/sponsor/edit.do"><spring:message
+									code="master.page.profile.edit" /> </a></li>
+					</security:authorize>
+
+					<security:authorize access="hasRole('REVIEWER')">
+						<li><a href="reviewer/display.do"><spring:message
+									code="master.page.profile" /> </a></li>
+						<li><a href="reviewer/reviewer/edit.do"><spring:message
+									code="master.page.profile.edit" /> </a></li>
+					</security:authorize>
 					<li><a href="j_spring_security_logout"><spring:message
 								code="master.page.logout" /> </a></li>
 				</ul></li>

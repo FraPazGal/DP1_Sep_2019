@@ -54,7 +54,8 @@
 			required="${required}" placeholder="${place}" />
 	</jstl:if>
 	<jstl:if test="${password eq true }">
-		<form:password path="${path}" size="${size }" placeholder="${place}" />
+		<form:password path="${path}" size="${size }" required="${required}"
+			placeholder="${place}" />
 	</jstl:if>
 	<br>
 	<form:errors path="${path}" cssClass="error" />

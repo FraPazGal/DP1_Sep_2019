@@ -105,31 +105,41 @@ public class AdministratorController extends AbstractController {
 	 **/
 	@RequestMapping(value = "/administrator/register", method = RequestMethod.POST, params = "save")
 	public ModelAndView register(
-			@Valid final ActorRegistrationForm actorRegistrationForm,
+			final ActorRegistrationForm actorRegistrationForm,
 			final BindingResult binding) {
 
 		ModelAndView res;
 
-		Administrator administrator = new Administrator();
-		administrator = this.administratorService.create();
+		try {
 
-		administrator = this.administratorService.reconstruct(
-				actorRegistrationForm, binding);
+			Administrator administrator = this.administratorService
+					.reconstruct(actorRegistrationForm, binding);
 
-		if (binding.hasErrors())
-			res = this.createRegisterModelAndView(actorRegistrationForm);
-		else
-			try {
+			if (binding.hasErrors()) {
 
-				this.administratorService.save(administrator);
+				res = new ModelAndView("administrator/register");
+				res.addObject("registerFormObject", actorRegistrationForm);
+				res.addObject("binding", binding);
 
-				res = new ModelAndView("redirect:/");
+			} else {
+				try {
 
-			} catch (final Throwable oops) {
-				res = this.createRegisterModelAndView(actorRegistrationForm,
-						"administrator.commit.error");
+					this.administratorService.save(administrator);
 
+					res = new ModelAndView("redirect:/");
+
+				} catch (final Throwable oops) {
+					res = this
+							.createRegisterModelAndView(actorRegistrationForm,
+									"administrator.commit.error");
+
+				}
 			}
+
+		} catch (Throwable oops) {
+			res = new ModelAndView("redirect:/");
+		}
+
 		return res;
 	}
 
@@ -171,14 +181,15 @@ public class AdministratorController extends AbstractController {
 					&& this.actorService.findOne(this.utilityService
 							.findByPrincipal().getId()) != null);
 
-			Administrator administrator = new Administrator();
-			administrator = this.administratorService.create();
-
-			administrator = this.administratorService.reconstruct(actorForm,
-					binding);
+			Administrator administrator = this.administratorService
+					.reconstruct(actorForm, binding);
 
 			if (binding.hasErrors()) {
-				res = this.createEditModelAndView(actorForm);
+
+				res = new ModelAndView("administrator/edit");
+				res.addObject("editionFormObject", actorForm);
+				res.addObject("binding", binding);
+
 			} else {
 				try {
 					this.administratorService.save(administrator);

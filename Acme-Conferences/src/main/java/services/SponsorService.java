@@ -103,6 +103,7 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.SponsorRepository;
 import security.Authority;
@@ -131,6 +132,9 @@ public class SponsorService {
 
 	@Autowired
 	private UtilityService utilityService;
+
+	@Autowired
+	private Validator validator;
 
 	/* Simple CRUD methods */
 
@@ -236,33 +240,7 @@ public class SponsorService {
 	public Sponsor reconstruct(final ActorRegistrationForm form,
 			final BindingResult binding) {
 
-		/* Creating admin */
-		final Sponsor res = this.create();
-
-		res.setName(form.getName());
-		res.setSurname(form.getSurname());
-		res.setPhoto(form.getPhoto());
-		res.setEmail(form.getEmail());
-		res.setPhoneNumber(form.getPhoneNumber());
-		res.setAddress(form.getAddress());
-
-		/* Creating user account */
-		final UserAccount userAccount = new UserAccount();
-
-		final List<Authority> authorities = new ArrayList<Authority>();
-		final Authority authority = new Authority();
-		authority.setAuthority(Authority.SPONSOR);
-		authorities.add(authority);
-		userAccount.setAuthorities(authorities);
-
-		userAccount.setUsername(form.getUsername());
-
-		Md5PasswordEncoder encoder;
-		encoder = new Md5PasswordEncoder();
-		userAccount
-				.setPassword(encoder.encodePassword(form.getPassword(), null));
-
-		res.setUserAccount(userAccount);
+		final Sponsor res;
 
 		if (form.getEmail() != null) {
 			try {
@@ -300,6 +278,29 @@ public class SponsorService {
 			}
 		}
 
+		this.validator.validate(form, binding);
+
+		if (!binding.hasErrors()) {
+			/* Creating admin */
+			res = this.create();
+
+			res.setName(form.getName());
+			res.setSurname(form.getSurname());
+			res.setPhoto(form.getPhoto());
+			res.setEmail(form.getEmail());
+			res.setPhoneNumber(form.getPhoneNumber());
+			res.setAddress(form.getAddress());
+
+			Md5PasswordEncoder encoder;
+			encoder = new Md5PasswordEncoder();
+			res.getUserAccount().setPassword(
+					encoder.encodePassword(form.getPassword(), null));
+
+			res.getUserAccount().setUsername(form.getUsername());
+		} else {
+			res = new Sponsor();
+		}
+
 		return res;
 	}
 
@@ -312,18 +313,7 @@ public class SponsorService {
 	 */
 	public Sponsor reconstruct(final ActorForm form, final BindingResult binding) {
 
-		/* Creating admin */
-		final Sponsor res = this.create();
-
-		res.setId(form.getId());
-		res.setVersion(form.getVersion());
-		res.setName(form.getName());
-		res.setMiddleName(form.getMiddleName());
-		res.setSurname(form.getSurname());
-		res.setPhoto(form.getPhoto());
-		res.setEmail(form.getEmail());
-		res.setPhoneNumber(form.getPhoneNumber());
-		res.setAddress(form.getAddress());
+		final Sponsor res;
 
 		if (form.getEmail() != null) {
 			try {
@@ -350,6 +340,25 @@ public class SponsorService {
 			} catch (Throwable oops) {
 				binding.rejectValue("phoneNumber", "phone.error");
 			}
+		}
+
+		this.validator.validate(form, binding);
+
+		if (!binding.hasErrors()) {
+			/* Creating admin */
+			res = this.create();
+
+			res.setId(form.getId());
+			res.setVersion(form.getVersion());
+			res.setName(form.getName());
+			res.setMiddleName(form.getMiddleName());
+			res.setSurname(form.getSurname());
+			res.setPhoto(form.getPhoto());
+			res.setEmail(form.getEmail());
+			res.setPhoneNumber(form.getPhoneNumber());
+			res.setAddress(form.getAddress());
+		} else {
+			res = new Sponsor();
 		}
 
 		return res;

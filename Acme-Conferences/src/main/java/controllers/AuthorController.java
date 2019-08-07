@@ -109,25 +109,33 @@ public class AuthorController extends AbstractController {
 
 		ModelAndView res;
 
-		Author author = new Author();
-		author = this.authorService.create();
+		try {
+			Author author = this.authorService.reconstruct(registerFormObject,
+					binding);
 
-		author = this.authorService.reconstruct(registerFormObject, binding);
+			if (binding.hasErrors()) {
 
-		if (binding.hasErrors())
-			res = this.createRegisterModelAndView(registerFormObject);
-		else
-			try {
+				res = new ModelAndView("author/register");
+				res.addObject("registerFormObject", registerFormObject);
+				res.addObject("binding", binding);
 
-				this.authorService.save(author);
+			} else {
+				try {
 
-				res = new ModelAndView("redirect:/");
+					this.authorService.save(author);
 
-			} catch (final Throwable oops) {
-				res = this.createRegisterModelAndView(registerFormObject,
-						"author.commit.error");
+					res = new ModelAndView("redirect:/");
 
+				} catch (final Throwable oops) {
+					res = this.createRegisterModelAndView(registerFormObject,
+							"author.commit.error");
+
+				}
 			}
+		} catch (Throwable oops) {
+			res = new ModelAndView("redirect:/");
+		}
+
 		return res;
 	}
 
@@ -169,14 +177,15 @@ public class AuthorController extends AbstractController {
 					&& this.actorService.findOne(this.utilityService
 							.findByPrincipal().getId()) != null);
 
-			Author author = new Author();
-			author = this.authorService.create();
-
-			author = this.authorService.reconstruct(editionFormObject,
+			Author author = this.authorService.reconstruct(editionFormObject,
 					binding);
 
 			if (binding.hasErrors()) {
-				res = this.createEditModelAndView(editionFormObject);
+
+				res = new ModelAndView("administrator/edit");
+				res.addObject("editionFormObject", editionFormObject);
+				res.addObject("binding", binding);
+
 			} else {
 				try {
 					this.authorService.save(author);
@@ -186,11 +195,8 @@ public class AuthorController extends AbstractController {
 				} catch (Throwable oops) {
 					res = this.createEditModelAndView(editionFormObject,
 							"author.commit.error");
-
 				}
-
 			}
-
 		} catch (Throwable oops) {
 			res = new ModelAndView("redirect:/");
 		}
