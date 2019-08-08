@@ -58,6 +58,13 @@
 					<jstl:out value="${reviewer.address}" />
 				</div>
 
+				<br />
+
+				<div>
+					<strong><spring:message code="actor.keywords" />: </strong>
+					<jstl:out value="${reviewer.keywords}" />
+				</div>
+
 			</div>
 
 			<div style="float: right;">

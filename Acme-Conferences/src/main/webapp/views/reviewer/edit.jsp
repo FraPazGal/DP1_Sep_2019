@@ -7,7 +7,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-
+<%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <script>
 	function checkPhone(msg) {
@@ -23,7 +23,7 @@
 </script>
 
 <spring:message code="phone.confirmation" var="confirmTelephone" />
-<security:authorize access="hasRole('AUTHOR')">
+<security:authorize access="hasRole('REVIEWER')">
 	<form:form modelAttribute="editionFormObject"
 		action="reviewer/reviewer/edit.do"
 		onsubmit="javascript: return checkPhone('${confirmTelephone}');">
@@ -37,93 +37,75 @@
 				<spring:message code="actor.personalData" />
 			</legend>
 
-			<div>
-				<p>
-					<form:errors path="name" cssClass="error" />
+			<acme:textbox path="name" code="actor.name" size="60" required="true" />
+			<jstl:if test="${not empty binding.getFieldError('name')}">
+				<p class="error">
+					<spring:message code="name.error" />
 				</p>
-				<strong><form:label path="name">
-						<spring:message code="actor.name" />
-					</form:label></strong>
-				<form:input path="name" />
-			</div>
-
-			<div>
-				<p>
-					<form:errors path="surname" cssClass="error" />
-				</p>
-				<strong><form:label path="surname">
-						<spring:message code="actor.surname" />
-					</form:label></strong>
-				<form:input path="surname" />
-			</div>
+			</jstl:if>
 
 			<br />
 
-			<div>
-				<p>
-					<form:errors path="middleName" cssClass="error" />
-				</p>
-				<strong><form:label path="middleName">
-						<spring:message code="actor.middleName" />
-					</form:label></strong>
-				<form:input path="middleName" />
-			</div>
+			<acme:textbox path="middleName" code="actor.middleName" size="60" />
 
 			<br />
 
-			<div>
-				<form:errors path="photo" cssClass="error">
-					<p class="error">
-						<spring:message code="photo.error" />
-					</p>
-				</form:errors>
-				<strong><form:label path="photo">
-						<spring:message code="actor.photo" />
-					</form:label></strong>
-				<form:input path="photo" />
-			</div>
+			<acme:textbox path="surname" code="actor.surname" size="60"
+				required="true" />
+			<jstl:if test="${not empty binding.getFieldError('surname')}">
+				<p class="error">
+					<spring:message code="surname.error" />
+				</p>
+			</jstl:if>
 
 			<br />
 
-			<div>
-				<form:errors path="email" cssClass="error">
-					<p class="error">
-						<spring:message code="email.error" />
-					</p>
-				</form:errors>
-				<strong><form:label path="email">
-						<spring:message code="actor.email" />
-					</form:label></strong>
-				<form:input path="email" />
-			</div>
-
-			<div>
-				<p>
-					<form:errors path="phoneNumber" cssClass="error" />
+			<acme:textbox path="photo" code="actor.photo" size="60" />
+			<jstl:if test="${not empty binding.getFieldError('photo')}">
+				<p class="error">
+					<spring:message code="photo.error" />
 				</p>
-				<strong><form:label path="phoneNumber">
-						<spring:message code="actor.phone" />
-					</form:label></strong>
-				<form:input path="phoneNumber" />
-			</div>
-
-			<div>
-				<p>
-					<form:errors path="address" cssClass="error" />
-				</p>
-				<strong><form:label path="address">
-						<spring:message code="actor.address" />
-					</form:label></strong>
-				<form:input path="address" />
-			</div>
+			</jstl:if>
 
 			<br />
+
+			<acme:textbox path="email" code="actor.email"
+				placeholder="adminemail.placeholder" size="60" required="true" />
+			<jstl:if test="${not empty binding.getFieldError('email')}">
+				<p class="error">
+					<spring:message code="email.error" />
+				</p>
+			</jstl:if>
+
+			<br />
+
+			<acme:textbox path="phoneNumber" code="actor.phone"
+				placeholder="phone.placeholder" size="60" />
+			<jstl:if test="${not empty binding.getFieldError('phone')}">
+				<p class="error">
+					<spring:message code="email.error" />
+				</p>
+			</jstl:if>
+
+			<br />
+
+			<acme:textbox path="address" code="actor.address" size="60" />
+
+			<br />
+
+			<acme:textbox path="keywords" code="actor.keywords"
+				placeholder="keywords.placeholder" size="60" required="true" />
+			<jstl:if test="${not empty binding.getFieldError('keywords')}">
+				<p class="error">
+					<spring:message code="keywords.error" />
+				</p>
+			</jstl:if>
+
 		</fieldset>
 		<br />
 
 		<!-- Buttons -->
-		<input type="submit" name="save"
-			value="<spring:message code="form.save" />" />
+		<acme:submit name="save" code="form.save" />
 
 		<button type="button"
 			onclick="javascript: relativeRedir('/reviewer/display.do')">
