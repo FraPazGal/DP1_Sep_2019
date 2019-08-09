@@ -48,6 +48,7 @@ public class UserAccount extends DomainEntity implements UserDetails {
 
 	private String username;
 	private String password;
+	private boolean anonymous;
 	private Collection<Authority> authorities;
 
 	@Size(min = 5, max = 32)
@@ -85,6 +86,14 @@ public class UserAccount extends DomainEntity implements UserDetails {
 		this.authorities = authorities;
 	}
 
+	public boolean getAnonymous() {
+		return anonymous;
+	}
+
+	public void setAnonymous(boolean anonymous) {
+		this.anonymous = anonymous;
+	}
+
 	public void addAuthority(final Authority authority) {
 		Assert.notNull(authority);
 		Assert.isTrue(!this.authorities.contains(authority));
@@ -120,7 +129,7 @@ public class UserAccount extends DomainEntity implements UserDetails {
 	@Transient
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return !anonymous;
 	}
 
 }

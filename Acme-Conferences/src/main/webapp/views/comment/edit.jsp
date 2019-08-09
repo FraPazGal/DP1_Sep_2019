@@ -12,21 +12,29 @@
 	<legend>
 		<spring:message code="comment.legend" />
 	</legend>
-	<form:form action="comment/edit.do?id=${id}" modelAttribute="comment"
-		id="form">
+	<form:form action="comment/edit.do" modelAttribute="comment" id="form">
 
-		<form:hidden path="id" />
-		<form:hidden path="version" />
 		<form:hidden path="conference" />
 		<form:hidden path="activity" />
 		<form:hidden path="publishedDate" />
 		<form:hidden path="writer" />
+		<form:hidden path="author" />
 
 		<acme:textbox code="comment.title" path="title" />
+		<jstl:if test="${not empty binding.getFieldError('title')}">
+			<p class="error">
+				<spring:message code="title.error" />
+			</p>
+		</jstl:if>
 
 		<br>
 
 		<acme:textbox code="comment.body" path="body" />
+		<jstl:if test="${not empty binding.getFieldError('body')}">
+			<p class="error">
+				<spring:message code="body.error" />
+			</p>
+		</jstl:if>
 
 		<br>
 

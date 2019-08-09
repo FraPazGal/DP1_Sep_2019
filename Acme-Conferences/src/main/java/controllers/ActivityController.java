@@ -20,7 +20,7 @@ import services.SectionService;
 import services.UtilityService;
 import domain.Activity;
 import domain.Actor;
-import domain.Comment;
+import domain.Comentario;
 import domain.Section;
 
 @Controller
@@ -46,7 +46,7 @@ public class ActivityController extends AbstractController {
 		ModelAndView res;
 		Activity activity;
 		Collection<Section> sections;
-		Collection<Comment> comments;
+		Collection<Comentario> comments;
 		Boolean permission;
 
 		try {
@@ -60,7 +60,7 @@ public class ActivityController extends AbstractController {
 
 			comments = (activity != null) ? this.commentService
 					.getCommentsOfActivity(activityid)
-					: new ArrayList<Comment>();
+					: new ArrayList<Comentario>();
 
 			res = new ModelAndView("activity/display");
 			res.addObject("activity", activity);

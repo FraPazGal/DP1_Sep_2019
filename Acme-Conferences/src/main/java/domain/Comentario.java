@@ -12,11 +12,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Comment extends DomainEntity {
+public class Comentario extends DomainEntity {
 
 	/* Attributes */
 
@@ -26,7 +27,7 @@ public class Comment extends DomainEntity {
 	private Activity activity;
 	private Actor writer;
 
-	public Comment() {
+	public Comentario() {
 
 	}
 
@@ -63,6 +64,7 @@ public class Comment extends DomainEntity {
 	}
 
 	@NotNull
+	@DateTimeFormat(pattern = "dd-MM-yyy hh:mm")
 	public Date getPublishedDate() {
 		return publishedDate;
 	}
