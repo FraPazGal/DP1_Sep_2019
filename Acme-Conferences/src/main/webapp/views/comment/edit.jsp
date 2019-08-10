@@ -20,7 +20,7 @@
 		<form:hidden path="writer" />
 		<form:hidden path="author" />
 
-		<acme:textbox code="comment.title" path="title" />
+		<acme:textbox code="comment.title" path="title" required="true" />
 		<jstl:if test="${not empty binding.getFieldError('title')}">
 			<p class="error">
 				<spring:message code="title.error" />
@@ -29,7 +29,7 @@
 
 		<br>
 
-		<acme:textbox code="comment.body" path="body" />
+		<acme:textbox code="comment.body" path="body" required="true" />
 		<jstl:if test="${not empty binding.getFieldError('body')}">
 			<p class="error">
 				<spring:message code="body.error" />

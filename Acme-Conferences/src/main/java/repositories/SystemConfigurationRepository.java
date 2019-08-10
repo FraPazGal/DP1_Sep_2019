@@ -13,4 +13,7 @@ public interface SystemConfigurationRepository extends
 	@Query("select s from SystemConfiguration s")
 	SystemConfiguration getMySystemConfiguration();
 
+	@Query("select s.banner from SystemConfiguration s")
+	String findMyBanner();
+
 }

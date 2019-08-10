@@ -43,39 +43,36 @@
 			<form:hidden path="conference" />
 			<form:hidden path="submission" />
 
-			<acme:textbox code="activity.title" path="title" />
+			<acme:textbox code="activity.title" path="title" required="true"
+				size="60" />
 
 			<br>
 
 			<acme:textbox code="activity.speakersInvolved"
-				path="speakersInvolved" />
+				path="speakersInvolved" required="true" size="60" />
 
 			<br>
 
-			<span id="newSpeaker"></span>
-
-			<input type="button" value="<spring:message code='textarea.add'/>"
-				onclick="add()" />
-
-			<br>
-			<br>
-
-			<acme:textbox code="activity.summary" path="summary" />
+			<acme:textbox code="activity.summary" path="summary" required="true"
+				size="60" />
 
 			<br>
 
-			<acme:textbox code="activity.usedRoom" path="usedRoom" />
+			<acme:textbox code="activity.usedRoom" path="usedRoom"
+				required="true" size="60" />
 
 			<br>
 
-			<acme:textbox code="activity.attachement" path="attachement" />
+			<acme:textbox code="activity.attachement" path="attachement"
+				size="60" />
 
 			<br>
 
 			<form:label path="type">
 				<spring:message code="activity.type" />
 			</form:label>
-			<form:select path="type">
+			<br />
+			<form:select path="type" required="true" size="4">
 				<spring:message code='activity.selected' var="selected" />
 				<jstl:choose>
 					<jstl:when test="${activity.id == 0}">
@@ -95,11 +92,13 @@
 			<br>
 			<br>
 
-			<acme:textbox code="activity.startMoment" path="startMoment" />
+			<acme:textbox code="activity.startMoment" path="startMoment"
+				placeholder="moment.placeholder" required="true" size="60" />
 
 			<br>
 
-			<acme:textbox code="activity.duration" path="duration" />
+			<acme:textbox code="activity.duration" path="duration"
+				required="true" size="60" />
 
 			<br>
 

@@ -153,6 +153,6 @@ public class CommentService {
 	}
 
 	public Collection<Comentario> getCommentsOfActivity(Integer activityid) {
-		return this.commentRepository.getCommentsOfConference(activityid);
+		return this.commentRepository.getCommentsOfActivity(activityid);
 	}
 }

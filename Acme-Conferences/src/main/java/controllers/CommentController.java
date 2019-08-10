@@ -64,7 +64,7 @@ public class CommentController extends AbstractController {
 
 				if (validated.getActivity() != null) {
 					res = new ModelAndView(
-							"redirect:/activiy/display.do?activityid="
+							"redirect:/activity/display.do?activityid="
 									+ validated.getActivity().getId());
 				} else {
 					res = new ModelAndView(

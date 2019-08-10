@@ -131,12 +131,6 @@
 
 		</security:authorize>
 
-		<security:authorize access="hasRole('ADMIN')">
-
-			<li><a href="statistics/display.do"><spring:message
-						code="master.page.administrator.statistics" /></a></li>
-		</security:authorize>
-
 		<security:authorize access="isAuthenticated()">
 			<li><a class="fNiv"> <spring:message
 						code="master.page.message" />
@@ -154,6 +148,24 @@
 									code="master.page.message.broadcast.all" /> </a></li>
 					</security:authorize>
 				</ul></li>
+		</security:authorize>
+
+		<security:authorize access="hasRole('ADMIN')">
+
+			<li><a href="statistics/display.do"><spring:message
+						code="master.page.administrator.statistics" /></a></li>
+
+			<li><a href="config/admin/display.do"><spring:message
+						code="master.page.configuration" /></a>
+
+				<ul>
+					<li class="arrow"></li>
+					<li><a href="config/admin/display.do"><spring:message
+								code="master.page.configuration.display" /> </a></li>
+					<li><a href="config/admin/edit.do"><spring:message
+								code="master.page.configuration.edit" /> </a></li>
+				</ul></li>
+
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
