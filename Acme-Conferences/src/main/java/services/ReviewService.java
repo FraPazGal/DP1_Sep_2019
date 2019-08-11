@@ -142,4 +142,8 @@ public class ReviewService {
 		}
 
 	}
+
+	public boolean isAssigned(int id) {
+		return this.reportRepository.findSubmissionReport(id) != null;
+	}
 }

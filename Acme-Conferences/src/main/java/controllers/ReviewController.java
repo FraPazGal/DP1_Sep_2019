@@ -38,7 +38,7 @@ public class ReviewController extends AbstractController {
 	@Autowired
 	private SubmissionService submissionService;
 
-	@RequestMapping(value = "/myreports", method = RequestMethod.GET)
+	@RequestMapping(value = "/reviewer/myreports", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView res;
 		Actor principal;
@@ -51,7 +51,7 @@ public class ReviewController extends AbstractController {
 
 			myReports = this.reviewService.findMyReports(principal.getId());
 
-			res = new ModelAndView("report/mine");
+			res = new ModelAndView("review/mine");
 			res.addObject("reports", myReports);
 
 		} catch (Throwable oops) {
@@ -61,7 +61,7 @@ public class ReviewController extends AbstractController {
 		return res;
 	}
 
-	@RequestMapping(value = "/conferencereports", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/conferencereports", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam(value = "id") Integer id) {
 		ModelAndView res;
 		Collection<Report> conferenceReports;
@@ -108,7 +108,30 @@ public class ReviewController extends AbstractController {
 		return res;
 	}
 
-	@RequestMapping(value = "/assign", method = RequestMethod.POST)
+	@RequestMapping(value = "/admin/assign", method = RequestMethod.GET)
+	public ModelAndView assignView(
+			@RequestParam(value = "submissionid") Integer submissionid) {
+		ModelAndView res;
+		Collection<Reviewer> availableReviewers;
+
+		try {
+			Assert.isTrue(this.utilityService.checkAuthority(
+					this.utilityService.findByPrincipal(), "ADMIN"));
+
+			availableReviewers = this.reviewService.findReviewersNotAssigned();
+
+			res = new ModelAndView("review/assign");
+			res.addObject("reviewers", availableReviewers);
+			res.addObject("submissionid", submissionid);
+
+		} catch (Throwable oops) {
+			res = new ModelAndView("welcome/index");
+		}
+
+		return res;
+	}
+
+	@RequestMapping(value = "/admin/assign", method = RequestMethod.POST)
 	public ModelAndView assign(
 			@RequestParam(value = "reviewerid") Integer reviewerid,
 			@RequestParam(value = "submissionid") Integer submissionid) {
@@ -123,7 +146,7 @@ public class ReviewController extends AbstractController {
 
 			this.reviewService.save(newReport);
 
-			res = new ModelAndView("redirect:review/display.do?id="
+			res = new ModelAndView("redirect:/review/display.do?id="
 					+ newReport.getId());
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
@@ -153,7 +176,7 @@ public class ReviewController extends AbstractController {
 					.findConferenceSubmitions(conferenceid);
 
 			reviewers = this.reviewService.findReviewersNotAssigned();
-			
+
 			this.reviewService.assign(submissions, reviewers);
 
 			res = new ModelAndView("conference/display.do?conferenceId="
@@ -165,7 +188,32 @@ public class ReviewController extends AbstractController {
 		return res;
 	}
 
-	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+	@RequestMapping(value = "/reviewer/edit", method = RequestMethod.GET)
+	public ModelAndView edit(@RequestParam(value = "reviewid") int reviewid) {
+		ModelAndView res;
+		Actor principal;
+		Report toWrite;
+
+		try {
+			principal = this.utilityService.findByPrincipal();
+			Assert.isTrue(this.utilityService.checkAuthority(principal,
+					"REVIEWER"));
+
+			toWrite = this.reviewService.findOne(reviewid);
+			Assert.notNull(toWrite);
+			Assert.isTrue(toWrite.getReviewer().getId() == principal.getId());
+
+			res = new ModelAndView("review/edit");
+			res.addObject("review", toWrite);
+
+		} catch (Throwable oops) {
+			res = new ModelAndView("welcome/index");
+		}
+
+		return res;
+	}
+
+	@RequestMapping(value = "/reviewer/edit", method = RequestMethod.POST)
 	public ModelAndView save(Report review, BindingResult binding) {
 		ModelAndView res;
 		Actor principal;
@@ -180,16 +228,14 @@ public class ReviewController extends AbstractController {
 			toSave = this.reviewService.reconstruct(review, binding);
 
 			if (binding.hasErrors()) {
-				res = new ModelAndView("report/edit");
-				res.addObject("report", review);
-				res.addObject("hasPermission",
-						review.getReviewer().getId() == principal.getId());
+				res = new ModelAndView("review/edit");
+				res.addObject("review", review);
+				res.addObject("binding", binding);
 			} else {
 				toSave.setIsWritten(true);
 				this.reviewService.save(toSave);
 
-				res = new ModelAndView("redirect:review/display.do?id="
-						+ toSave.getId());
+				res = new ModelAndView("redirect:review/reviewer/myreports.do");
 
 			}
 		} catch (Throwable oops) {

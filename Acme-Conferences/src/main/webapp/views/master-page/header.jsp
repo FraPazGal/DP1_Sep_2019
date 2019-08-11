@@ -106,7 +106,11 @@
 								code="master.page.submission.list" /></a></li>
 				</ul></li>
 
+		</security:authorize>
 
+		<security:authorize access="hasRole('REVIEWER')">
+			<li><a class="fNiv" href="review/reviewer/myreports.do"><spring:message
+						code="master.page.reviews" /></a>
 		</security:authorize>
 
 		<security:authorize access="isAnonymous()">

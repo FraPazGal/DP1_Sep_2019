@@ -16,4 +16,7 @@ public interface ReportRepository extends JpaRepository<Report, Integer> {
 
 	@Query("select r from Report r where r.submission.conference.id = ?1")
 	Collection<Report> findConferenceReports(Integer id);
+
+	@Query("select r from Report r where r.submission.id = ?1")
+	Report findSubmissionReport(Integer id);
 }
