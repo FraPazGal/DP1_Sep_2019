@@ -35,22 +35,18 @@ public class CommentService {
 	@Autowired
 	private Validator validator;
 
-	public Comentario create() {
-		this.commentRepository.flush();
+	public Comentario createAnonymous(Integer conferenceid, Integer activityid) {
 		Comentario res = new Comentario();
-		Actor principal;
 
+		res = new Comentario();
+
+		Conference conference = this.conferenceService.findOne(conferenceid);
+		Assert.notNull(conference);
+
+		res.setAuthor("[Anonymous]");
+		res.setWriter(this.utilityService.findByUsername("[Anonymous]"));
+		res.setConference(conference);
 		res.setPublishedDate(LocalDate.now().toDate());
-
-		try {
-			principal = this.utilityService.findByPrincipal();
-			Assert.notNull(principal);
-
-			res.setWriter(principal);
-			res.setAuthor(principal.getUserAccount().getUsername());
-		} catch (Throwable oops) {
-			res.setAuthor("[Anonymous]");
-		}
 
 		return res;
 
@@ -66,50 +62,33 @@ public class CommentService {
 
 		try {
 			if (conferenceid != null) {
-				try {
-					principal = this.utilityService.findByPrincipal();
-					Assert.notNull(principal);
 
-					conference = this.conferenceService.findOne(conferenceid);
-					Assert.notNull(conference);
+				principal = this.utilityService.findByPrincipal();
+				Assert.notNull(principal);
 
-					res.setWriter(principal);
-					res.setAuthor(principal.getUserAccount().getUsername());
-					res.setConference(conference);
-				} catch (Throwable oops) {
-					conference = this.conferenceService.findOne(conferenceid);
-					Assert.notNull(conference);
+				conference = this.conferenceService.findOne(conferenceid);
+				Assert.notNull(conference);
 
-					res.setAuthor("[Anonymous]");
-					res.setWriter(this.utilityService
-							.findByUsername("[Anonymous]"));
-					res.setConference(conference);
-				}
+				res.setWriter(principal);
+				res.setAuthor(principal.getUserAccount().getUsername());
+				res.setConference(conference);
+
 			} else {
-				try {
-					principal = this.utilityService.findByPrincipal();
-					Assert.notNull(principal);
 
-					activity = this.activityService.findOne(activityid);
-					Assert.notNull(activity);
+				principal = this.utilityService.findByPrincipal();
+				Assert.notNull(principal);
 
-					res.setWriter(principal);
-					res.setAuthor(principal.getUserAccount().getUsername());
-					res.setActivity(activity);
-				} catch (Throwable oops) {
-					activity = this.activityService.findOne(activityid);
-					Assert.notNull(activity);
+				activity = this.activityService.findOne(activityid);
+				Assert.notNull(activity);
 
-					res.setAuthor("[Anonymous]");
-					res.setWriter(this.utilityService
-							.findByUsername("[Anonymous]"));
-					res.setActivity(activity);
-				}
+				res.setWriter(principal);
+				res.setAuthor(principal.getUserAccount().getUsername());
+				res.setActivity(activity);
+
 			}
 		} catch (Throwable oops) {
 
 		}
-
 		return res;
 	}
 
