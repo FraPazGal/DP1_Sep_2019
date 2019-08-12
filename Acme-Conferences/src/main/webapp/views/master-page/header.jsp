@@ -97,7 +97,7 @@
 
 		</security:authorize>
 
-		<security:authorize access="hasAnyRole('AUTHOR', 'REVIEWER')">
+		<security:authorize access="hasAnyRole('AUTHOR', 'REVIEWER','ADMIN')">
 			<li><a class="fNiv"><spring:message
 						code="master.page.submission" /></a>
 				<ul>

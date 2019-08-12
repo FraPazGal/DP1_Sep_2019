@@ -44,7 +44,7 @@
 
 			<br />
 
-			<acme:textbox path="readabilityScore" code="review.originality"
+			<acme:textbox path="readabilityScore" code="review.readability"
 				size="60" required="true" />
 			<jstl:if
 				test="${not empty binding.getFieldError('readabilityScore')}">

@@ -146,10 +146,15 @@ public class ReviewController extends AbstractController {
 
 			this.reviewService.save(newReport);
 
-			res = new ModelAndView("redirect:/review/display.do?id="
-					+ newReport.getId());
+			res = new ModelAndView("redirect:/submission/list.do");
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			Collection<Reviewer> availableReviewers = this.reviewService
+					.findReviewersNotAssigned();
+
+			res = new ModelAndView("review/assign");
+			res.addObject("reviewers", availableReviewers);
+			res.addObject("submissionid", submissionid);
+			res.addObject("errormesage", "transaction.error");
 		}
 
 		return res;
@@ -235,7 +240,7 @@ public class ReviewController extends AbstractController {
 				toSave.setIsWritten(true);
 				this.reviewService.save(toSave);
 
-				res = new ModelAndView("redirect:review/reviewer/myreports.do");
+				res = new ModelAndView("redirect:myreports.do");
 
 			}
 		} catch (Throwable oops) {

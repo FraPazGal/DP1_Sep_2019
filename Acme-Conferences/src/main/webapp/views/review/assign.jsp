@@ -11,30 +11,54 @@
 
 <security:authorize access="hasRole('ADMIN')">
 
-	<fieldset>
-		<legend>
-			<spring:message code="review.reviewer.selection" />
-		</legend>
+	<jstl:choose>
 
-		<form action="review/admin/assign.do">
+		<jstl:when test="${not empty reviewers}">
+			<fieldset>
+				<legend>
+					<spring:message code="review.reviewer.selection" />
+				</legend>
 
-			<input type="hidden" name="submissionid" value="${submissionid}">
+				<form action="review/admin/assign.do">
 
-			<label><spring:message code="review.available" /></label> <br /> <br />
-			<select name="reviewerid">
+					<input type="hidden" name="submissionid" value="${submissionid}">
 
-				<jstl:forEach var="reviewer" items="${reviewers}">
-					<option value="${reviewer.id}">
-						<jstl:out value="${reviewer.userAccount.username}" />
-					</option>
-				</jstl:forEach>
+					<label><spring:message code="review.available" /></label> <br />
+					<br /> <select name="reviewerid">
 
-			</select> <br /> <br /> <input type="submit"
-				value="<spring:message code="review.assign" />" formmethod="post">
+						<jstl:forEach var="reviewer" items="${reviewers}">
+							<option value="${reviewer.id}">
+								<jstl:out value="${reviewer.userAccount.username}" />
+							</option>
+						</jstl:forEach>
+
+					</select>
+
+					<jstl:if test="${not empty errormessage}">
+						<p class="error">
+							<spring:message code="${errormessage}" />
+						</p>
+					</jstl:if>
+
+					<br /> <br /> <input type="submit"
+						value="<spring:message code="review.assign" />" formmethod="post">
 
 
-		</form>
+				</form>
 
-	</fieldset>
+			</fieldset>
+
+		</jstl:when>
+		<jstl:otherwise>
+			<h2>
+				<spring:message code="no.reviewers" />
+			</h2>
+
+			<input type="button" onclick="window.history.back()"
+				value="<spring:message code="go.back" />">
+
+		</jstl:otherwise>
+
+	</jstl:choose>
 
 </security:authorize>

@@ -5,6 +5,7 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -84,7 +85,7 @@ public class Report extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public Reviewer getReviewer() {
 		return reviewer;
 	}
