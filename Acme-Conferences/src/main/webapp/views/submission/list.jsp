@@ -169,6 +169,11 @@
 				</display:column>
 
 			</display:table>
+
+			<input type="button" value="<spring:message code="assign.all"/>"
+				onclick="location.href = 'review/admin/automaticassign.do';"
+				formmethod="post">
+
 		</jstl:when>
 		<jstl:otherwise>
 			<p>

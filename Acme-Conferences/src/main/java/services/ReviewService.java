@@ -130,11 +130,21 @@ public class ReviewService {
 		for (Submission s : submissions) {
 			int i = 0;
 			for (Reviewer r : reviewers) {
-				if (!this.reviewerService.isReviewing(r.getId())) {
-					Report report = this.create(r.getId(), s.getId());
-					this.save(report);
-					this.reportRepository.flush();
-					i++;
+				if (this.reviewerService.isNotAssigned(r.getId())) {
+					String[] keywords = r.getKeywords().toLowerCase()
+							.split(",");
+					for (String keyword : keywords) {
+						if (s.getConference().getTitle().toLowerCase()
+								.contains(keyword)
+								|| s.getConference().getSummary().toLowerCase()
+										.contains(keyword)) {
+							Report report = this.create(r.getId(), s.getId());
+							this.save(report);
+							this.reportRepository.flush();
+							i++;
+							break;
+						}
+					}
 					if (i == 3)
 						break;
 				}

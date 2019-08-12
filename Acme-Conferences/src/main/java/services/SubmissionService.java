@@ -265,7 +265,7 @@ public class SubmissionService {
 		return this.submissionRepository.findConferenceSubmitions(id);
 	}
 
-	private Collection<Submission> submissionsAssigned() {
+	public Collection<Submission> submissionsAssigned() {
 		return this.submissionRepository.submissionsAssigned();
 	}
 	

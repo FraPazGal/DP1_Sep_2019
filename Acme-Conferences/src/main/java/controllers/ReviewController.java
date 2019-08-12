@@ -2,7 +2,6 @@ package controllers;
 
 import java.util.Collection;
 
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -12,12 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.ConferenceService;
 import services.ReviewService;
 import services.SubmissionService;
 import services.UtilityService;
 import domain.Actor;
-import domain.Conference;
 import domain.Report;
 import domain.Reviewer;
 import domain.Submission;
@@ -31,9 +28,6 @@ public class ReviewController extends AbstractController {
 
 	@Autowired
 	private UtilityService utilityService;
-
-	@Autowired
-	private ConferenceService conferenceService;
 
 	@Autowired
 	private SubmissionService submissionService;
@@ -160,32 +154,26 @@ public class ReviewController extends AbstractController {
 		return res;
 	}
 
-	@RequestMapping(value = "/automaticassignment")
-	public ModelAndView assign(
-			@RequestParam(value = "conferenceid") Integer conferenceid) {
+	@RequestMapping(value = "/admin/automaticassign")
+	public ModelAndView assign() {
 		ModelAndView res;
-		Conference conference;
 		Collection<Reviewer> reviewers;
-		Collection<Submission> submissions;
+		Collection<Submission> submissionsToAssign;
 
 		try {
 			Assert.isTrue(this.utilityService.checkAuthority(
 					this.utilityService.findByPrincipal(), "ADMIN"));
 
-			conference = this.conferenceService.findOne(conferenceid);
+			submissionsToAssign = this.submissionService.findAll();
 
-			Assert.isTrue(conference.getSubmissionDeadline().before(
-					LocalDate.now().toDate()));
-
-			submissions = this.submissionService
-					.findConferenceSubmitions(conferenceid);
+			submissionsToAssign.remove(this.submissionService
+					.submissionsAssigned());
 
 			reviewers = this.reviewService.findReviewersNotAssigned();
 
-			this.reviewService.assign(submissions, reviewers);
+			this.reviewService.assign(submissionsToAssign, reviewers);
 
-			res = new ModelAndView("conference/display.do?conferenceId="
-					+ conferenceid);
+			res = new ModelAndView("redirect:/submission/list.do");
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
 		}

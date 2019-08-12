@@ -300,4 +300,10 @@ public class ReviewerService {
 		return (reports == null || reports.size() == 0);
 	}
 
+	public boolean isNotAssigned(Integer reviewerid) {
+		Collection<Report> reports = this.reviewerRepository
+				.isReviewing(reviewerid);
+		return reports.isEmpty();
+	}
+
 }
