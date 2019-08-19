@@ -217,9 +217,7 @@ public class ConferenceController extends AbstractController {
 			Assert.notNull(conference);
 
 			principal = this.utilityService.findByPrincipal();
-			Assert.isTrue(
-					conference.getAdministrator().equals(
-							(Administrator) principal)
+			Assert.isTrue(conference.getAdministrator().equals((Administrator) principal)
 							&& !conference.getIsFinal(), "not.allowed");
 
 			result = this.createEditModelAndView(conference);
@@ -238,8 +236,7 @@ public class ConferenceController extends AbstractController {
 		ModelAndView result;
 
 		try {
-			Conference toSave = this.conferenceService.reconstruct(conference,
-					binding);
+			Conference toSave = this.conferenceService.reconstruct(conference, binding);
 			if (binding.hasErrors()) {
 
 				conference.setIsFinal(false);
@@ -316,12 +313,10 @@ public class ConferenceController extends AbstractController {
 		return this.createEditModelAndView(conference, null);
 	}
 
-	protected ModelAndView createEditModelAndView(final Conference conference,
-			final String messageCode) {
-		final ModelAndView result;
+	protected ModelAndView createEditModelAndView(final Conference conference, final String messageCode) {
 		Collection<Category> categories = this.categoryService.findAll();
-
-		result = new ModelAndView("conference/edit");
+		ModelAndView result = new ModelAndView("conference/edit");
+		
 		result.addObject("conference", conference);
 		result.addObject("categories", categories);
 		result.addObject("errMsg", messageCode);

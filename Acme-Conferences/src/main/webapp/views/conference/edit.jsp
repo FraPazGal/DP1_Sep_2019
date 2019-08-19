@@ -20,8 +20,7 @@
 	</jstl:when>
 	<jstl:otherwise>
 		<h1><spring:message	code="conference.title.edit" /></h1>
-		<form:form modelAttribute="conference" action="conference/edit.do"
-			id="form">
+		<form:form modelAttribute="conference" action="conference/edit.do"	id="form">
 	
 			<form:hidden path="id" />
 			

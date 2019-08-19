@@ -70,7 +70,7 @@ public class FinderController extends AbstractController {
 			result.addObject("conferences", this.finderService.searchAnon(keyWord));
 			result.addObject("requestUri", "finder/anon/search.do");
 		} catch (Throwable oops) {
-			result = new ModelAndView("conferences/list?catalog=unpublished");
+			result = new ModelAndView("redirect:../welcome/index.do");
 
 			result.addObject("errMsg", oops.getMessage());
 		}
