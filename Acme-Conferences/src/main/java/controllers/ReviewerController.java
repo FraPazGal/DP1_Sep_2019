@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
-import services.SponsorService;
+import services.ReviewerService;
 import services.UtilityService;
 import domain.Actor;
-import domain.Sponsor;
-import forms.ActorForm;
-import forms.ActorRegistrationForm;
+import domain.Reviewer;
+import forms.ReviewerForm;
+import forms.ReviewerRegistrationForm;
 
 @Controller
-@RequestMapping("/sponsor")
-public class SponsorController extends AbstractController {
+@RequestMapping("/reviewer")
+public class ReviewerController extends AbstractController {
 
 	/* Services */
 
 	@Autowired
-	private SponsorService sponsorService;
+	private ReviewerService reviewerService;
 
 	@Autowired
 	private ActorService actorService;
@@ -38,7 +38,7 @@ public class SponsorController extends AbstractController {
 
 	/**
 	 * 
-	 * Display sponsor
+	 * Display reviewer
 	 * 
 	 * @params id (optional)
 	 * 
@@ -47,32 +47,32 @@ public class SponsorController extends AbstractController {
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam(required = false) final Integer id) {
 		ModelAndView res;
-		Sponsor toDisplay;
-		String requestURI = "sponsor/display.do";
+		Reviewer toDisplay;
+		String requestURI = "reviewer/display.do";
 		Boolean found = true;
 		Boolean permission;
 
 		try {
 			if (id != null) {
-				toDisplay = (Sponsor) this.actorService.findOne(id);
+				toDisplay = (Reviewer) this.actorService.findOne(id);
+				requestURI += "?id=" + id;
 				if (toDisplay == null)
 					found = false;
 				permission = (toDisplay.getId() == this.utilityService
 						.findByPrincipal().getId()) ? true : false;
-				requestURI += "?id=" + id;
 			} else {
-				toDisplay = (Sponsor) this.utilityService.findByPrincipal();
+				toDisplay = (Reviewer) this.utilityService.findByPrincipal();
 				permission = true;
 			}
 
-			res = new ModelAndView("sponsor/display");
-			res.addObject("sponsor", toDisplay);
+			res = new ModelAndView("reviewer/display");
+			res.addObject("reviewer", toDisplay);
 			res.addObject("found", found);
 			res.addObject("requestURI", requestURI);
 			res.addObject("permission", permission);
 		} catch (final Throwable oops) {
 			found = false;
-			res = new ModelAndView("sponsor/display");
+			res = new ModelAndView("reviewer/display");
 			res.addObject("found", found);
 		}
 
@@ -81,72 +81,80 @@ public class SponsorController extends AbstractController {
 
 	/**
 	 * 
-	 * Register sponsor GET
+	 * Register reviewer GET
 	 * 
 	 * @return ModelAndView
 	 **/
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public ModelAndView registerNewSponsor() {
+	public ModelAndView registerNewAdministrator() {
 		ModelAndView res;
 
-		final ActorRegistrationForm registerFormObject = new ActorRegistrationForm();
+		final ReviewerRegistrationForm reviewerRegistrationForm = new ReviewerRegistrationForm();
 
-		res = this.createRegisterModelAndView(registerFormObject);
+		res = this.createRegisterModelAndView(reviewerRegistrationForm);
 
 		return res;
 	}
 
 	/**
 	 * 
-	 * Register sponsor POST
+	 * Register reviewer POST
 	 * 
 	 * @return ModelAndView
 	 **/
 	@RequestMapping(value = "/register", method = RequestMethod.POST, params = "save")
 	public ModelAndView register(
-			@Valid final ActorRegistrationForm registerFormObject,
+			final ReviewerRegistrationForm reviewerRegistrationForm,
 			final BindingResult binding) {
 
 		ModelAndView res;
 
-		Sponsor sponsor = this.sponsorService.reconstruct(registerFormObject,
-				binding);
+		try {
 
-		if (binding.hasErrors()) {
+			Reviewer reviewer = this.reviewerService.reconstruct(
+					reviewerRegistrationForm, binding);
 
-			res = new ModelAndView("sponsor/register");
-			res.addObject("registerFormObject", registerFormObject);
-			res.addObject("binding", binding);
+			if (binding.hasErrors()) {
 
-		} else {
-			try {
+				res = new ModelAndView("reviewer/register");
+				res.addObject("registerFormObject", reviewerRegistrationForm);
+				res.addObject("binding", binding);
 
-				this.sponsorService.save(sponsor);
+			} else {
+				try {
 
-				res = new ModelAndView("redirect:/");
+					this.reviewerService.save(reviewer);
 
-			} catch (final Throwable oops) {
-				res = this.createRegisterModelAndView(registerFormObject,
-						"sponsor.commit.error");
+					res = new ModelAndView("redirect:/");
 
+				} catch (final Throwable oops) {
+					res = this.createRegisterModelAndView(
+							reviewerRegistrationForm, "reviewer.commit.error");
+
+				}
 			}
+
+		} catch (Throwable oops) {
+			res = new ModelAndView("redirect:/");
 		}
+
 		return res;
 	}
 
 	/**
 	 * 
-	 * Edit sponsor GET
+	 * Edit reviewer GET
 	 * 
 	 * @return ModelAndView
 	 **/
-	@RequestMapping(value = "/sponsor/edit", method = RequestMethod.GET)
-	public ModelAndView editSponsor() {
+	@RequestMapping(value = "/reviewer/edit", method = RequestMethod.GET)
+	public ModelAndView editAdministrator() {
 		ModelAndView res;
 		Actor principal;
 
 		principal = this.utilityService.findByPrincipal();
-		final ActorForm editionFormObject = new ActorForm(principal);
+		final ReviewerForm editionFormObject = new ReviewerForm(
+				(Reviewer) principal);
 
 		res = this.createEditModelAndView(editionFormObject);
 
@@ -155,41 +163,41 @@ public class SponsorController extends AbstractController {
 
 	/**
 	 * 
-	 * Edit sponsor POST
+	 * Edit reviewer POST
 	 * 
 	 * @return ModelAndView
 	 **/
-	@RequestMapping(value = "/sponsor/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView edit(@Valid final ActorForm editionFormObject,
+	@RequestMapping(value = "/reviewer/edit", method = RequestMethod.POST, params = "save")
+	public ModelAndView edit(@Valid final ReviewerForm reviewerForm,
 			final BindingResult binding) {
 
 		ModelAndView res;
 
 		try {
 
-			Assert.isTrue(this.utilityService.findByPrincipal().getId() == editionFormObject
+			Assert.isTrue(this.utilityService.findByPrincipal().getId() == reviewerForm
 					.getId()
 					&& this.actorService.findOne(this.utilityService
 							.findByPrincipal().getId()) != null);
 
-			Sponsor sponsor = this.sponsorService.reconstruct(
-					editionFormObject, binding);
+			Reviewer reviewer = this.reviewerService.reconstruct(reviewerForm,
+					binding);
 
 			if (binding.hasErrors()) {
 
-				res = new ModelAndView("administrator/edit");
-				res.addObject("editionFormObject", editionFormObject);
+				res = new ModelAndView("reviewer/edit");
+				res.addObject("editionFormObject", reviewerForm);
 				res.addObject("binding", binding);
 
 			} else {
 				try {
-					this.sponsorService.save(sponsor);
+					this.reviewerService.save(reviewer);
 
 					res = new ModelAndView("redirect:/");
 
 				} catch (Throwable oops) {
-					res = this.createEditModelAndView(editionFormObject,
-							"sponsor.commit.error");
+					res = this.createEditModelAndView(reviewerForm,
+							"reviewer.commit.error");
 
 				}
 
@@ -206,21 +214,22 @@ public class SponsorController extends AbstractController {
 
 	/* Registration related */
 	protected ModelAndView createRegisterModelAndView(
-			final ActorRegistrationForm registerFormObject) {
+			final ReviewerRegistrationForm reviewerRegistrationForm) {
 		ModelAndView result;
 
-		result = this.createRegisterModelAndView(registerFormObject, null);
+		result = this
+				.createRegisterModelAndView(reviewerRegistrationForm, null);
 
 		return result;
 	}
 
 	protected ModelAndView createRegisterModelAndView(
-			final ActorRegistrationForm registerFormObject,
+			final ReviewerRegistrationForm reviewerRegistrationForm,
 			final String messageCode) {
 		ModelAndView result;
 
-		result = new ModelAndView("sponsor/register");
-		result.addObject("registerFormObject", registerFormObject);
+		result = new ModelAndView("reviewer/register");
+		result.addObject("registerFormObject", reviewerRegistrationForm);
 		result.addObject("message", messageCode);
 
 		return result;
@@ -228,20 +237,20 @@ public class SponsorController extends AbstractController {
 
 	/* Edition related */
 	protected ModelAndView createEditModelAndView(
-			final ActorForm editionFormObject) {
+			final ReviewerForm reviewerForm) {
 		ModelAndView result;
 
-		result = this.createEditModelAndView(editionFormObject, null);
+		result = this.createEditModelAndView(reviewerForm, null);
 
 		return result;
 	}
 
 	protected ModelAndView createEditModelAndView(
-			final ActorForm editionFormObject, final String messageCode) {
+			final ReviewerForm reviewerForm, final String messageCode) {
 		ModelAndView result;
 
-		result = new ModelAndView("sponsor/edit");
-		result.addObject("editionFormObject", editionFormObject);
+		result = new ModelAndView("reviewer/edit");
+		result.addObject("editionFormObject", reviewerForm);
 		result.addObject("message", messageCode);
 
 		return result;

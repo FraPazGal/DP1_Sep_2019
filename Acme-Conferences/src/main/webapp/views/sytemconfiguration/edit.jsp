@@ -50,7 +50,7 @@
 			<form:hidden path="id" />
 			<form:hidden path="version" />
 
-			<acme:textbox code="config.sysname" path="systemName" />
+			<acme:textbox code="config.sysname" path="systemName" required="true" />
 			<jstl:if
 				test="${not empty binding.getFieldError('systemName').getCode()}">
 				<p class="error">
@@ -61,7 +61,7 @@
 
 			<br>
 
-			<acme:textbox code="config.banner" path="banner" />
+			<acme:textbox code="config.banner" path="banner" required="true" />
 			<jstl:if
 				test="${not empty binding.getFieldError('banner').getCode()}">
 				<p class="error">
@@ -71,7 +71,8 @@
 
 			<br>
 
-			<acme:textbox code="config.countryCode" path="countryCode" />
+			<acme:textbox code="config.countryCode" path="countryCode"
+				required="true" />
 			<jstl:if
 				test="${not empty binding.getFieldError('countryCode').getCode()}">
 				<p class="error">
@@ -85,7 +86,7 @@
 			<form:label path="timeResultsCached">
 				<spring:message code="config.cache" />
 			</form:label>
-			<form:input type="number" path="timeResultsCached" />
+			<form:input type="number" path="timeResultsCached" required="true" />
 			<jstl:if
 				test="${not empty binding.getFieldError('timeResultsCached').getCode()}">
 				<p class="error">
@@ -100,7 +101,7 @@
 			<form:label path="maxResults">
 				<spring:message code="config.maxResults" />
 			</form:label>
-			<form:input type="number" path="maxResults" />
+			<form:input type="number" path="maxResults" required="true" />
 			<jstl:if
 				test="${not empty binding.getFieldError('maxResults').getCode()}">
 				<p class="error">

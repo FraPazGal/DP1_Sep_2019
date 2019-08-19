@@ -22,7 +22,7 @@ import services.SystemConfigurationService;
 import services.UtilityService;
 import domain.Actor;
 import domain.Author;
-import domain.Message;
+import domain.Mensaje;
 
 @Controller
 @RequestMapping("/message")
@@ -49,7 +49,7 @@ public class MessageController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView res;
-		Collection<Message> messages;
+		Collection<Mensaje> messages;
 
 		try {
 			messages = this.messageService.findByPrincipal();
@@ -67,7 +67,7 @@ public class MessageController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView res;
-		Message newMessage;
+		Mensaje newMessage;
 
 		try {
 			newMessage = this.messageService.create();
@@ -76,7 +76,11 @@ public class MessageController {
 			res.addObject("mensaje", newMessage);
 			res.addObject("topics", this.systemConfigurationService
 					.findMySystemConfiguration().getTopics());
-			res.addObject("actors", this.actorService.findAll());
+
+			Collection<Actor> actors = this.actorService.findAll();
+			actors.remove((Actor) this.utilityService.findByPrincipal());
+
+			res.addObject("actors", actors);
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
 		}
@@ -84,16 +88,23 @@ public class MessageController {
 	}
 
 	@RequestMapping(value = "/send", method = RequestMethod.POST, params = "save")
-	public ModelAndView send(@Valid Message message, BindingResult binding) {
+	public ModelAndView send(Mensaje message, BindingResult binding) {
 		ModelAndView res;
 
 		try {
+			this.messageService.validate(message, binding);
 			if (binding.hasErrors()) {
+
 				res = new ModelAndView("message/edit");
+
 				res.addObject("mensaje", message);
 				res.addObject("topics", this.systemConfigurationService
 						.findMySystemConfiguration().getTopics());
-				res.addObject("actors", this.actorService.findAll());
+
+				Collection<Actor> actors = this.actorService.findAll();
+				actors.remove((Actor) this.utilityService.findByPrincipal());
+
+				res.addObject("actors", actors);
 			} else {
 				this.messageService.save(message);
 
@@ -111,7 +122,7 @@ public class MessageController {
 			@RequestParam(value = "type") String type,
 			@RequestParam(value = "id", required = false) Integer id) {
 		ModelAndView res;
-		Message newMessage;
+		Mensaje newMessage;
 		Collection<Actor> actors;
 
 		try {
@@ -156,7 +167,7 @@ public class MessageController {
 	}
 
 	@RequestMapping(value = "/broadcast", method = RequestMethod.POST, params = "save")
-	public ModelAndView sendBroadcast(@Valid Message message,
+	public ModelAndView sendBroadcast(@Valid Mensaje message,
 			BindingResult binding) {
 		ModelAndView res;
 

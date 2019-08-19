@@ -5,14 +5,14 @@ import javax.transaction.Transactional;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import domain.Message;
+import domain.Mensaje;
 
 @Component
 @Transactional
-public class MessageToStringConverter implements Converter<Message, String> {
+public class MessageToStringConverter implements Converter<Mensaje, String> {
 
 	@Override
-	public String convert(final Message message) {
+	public String convert(final Mensaje message) {
 		String result;
 
 		if (message == null)

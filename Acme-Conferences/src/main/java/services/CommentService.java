@@ -13,7 +13,7 @@ import org.springframework.validation.Validator;
 import repositories.CommentRepository;
 import domain.Activity;
 import domain.Actor;
-import domain.Comment;
+import domain.Comentario;
 import domain.Conference;
 
 @Transactional
@@ -35,29 +35,25 @@ public class CommentService {
 	@Autowired
 	private Validator validator;
 
-	public Comment create() {
-		Comment res = new Comment();
-		Actor principal;
+	public Comentario createAnonymous(Integer conferenceid, Integer activityid) {
+		Comentario res = new Comentario();
 
+		res = new Comentario();
+
+		Conference conference = this.conferenceService.findOne(conferenceid);
+		Assert.notNull(conference);
+
+		res.setAuthor("[Anonymous]");
+		res.setWriter(this.utilityService.findByUsername("[Anonymous]"));
+		res.setConference(conference);
 		res.setPublishedDate(LocalDate.now().toDate());
-
-		try {
-			principal = this.utilityService.findByPrincipal();
-			Assert.notNull(principal);
-
-			res.setWriter(principal);
-			res.setAuthor(principal.getUserAccount().getUsername());
-		} catch (Throwable oops) {
-			res.setAuthor("[Anonymous]");
-			res.setWriter(null);
-		}
 
 		return res;
 
 	}
 
-	public Comment createComment(Integer conferenceid, Integer activityid) {
-		Comment res = new Comment();
+	public Comentario createComment(Integer conferenceid, Integer activityid) {
+		Comentario res = new Comentario();
 		Actor principal;
 		Conference conference;
 		Activity activity;
@@ -66,58 +62,45 @@ public class CommentService {
 
 		try {
 			if (conferenceid != null) {
-				try {
-					principal = this.utilityService.findByPrincipal();
-					Assert.notNull(principal);
 
-					conference = this.conferenceService.findOne(conferenceid);
-					Assert.notNull(conference);
+				principal = this.utilityService.findByPrincipal();
+				Assert.notNull(principal);
 
-					res.setWriter(principal);
-					res.setAuthor(principal.getUserAccount().getUsername());
-					res.setConference(conference);
-				} catch (Throwable oops) {
-					conference = this.conferenceService.findOne(conferenceid);
-					Assert.notNull(conference);
+				conference = this.conferenceService.findOne(conferenceid);
+				Assert.notNull(conference);
 
-					res.setAuthor("[Anonymous]");
-					res.setConference(conference);
-				}
+				res.setWriter(principal);
+				res.setAuthor(principal.getUserAccount().getUsername());
+				res.setConference(conference);
+
 			} else {
-				try {
-					principal = this.utilityService.findByPrincipal();
-					Assert.notNull(principal);
 
-					activity = this.activityService.findOne(activityid);
-					Assert.notNull(activity);
+				principal = this.utilityService.findByPrincipal();
+				Assert.notNull(principal);
 
-					res.setWriter(principal);
-					res.setAuthor(principal.getUserAccount().getUsername());
-					res.setActivity(activity);
-				} catch (Throwable oops) {
-					activity = this.activityService.findOne(activityid);
-					Assert.notNull(activity);
+				activity = this.activityService.findOne(activityid);
+				Assert.notNull(activity);
 
-					res.setAuthor("[Anonymous]");
-					res.setActivity(activity);
-				}
+				res.setWriter(principal);
+				res.setAuthor(principal.getUserAccount().getUsername());
+				res.setActivity(activity);
+
 			}
 		} catch (Throwable oops) {
 
 		}
-
 		return res;
 	}
 
-	public Comment save(Comment comment) {
+	public Comentario save(Comentario comment) {
 		return this.commentRepository.save(comment);
 	}
 
-	public void delete(Comment comment) {
+	public void delete(Comentario comment) {
 		this.commentRepository.delete(comment);
 	}
 
-	public Comment validate(Comment comment, BindingResult binding) {
+	public Comentario validate(Comentario comment, BindingResult binding) {
 
 		try {
 			Assert.isTrue(comment.getConference() != null
@@ -127,16 +110,28 @@ public class CommentService {
 			binding.rejectValue("activity", "activity.error");
 		}
 
-		validator.validate(comment, binding);
+		try {
+			Assert.isTrue(!comment.getBody().trim().isEmpty());
+		} catch (Throwable oops) {
+			binding.rejectValue("body", "body.error");
+		}
+
+		try {
+			Assert.isTrue(!comment.getTitle().trim().isEmpty());
+		} catch (Throwable oops) {
+			binding.rejectValue("title", "title.error");
+		}
+
+		this.validator.validate(comment, binding);
 
 		return comment;
 	}
 
-	public Collection<Comment> getCommentsOfConference(Integer conferenceid) {
+	public Collection<Comentario> getCommentsOfConference(Integer conferenceid) {
 		return this.commentRepository.getCommentsOfConference(conferenceid);
 	}
 
-	public Collection<Comment> getCommentsOfActivity(Integer activityid) {
-		return this.commentRepository.getCommentsOfConference(activityid);
+	public Collection<Comentario> getCommentsOfActivity(Integer activityid) {
+		return this.commentRepository.getCommentsOfActivity(activityid);
 	}
 }

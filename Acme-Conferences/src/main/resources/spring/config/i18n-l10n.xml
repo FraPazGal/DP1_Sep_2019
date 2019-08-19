@@ -34,6 +34,8 @@
 		<value>/views/sytemconfiguration/messages</value>
 		<value>/views/message/messages</value>
 		<value>/views/submission/messages</value>
+
+		<value>/views/review/messages</value>
 	</util:list>
 
 </beans>

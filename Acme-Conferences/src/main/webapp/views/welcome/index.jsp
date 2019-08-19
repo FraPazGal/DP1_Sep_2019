@@ -20,8 +20,8 @@
 
 <p>
 	<spring:message code="welcome.greeting.prefix" />
-	${name}
-	<spring:message code="welcome.greeting.suffix" />
+	${name}!
+
 </p>
 
 <p>

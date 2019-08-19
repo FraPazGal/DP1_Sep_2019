@@ -73,4 +73,8 @@ public class UtilityService {
 
 		return isAdmin;
 	}
+
+	public Actor findByUsername(String username) {
+		return this.actorRepository.findByUsername(username);
+	}
 }

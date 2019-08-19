@@ -260,8 +260,12 @@ public class SubmissionService {
 	public Collection<Submission> submissionsPerAuthor(int authorId) {
 		return this.submissionRepository.submissionsPerAuthor(authorId);
 	}
-	
-	private Collection<Submission> submissionsAssigned() {
+
+	public Collection<Submission> findConferenceSubmitions(Integer id) {
+		return this.submissionRepository.findConferenceSubmitions(id);
+	}
+
+	public Collection<Submission> submissionsAssigned() {
 		return this.submissionRepository.submissionsAssigned();
 	}
 	

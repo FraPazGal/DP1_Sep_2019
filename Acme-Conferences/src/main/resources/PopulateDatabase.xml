@@ -10,6 +10,31 @@
 
 	<!-- USER ACCOUNTS -->
 
+
+	<!-- SPECIAL -->
+
+	<bean id="userAnonymous" class="security.UserAccount">
+		<property name="username" value="[Anonymous]" />
+		<property name="password" value="1ea4b70898f9ef5eb7172cb3f83f6e56" />
+		<property name="anonymous" value="true" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ANONYMOUS" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ANONYMOUS -->
+
+	<bean id="anonymousActor" class="domain.Actor">
+		<property name="name" value="[Anonymous]" />
+		<property name="surname" value="[Anonymous]" />
+		<property name="email" value="[Anonymous]" />
+		<property name="userAccount" ref="userAnonymous" />
+	</bean>
+
 	<!-- ADMINISTRATORS -->
 
 	<bean id="userAdmin1" class="security.UserAccount">
@@ -1181,7 +1206,7 @@
 		<property name="paper" ref="paper3" />
 		<property name="cameraReadyPaper" ref="paper3cr" />
 	</bean>
-	
+
 	<bean id="submission4" class="domain.Submission">
 		<property name="ticker" value="STN-LO0I" />
 		<property name="status" value="ACCEPTED" />
@@ -1237,7 +1262,7 @@
 
 	<!-- MESSAGES -->
 
-	<bean id="message1" class="domain.Message">
+	<bean id="message1" class="domain.Mensaje">
 		<property name="sendMoment" value="03/15/2019 23:59:59" />
 		<property name="subject" value="DP" />
 		<property name="body"
@@ -1252,7 +1277,7 @@
 		<property name="sender" ref="reviewer1" />
 	</bean>
 
-	<bean id="message2" class="domain.Message">
+	<bean id="message2" class="domain.Mensaje">
 		<property name="sendMoment" value="04/23/2019 15:55:51" />
 		<property name="subject" value="DP" />
 		<property name="body"
@@ -1266,7 +1291,7 @@
 		<property name="sender" ref="reviewer2" />
 	</bean>
 
-	<bean id="message3" class="domain.Message">
+	<bean id="message3" class="domain.Mensaje">
 		<property name="sendMoment" value="04/23/2019 08:23:15" />
 		<property name="subject" value="DP" />
 		<property name="body"
@@ -1491,7 +1516,7 @@
 
 	<!-- CONFERENCE 1 COMMENTS -->
 
-	<bean id="comment1" class="domain.Comment">
+	<bean id="comment1" class="domain.Comentario">
 		<property name="title" value="Very borring" />
 		<property name="body"
 			value="It was very boring, what I usually like is destroy planets, not saving them." />
@@ -1500,7 +1525,7 @@
 		<property name="conference" ref="conference1" />
 		<property name="writer" ref="administrator1" />
 	</bean>
-	<bean id="comment2" class="domain.Comment">
+	<bean id="comment2" class="domain.Comentario">
 		<property name="title" value="I think the same as that Boros guy" />
 		<property name="body" value="I also enjoy destroying planets." />
 		<property name="author" value="Frieza" />
@@ -1508,7 +1533,7 @@
 		<property name="conference" ref="conference1" />
 		<property name="writer" ref="reviewer1" />
 	</bean>
-	<bean id="comment3" class="domain.Comment">
+	<bean id="comment3" class="domain.Comentario">
 		<property name="title" value="What is climate change" />
 		<property name="body" value="I 
 		don't know what that is." />
@@ -1517,7 +1542,7 @@
 		<property name="activity" ref="activity3Conference1" />
 		<property name="writer" ref="sponsor1" />
 	</bean>
-	<bean id="comment4" class="domain.Comment">
+	<bean id="comment4" class="domain.Comentario">
 		<property name="title" value="Climate 
 		change doesn't exist" />
 		<property name="body" value="I you don't need to 
@@ -1528,7 +1553,7 @@
 		<property name="writer" ref="author1" />
 	</bean>
 	<!-- CONFERENCE 3 COMMENTS -->
-	<bean id="comment5" class="domain.Comment">
+	<bean id="comment5" class="domain.Comentario">
 		<property name="title" value="Interesting..." />
 		<property name="body"
 			value="I could 
@@ -1538,7 +1563,7 @@
 		<property name="conference" ref="conference3" />
 		<property name="writer" ref="administrator2" />
 	</bean>
-	<bean id="comment6" class="domain.Comment">
+	<bean id="comment6" class="domain.Comentario">
 		<property name="title" value="Kono 
 		Dio Da!" />
 		<property name="body" value="Wryyyyy!" />
@@ -1547,7 +1572,7 @@
 		<property name="conference" ref="conference3" />
 		<property name="writer" ref="reviewer2" />
 	</bean>
-	<bean id="comment7" class="domain.Comment">
+	<bean id="comment7" class="domain.Comentario">
 		<property name="title" value="Don't like it" />
 		<property name="body" value="I don't 
 		like what I cannot understand." />
@@ -1556,7 +1581,7 @@
 		<property name="activity" ref="activity3Conference3" />
 		<property name="writer" ref="sponsor2" />
 	</bean>
-	<bean id="comment8" class="domain.Comment">
+	<bean id="comment8" class="domain.Comentario">
 		<property name="title" value="I 
 		am Meruem, King of the chimera ants..." />
 		<property name="body" value="...and 

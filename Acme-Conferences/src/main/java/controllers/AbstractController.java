@@ -11,26 +11,30 @@
 package controllers;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
+
+import services.SystemConfigurationService;
 
 @Controller
 public class AbstractController {
-	
-//	@Autowired
-//	private SystemConfigurationService	systemConfigurationService;
-//
-//	// Methods
-//
-//	@ModelAttribute("banner")
-//	public String getBanner(final Model model) {
-//
-//		final String urlBanner = this.systemConfigurationService.findMyBanner();
-//		return urlBanner;
-//	}
-	
+
+	@Autowired
+	private SystemConfigurationService systemConfigurationService;
+
+	// Methods
+
+	@ModelAttribute("banner")
+	public String getBanner(final Model model) {
+
+		final String urlBanner = this.systemConfigurationService.findMyBanner();
+		return urlBanner;
+	}
 
 	// Panic handler ----------------------------------------------------------
 

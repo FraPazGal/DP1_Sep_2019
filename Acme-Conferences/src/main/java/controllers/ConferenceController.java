@@ -24,7 +24,7 @@ import domain.Activity;
 import domain.Actor;
 import domain.Administrator;
 import domain.Category;
-import domain.Comment;
+import domain.Comentario;
 import domain.Conference;
 import domain.Sponsorship;
 
@@ -62,7 +62,7 @@ public class ConferenceController extends AbstractController {
 		Sponsorship spoBanner = null;
 		Category category = new Category();
 		Collection<Activity> activities;
-		Collection<Comment> comments;
+		Collection<Comentario> comments;
 		Map<String, String> titleCat = new HashMap<>();
 
 		try {

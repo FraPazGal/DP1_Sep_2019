@@ -5,12 +5,11 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.Range;
 
 @Entity
@@ -24,10 +23,10 @@ public class Report extends DomainEntity {
 	private String status, comments;
 	private Submission submission;
 	private Reviewer reviewer;
+	private boolean isWritten;
 
 	/* Getters and setters */
 
-	@NotNull
 	@Range(min = 0, max = 10, message = "range.error")
 	public Double getOriginalityScore() {
 		return originalityScore;
@@ -37,7 +36,6 @@ public class Report extends DomainEntity {
 		this.originalityScore = originalityScore;
 	}
 
-	@NotNull
 	@Range(min = 0, max = 10, message = "range.error")
 	public Double getQualityScore() {
 		return qualityScore;
@@ -47,7 +45,6 @@ public class Report extends DomainEntity {
 		this.qualityScore = qualityScore;
 	}
 
-	@NotNull
 	@Range(min = 0, max = 10, message = "range.error")
 	public Double getReadabilityScore() {
 		return readabilityScore;
@@ -57,8 +54,6 @@ public class Report extends DomainEntity {
 		this.readabilityScore = readabilityScore;
 	}
 
-	@NotNull
-	@NotBlank
 	@Pattern(regexp = "^BORDER-LINE|ACCEPTED|REJECTED$", message = "status.error")
 	public String getStatus() {
 		return status;
@@ -68,8 +63,6 @@ public class Report extends DomainEntity {
 		this.status = status;
 	}
 
-	@NotNull
-	@NotBlank
 	public String getComments() {
 		return comments;
 	}
@@ -80,7 +73,7 @@ public class Report extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public Submission getSubmission() {
 		return submission;
 	}
@@ -91,12 +84,21 @@ public class Report extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@OneToOne(optional = false)
+	@ManyToOne(optional = false)
 	public Reviewer getReviewer() {
 		return reviewer;
 	}
 
 	public void setReviewer(Reviewer reviewer) {
 		this.reviewer = reviewer;
+	}
+
+	@NotNull
+	public boolean getIsWritten() {
+		return isWritten;
+	}
+
+	public void setIsWritten(boolean isWritten) {
+		this.isWritten = isWritten;
 	}
 }

@@ -25,10 +25,10 @@ public interface DashboardRepository extends
 	@Query("select max(c.conferences.size),min(c.conferences.size),avg(c.conferences.size),stddev(c.conferences.size) from Category c")
 	Double[] statsConferencesPerCategory();
 
-	@Query("select max(1.0*(select count(*) from Comment com where com.conference = c)),min(1.0*(select count(*) from Comment com where com.conference = c)),avg(1.0*(select count(*) from Comment com where com.conference = c)),stddev(1.0*(select count(*) from Comment com where com.conference = c)) from Conference c")
+	@Query("select max(1.0*(select count(*) from Comentario com where com.conference = c)),min(1.0*(select count(*) from Comentario com where com.conference = c)),avg(1.0*(select count(*) from Comentario com where com.conference = c)),stddev(1.0*(select count(*) from Comentario com where com.conference = c)) from Conference c")
 	Double[] statsCommentsPerConference();
 
-	@Query("select max(1.0*(select count(*) from Comment com where com.activity = a)),min(1.0*(select count(*) from Comment com where com.activity = a)),avg(1.0*(select count(*) from Comment com where com.activity = a)),stddev(1.0*(select count(*) from Comment com where com.activity = a)) from Activity a")
+	@Query("select max(1.0*(select count(*) from Comentario com where com.activity = a)),min(1.0*(select count(*) from Comentario com where com.activity = a)),avg(1.0*(select count(*) from Comentario com where com.activity = a)),stddev(1.0*(select count(*) from Comentario com where com.activity = a)) from Activity a")
 	Double[] statsCommentsPerActivity();
 
 }

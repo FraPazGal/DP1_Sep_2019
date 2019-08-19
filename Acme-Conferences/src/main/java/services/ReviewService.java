@@ -13,6 +13,7 @@ import org.springframework.validation.Validator;
 import repositories.ReportRepository;
 import domain.Report;
 import domain.Reviewer;
+import domain.Submission;
 
 @Transactional
 @Service
@@ -22,15 +23,28 @@ public class ReviewService {
 	private ReportRepository reportRepository;
 
 	@Autowired
-	private UtilityService utilityService;
+	private ReviewerService reviewerService;
+
+	@Autowired
+	private SubmissionService submissionService;
 
 	@Autowired
 	private Validator validator;
 
-	public Report create() {
+	public Report create(Integer reviewerid, Integer submissionid) {
+		Reviewer reviewer;
+		Submission submission;
 		Report res = new Report();
 
-		res.setReviewer((Reviewer) this.utilityService.findByPrincipal());
+		reviewer = this.reviewerService.findOne(reviewerid);
+		Assert.notNull(reviewer);
+		res.setReviewer(reviewer);
+
+		submission = this.submissionService.findOne(submissionid);
+		Assert.notNull(submission);
+		res.setSubmission(submission);
+
+		res.setIsWritten(false);
 
 		return res;
 	}
@@ -77,8 +91,69 @@ public class ReviewService {
 		}
 		return res;
 	}
-	
-	public Collection<Report> findMyReports(Integer id){
+
+	public Collection<Report> findMyReports(Integer id) {
 		return this.reportRepository.findMyReports(id);
+	}
+
+	public Collection<Report> findConferenceReports(Integer id) {
+		return this.reportRepository.findConferenceReports(id);
+	}
+
+	public Report findOne(Integer id) {
+		return this.reportRepository.findOne(id);
+	}
+
+	public Collection<Reviewer> findReviewersNotAssigned() {
+		Collection<Reviewer> res;
+		Collection<Report> reports;
+
+		res = this.reviewerService.findAll();
+		reports = this.findAll();
+
+		for (Report r : reports) {
+			if (res.contains(r.getReviewer()) && !r.getIsWritten()) {
+				res.remove(r.getReviewer());
+			}
+		}
+
+		return res;
+	}
+
+	private Collection<Report> findAll() {
+		return this.reportRepository.findAll();
+	}
+
+	public void assign(Collection<Submission> submissions,
+			Collection<Reviewer> reviewers) {
+
+		for (Submission s : submissions) {
+			int i = 0;
+			for (Reviewer r : reviewers) {
+				if (this.reviewerService.isNotAssigned(r.getId())) {
+					String[] keywords = r.getKeywords().toLowerCase()
+							.split(",");
+					for (String keyword : keywords) {
+						if (s.getConference().getTitle().toLowerCase()
+								.contains(keyword)
+								|| s.getConference().getSummary().toLowerCase()
+										.contains(keyword)) {
+							Report report = this.create(r.getId(), s.getId());
+							this.save(report);
+							this.reportRepository.flush();
+							i++;
+							break;
+						}
+					}
+					if (i == 3)
+						break;
+				}
+			}
+		}
+
+	}
+
+	public boolean isAssigned(int id) {
+		return this.reportRepository.findSubmissionReport(id) != null;
 	}
 }

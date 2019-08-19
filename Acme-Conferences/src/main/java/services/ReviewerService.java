@@ -11,14 +11,16 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.ReviewerRepository;
 import security.Authority;
 import security.UserAccount;
 import domain.Actor;
+import domain.Report;
 import domain.Reviewer;
-import forms.ActorForm;
-import forms.ActorRegistrationForm;
+import forms.ReviewerForm;
+import forms.ReviewerRegistrationForm;
 
 @Transactional
 @Service
@@ -39,6 +41,9 @@ public class ReviewerService {
 
 	@Autowired
 	private UtilityService utilityService;
+
+	@Autowired
+	private Validator validator;
 
 	/* Simple CRUD methods */
 
@@ -142,36 +147,10 @@ public class ReviewerService {
 	 * 
 	 * @return Reviewer
 	 */
-	public Reviewer reconstruct(final ActorRegistrationForm form,
+	public Reviewer reconstruct(final ReviewerRegistrationForm form,
 			final BindingResult binding) {
 
-		/* Creating admin */
-		final Reviewer res = this.create();
-
-		res.setName(form.getName());
-		res.setSurname(form.getSurname());
-		res.setPhoto(form.getPhoto());
-		res.setEmail(form.getEmail());
-		res.setPhoneNumber(form.getPhoneNumber());
-		res.setAddress(form.getAddress());
-
-		/* Creating user account */
-		final UserAccount userAccount = new UserAccount();
-
-		final List<Authority> reviewerities = new ArrayList<Authority>();
-		final Authority authority = new Authority();
-		authority.setAuthority(Authority.REVIEWER);
-		reviewerities.add(authority);
-		userAccount.setAuthorities(reviewerities);
-
-		userAccount.setUsername(form.getUsername());
-
-		Md5PasswordEncoder encoder;
-		encoder = new Md5PasswordEncoder();
-		userAccount
-				.setPassword(encoder.encodePassword(form.getPassword(), null));
-
-		res.setUserAccount(userAccount);
+		final Reviewer res;
 
 		if (form.getEmail() != null) {
 			try {
@@ -209,6 +188,36 @@ public class ReviewerService {
 			}
 		}
 
+		try {
+			Assert.isTrue(!form.getKeywords().trim().isEmpty());
+		} catch (Throwable oops) {
+			binding.rejectValue("keywords", "keywords.error");
+		}
+
+		this.validator.validate(form, binding);
+
+		if (!binding.hasErrors()) {
+			/* Creating admin */
+			res = this.create();
+
+			res.setName(form.getName());
+			res.setSurname(form.getSurname());
+			res.setPhoto(form.getPhoto());
+			res.setEmail(form.getEmail());
+			res.setPhoneNumber(form.getPhoneNumber());
+			res.setAddress(form.getAddress());
+			res.setKeywords(form.getKeywords());
+
+			Md5PasswordEncoder encoder;
+			encoder = new Md5PasswordEncoder();
+			res.getUserAccount().setPassword(
+					encoder.encodePassword(form.getPassword(), null));
+			res.getUserAccount().setUsername(form.getUsername());
+
+		} else {
+			res = new Reviewer();
+		}
+
 		return res;
 	}
 
@@ -219,21 +228,10 @@ public class ReviewerService {
 	 * 
 	 * @return Reviewer
 	 */
-	public Reviewer reconstruct(final ActorForm form,
+	public Reviewer reconstruct(final ReviewerForm form,
 			final BindingResult binding) {
 
-		/* Creating admin */
-		final Reviewer res = this.create();
-
-		res.setId(form.getId());
-		res.setVersion(form.getVersion());
-		res.setName(form.getName());
-		res.setMiddleName(form.getMiddleName());
-		res.setSurname(form.getSurname());
-		res.setPhoto(form.getPhoto());
-		res.setEmail(form.getEmail());
-		res.setPhoneNumber(form.getPhoneNumber());
-		res.setAddress(form.getAddress());
+		final Reviewer res;
 
 		if (form.getEmail() != null) {
 			try {
@@ -262,11 +260,50 @@ public class ReviewerService {
 			}
 		}
 
+		try {
+			Assert.isTrue(!form.getKeywords().trim().isEmpty());
+		} catch (Throwable oops) {
+			binding.rejectValue("keywords", "keywords.error");
+		}
+
+		this.validator.validate(form, binding);
+
+		if (!binding.hasErrors()) {
+
+			res = this.create();
+
+			res.setId(form.getId());
+			res.setVersion(form.getVersion());
+			res.setName(form.getName());
+			res.setMiddleName(form.getMiddleName());
+			res.setSurname(form.getSurname());
+			res.setPhoto(form.getPhoto());
+			res.setEmail(form.getEmail());
+			res.setPhoneNumber(form.getPhoneNumber());
+			res.setAddress(form.getAddress());
+			res.setKeywords(form.getKeywords());
+
+		} else {
+			res = new Reviewer();
+		}
+
 		return res;
 	}
 
 	public void flush() {
 		this.reviewerRepository.flush();
+	}
+
+	public boolean isReviewing(Integer reviewerid) {
+		Collection<Report> reports = this.reviewerRepository
+				.isReviewing(reviewerid);
+		return (reports == null || reports.size() == 0);
+	}
+
+	public boolean isNotAssigned(Integer reviewerid) {
+		Collection<Report> reports = this.reviewerRepository
+				.isReviewing(reviewerid);
+		return reports.isEmpty();
 	}
 
 }

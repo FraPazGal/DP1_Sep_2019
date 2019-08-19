@@ -56,7 +56,7 @@
 
 		<security:intercept-url pattern="/finder/search.do"
 			access="isAuthenticated()" />
-			
+
 		<security:intercept-url pattern="/finder/anon/search.do"
 			access="!isAuthenticated()" />
 
@@ -97,9 +97,9 @@
 		<security:intercept-url pattern="/submission/create.do"
 			access="hasRole('AUTHOR')" />
 		<security:intercept-url pattern="/submission/list.do"
-			access="hasAnyRole('REVIEWER','AUTHOR')" />
+			access="hasAnyRole('REVIEWER','AUTHOR','ADMIN')" />
 		<security:intercept-url pattern="/submission/display.do"
-			access="hasAnyRole('REVIEWER','AUTHOR')" />
+			access="hasAnyRole('REVIEWER','AUTHOR','ADMIN')" />
 
 		<security:intercept-url pattern="/administrator/display.do"
 			access="hasRole('ADMIN')" />
@@ -107,6 +107,20 @@
 			access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/administrator/administrator/register.do"
 			access="hasRole('ADMIN')" />
+
+		<security:intercept-url pattern="/author/display.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/author/register.do"
+			access="isAnonymous()" />
+		<security:intercept-url pattern="/author/author/edit.do"
+			access="hasRole('AUTHOR')" />
+
+		<security:intercept-url pattern="/reviewer/display.do"
+			access="permitAll" />
+		<security:intercept-url pattern="/reviewer/register.do"
+			access="isAnonymous()" />
+		<security:intercept-url pattern="/reviewer/reviewer/edit.do"
+			access="hasRole('REVIEWER')" />
 
 		<security:intercept-url pattern="/sponsor/display.do"
 			access="permitAll" />
@@ -149,6 +163,20 @@
 			access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/message/broadcast.do"
 			access="hasRole('ADMIN')" />
+
+		<security:intercept-url pattern="/review/admin/assign.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/review/admin/automaticassign.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/review/display.do"
+			access="hasAnyRole('ADMIN','REVIEWER')" />
+		<security:intercept-url pattern="/review/reviewer/myreports.do"
+			access="hasRole('REVIEWER')" />
+		<security:intercept-url pattern="/review/admin/conferencereports.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/review/reviewer/edit.do"
+			access="hasRole('REVIEWER')" />
+
 
 		<security:intercept-url pattern="/**"
 			access="hasRole('NONE')" />

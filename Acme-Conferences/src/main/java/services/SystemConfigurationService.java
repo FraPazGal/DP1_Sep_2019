@@ -90,4 +90,8 @@ public class SystemConfigurationService {
 
 		return res;
 	}
+
+	public String findMyBanner() {
+		return this.systemConfigurationRepository.findMyBanner();
+	}
 }
