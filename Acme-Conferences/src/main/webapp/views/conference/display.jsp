@@ -10,7 +10,7 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <security:authorize access="permitAll">
-<spring:message code="date.dateFormat" var="format" />
+	<spring:message code="date.dateFormat" var="format" />
 
 	<jstl:choose>
 
@@ -86,8 +86,8 @@
 						<td><strong> <spring:message
 									code="conference.submissionDeadline" /> :
 						</strong></td>
-						<td> <span><fmt:formatDate
-									pattern="${format }" value="${conference.submissionDeadline}" /></span></td>
+						<td><span><fmt:formatDate pattern="${format }"
+									value="${conference.submissionDeadline}" /></span></td>
 					</tr>
 
 					<tr>
@@ -159,12 +159,16 @@
 					<input type="button"
 						onclick="redirect: location.href = 'activity/create.do?conferenceid=${conference.id}';"
 						value="<spring:message code='activity.create' />" />
-					<input type="button"
-						onclick="redirect: location.href = 'message/createbroadcast.do?type=reg&id=${conference.id}';"
-						value="<spring:message code='broadcast.reg' />" />
-					<input type="button"
-						onclick="redirect: location.href = 'message/createbroadcast.do?type=sub&id=${conference.id}';"
-						value="<spring:message code='broadcast.sub' />" />
+					<jstl:if test="${hasSubcriptions}">
+						<input type="button"
+							onclick="redirect: location.href = 'message/createbroadcast.do?type=reg&id=${conference.id}';"
+							value="<spring:message code='broadcast.reg' />" />
+					</jstl:if>
+					<jstl:if test="${hasSubmittions}">
+						<input type="button"
+							onclick="redirect: location.href = 'message/createbroadcast.do?type=sub&id=${conference.id}';"
+							value="<spring:message code='broadcast.sub' />" />
+					</jstl:if>
 				</jstl:if>
 
 				<jstl:if test="${not empty comments}">

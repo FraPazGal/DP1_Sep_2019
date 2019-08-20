@@ -61,4 +61,10 @@ public class ActivityService {
 	public void flush() {
 		this.activityRepository.flush();
 	}
+
+	public void deleteAll(Collection<Activity> activitiesOfConference) {
+		for (Activity a : activitiesOfConference) {
+			this.activityRepository.delete(a);
+		}
+	}
 }

@@ -24,11 +24,21 @@ public class SystemConfiguration extends DomainEntity {
 
 	/* Attributes */
 
-	private String systemName, banner, countryCode;
+	private String systemName, banner, countryCode, makes;
 	private Map<String, String> welcomeMessage, topics, voidWords;
 	private Integer timeResultsCached, maxResults;
 
 	/* Getters and setters */
+
+	@NotNull
+	@NotBlank
+	public String getMakes() {
+		return makes;
+	}
+
+	public void setMakes(String makes) {
+		this.makes = makes;
+	}
 
 	@NotNull
 	@NotBlank

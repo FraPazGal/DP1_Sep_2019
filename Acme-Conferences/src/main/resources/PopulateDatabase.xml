@@ -1230,7 +1230,8 @@
 	<bean id="systemConfiguration" class="domain.SystemConfiguration">
 		<property name="systemName" value="Acme-Conferenes" />
 		<property name="banner" value="https://i.ibb.co/GVpZCtM/acme-conference.png" />
-		<property name="countryCode" value="+034"></property>
+		<property name="countryCode" value="+034" />
+		<property name="makes" value="VISA,MASTERCARD,AMERICAN EXPRESS" />
 		<property name="welcomeMessage">
 			<util:map id="utilmap19" map-class="java.util.HashMap"
 				key-type="java.lang.String" value-type="java.lang.String">

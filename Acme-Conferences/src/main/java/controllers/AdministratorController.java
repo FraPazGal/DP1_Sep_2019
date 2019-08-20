@@ -13,9 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.AdministratorService;
+import services.FinderService;
 import services.UtilityService;
 import domain.Actor;
 import domain.Administrator;
+import domain.Finder;
 import forms.ActorForm;
 import forms.ActorRegistrationForm;
 
@@ -30,6 +32,9 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private ActorService actorService;
+
+	@Autowired
+	private FinderService finderService;
 
 	@Autowired
 	private UtilityService utilityService;
@@ -109,6 +114,8 @@ public class AdministratorController extends AbstractController {
 			final BindingResult binding) {
 
 		ModelAndView res;
+		Finder finder;
+		Administrator saved;
 
 		try {
 
@@ -124,7 +131,10 @@ public class AdministratorController extends AbstractController {
 			} else {
 				try {
 
-					this.administratorService.save(administrator);
+					saved = this.administratorService.save(administrator);
+
+					finder = this.finderService.create(saved);
+					this.finderService.save(finder);
 
 					res = new ModelAndView("redirect:/");
 

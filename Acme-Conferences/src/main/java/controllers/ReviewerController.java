@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.FinderService;
 import services.ReviewerService;
 import services.UtilityService;
 import domain.Actor;
+import domain.Finder;
 import domain.Reviewer;
 import forms.ReviewerForm;
 import forms.ReviewerRegistrationForm;
@@ -30,6 +32,9 @@ public class ReviewerController extends AbstractController {
 
 	@Autowired
 	private ActorService actorService;
+
+	@Autowired
+	private FinderService finderService;
 
 	@Autowired
 	private UtilityService utilityService;
@@ -108,6 +113,8 @@ public class ReviewerController extends AbstractController {
 			final BindingResult binding) {
 
 		ModelAndView res;
+		Finder finder;
+		Reviewer saved;
 
 		try {
 
@@ -123,7 +130,10 @@ public class ReviewerController extends AbstractController {
 			} else {
 				try {
 
-					this.reviewerService.save(reviewer);
+					saved = this.reviewerService.save(reviewer);
+
+					finder = this.finderService.create(saved);
+					this.finderService.save(finder);
 
 					res = new ModelAndView("redirect:/");
 

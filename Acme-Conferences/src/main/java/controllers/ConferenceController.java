@@ -18,7 +18,9 @@ import services.ActivityService;
 import services.CategoryService;
 import services.CommentService;
 import services.ConferenceService;
+import services.RegistrationService;
 import services.SponsorshipService;
+import services.SubmissionService;
 import services.UtilityService;
 import domain.Activity;
 import domain.Actor;
@@ -52,12 +54,20 @@ public class ConferenceController extends AbstractController {
 	@Autowired
 	private CommentService commentService;
 
+	@Autowired
+	private RegistrationService registrationService;
+
+	@Autowired
+	private SubmissionService submissionService;
+
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int conferenceId) {
 		ModelAndView result;
 		Conference conference;
 		boolean isPrincipal = false;
+		boolean hasSubcriptions = false;
+		boolean hasSubmittions = false;
 		Actor principal;
 		Sponsorship spoBanner = null;
 		Category category = new Category();
@@ -78,7 +88,12 @@ public class ConferenceController extends AbstractController {
 				principal = this.utilityService.findByPrincipal();
 				if (this.utilityService.checkAuthority(principal, "ADMIN"))
 					isPrincipal = true;
-
+				hasSubcriptions = (this.registrationService
+						.findActorsRegisteredTo(conferenceId).isEmpty()) ? false
+						: true;
+				hasSubmittions = (this.submissionService
+						.findActorsWithSubmitions(conferenceId).isEmpty()) ? false
+						: true;
 			} catch (final Throwable oops) {
 			}
 
@@ -89,6 +104,8 @@ public class ConferenceController extends AbstractController {
 			result.addObject("isPrincipal", isPrincipal);
 			result.addObject("activities", activities);
 			result.addObject("comments", comments);
+			result.addObject("hasSubcriptions", hasSubcriptions);
+			result.addObject("hasSubmittions", hasSubmittions);
 			result.addObject("requestURI",
 					"conference/display.do?conferenceId=" + conferenceId);
 		} catch (final Throwable oops) {
@@ -299,10 +316,13 @@ public class ConferenceController extends AbstractController {
 	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int conferenceId) {
-		ModelAndView result = new ModelAndView("redirect:list.do?catalog=unpublished");
+		ModelAndView result = new ModelAndView(
+				"redirect:list.do?catalog=unpublished");
 		try {
 			final Conference conference = this.conferenceService
 					.findOne(conferenceId);
+			this.activityService.deleteAll(this.activityService
+					.getActivitiesOfConference(conferenceId));
 			this.conferenceService.delete(conference);
 
 		} catch (final Throwable oops) {

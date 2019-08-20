@@ -70,7 +70,7 @@
 			<br />
 
 			<acme:textbox path="email" code="actor.email"
-				placeholder="adminemail.placeholder" size="60" required="true" />
+				placeholder="email.placeholder" size="60" required="true" />
 			<jstl:if test="${not empty binding.getFieldError('email')}">
 				<p class="error">
 					<spring:message code="email.error" />

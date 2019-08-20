@@ -36,6 +36,12 @@
 		</tr>
 
 		<tr>
+			<td><strong> <spring:message code="config.makes" /> :
+			</strong></td>
+			<td><jstl:out value="${config.makes}"></jstl:out></td>
+		</tr>
+
+		<tr>
 			<td><strong> <spring:message code="config.cache" /> :
 			</strong></td>
 			<td><jstl:out value="${config.timeResultsCached}"></jstl:out></td>

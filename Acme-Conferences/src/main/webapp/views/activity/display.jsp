@@ -65,6 +65,13 @@
 			</tr>
 
 			<tr>
+				<td><strong> <spring:message code="activity.type" />
+						:
+				</strong></td>
+				<td><jstl:out value="${activity.type}"></jstl:out></td>
+			</tr>
+
+			<tr>
 				<td><strong> <spring:message
 							code="activity.conference" /> :
 				</strong></td>

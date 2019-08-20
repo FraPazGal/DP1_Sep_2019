@@ -98,6 +98,15 @@
 			<br>
 			<br>
 
+			<acme:textbox code="config.makes" path="makes" required="true" />
+			<jstl:if test="${not empty binding.getFieldError('makes').getCode()}">
+				<p class="error">
+					<spring:message code="make.error" />
+				</p>
+			</jstl:if>
+
+			<br>
+
 			<form:label path="maxResults">
 				<spring:message code="config.maxResults" />
 			</form:label>
