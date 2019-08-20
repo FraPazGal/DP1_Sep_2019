@@ -30,7 +30,6 @@ public class Submission extends DomainEntity {
 
 	/* Getters and setters */
 
-	@NotNull
 	@NotBlank
 	public String getTicker() {
 		return ticker;
@@ -40,7 +39,6 @@ public class Submission extends DomainEntity {
 		this.ticker = ticker;
 	}
 
-	@NotNull
 	@NotBlank
 	@Pattern(regexp = "^UNDER-REVIEW|ACCEPTED|REJECTED$")
 	public String getStatus() {

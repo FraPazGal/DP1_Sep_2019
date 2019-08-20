@@ -474,6 +474,55 @@
 		<property name="paperDocument"
 			value="Este paper es mágnífico y dice verdades como puños." />
 	</bean>
+	
+	<bean id="paper8" class="domain.Paper">
+		<property name="title" value="Paper de testeo 1" />
+		<property name="authors" value="El tester 1" />
+		<property name="summary" value="Léete el paper de testeo 1 y déjatede resúmenes" />
+		<property name="paperDocument" value="Este paper de testeo 1 llegará lejos" />
+	</bean>
+	
+	<bean id="paper9" class="domain.Paper">
+		<property name="title" value="Paper de testeo 2" />
+		<property name="authors" value="El tester 2" />
+		<property name="summary" value="Léete el paper de testeo 2 y déjatede resúmenes" />
+		<property name="paperDocument" value="Este paper de testeo 2 llegará lejos" />
+	</bean>
+	
+	<bean id="paper10" class="domain.Paper">
+		<property name="title" value="Paper de testeo 3" />
+		<property name="authors" value="El tester 3" />
+		<property name="summary" value="Léete el paper de testeo 3 y déjatede resúmenes" />
+		<property name="paperDocument" value="Este paper de testeo 3 llegará lejos" />
+	</bean>
+	
+	<bean id="paper11" class="domain.Paper">
+		<property name="title" value="Paper de testeo 4" />
+		<property name="authors" value="El tester 4" />
+		<property name="summary" value="Léete el paper de testeo 4 y déjatede resúmenes" />
+		<property name="paperDocument" value="Este paper de testeo 4 llegará lejos" />
+	</bean>
+	
+	<bean id="paper12" class="domain.Paper">
+		<property name="title" value="Paper de testeo 5" />
+		<property name="authors" value="El tester 5" />
+		<property name="summary" value="Léete el paper de testeo 5 y déjatede resúmenes" />
+		<property name="paperDocument" value="Este paper de testeo 5 llegará lejos" />
+	</bean>
+	
+	<bean id="paper13" class="domain.Paper">
+		<property name="title" value="Paper de testeo 6" />
+		<property name="authors" value="El tester 6" />
+		<property name="summary" value="Léete el paper de testeo 6 y déjatede resúmenes" />
+		<property name="paperDocument" value="Este paper de testeo 6 llegará lejos" />
+	</bean>
+	
+	<bean id="paper14" class="domain.Paper">
+		<property name="title" value="Paper de testeo 7" />
+		<property name="authors" value="El tester 7" />
+		<property name="summary" value="Léete el paper de testeo 7 y déjatede resúmenes" />
+		<property name="paperDocument" value="Este paper de testeo 7 llegará lejos" />
+	</bean>
 
 	<!-- CATEGORIES -->
 
@@ -933,7 +982,7 @@
 		<property name="startDate" value="09/01/2020 09:00" />
 		<property name="endDate" value="09/04/2020 9:00" />
 		<property name="entryFee" value="24.95" />
-		<property name="isFinal" value="true" />
+		<property name="status" value="FINAL" />
 		<property name="administrator" ref="administrator1" />
 		<property name="category" ref="Plants" />
 	</bean>
@@ -950,7 +999,7 @@
 		<property name="startDate" value="09/01/2020 09:00" />
 		<property name="endDate" value="09/04/2020 22:00" />
 		<property name="entryFee" value="15.50" />
-		<property name="isFinal" value="false" />
+		<property name="status" value="DRAFT" />
 		<property name="administrator" ref="administrator1" />
 		<property name="category" ref="Animals" />
 	</bean>
@@ -967,7 +1016,7 @@
 		<property name="startDate" value="07/01/2020 09:00" />
 		<property name="endDate" value="07/02/2020 22:00" />
 		<property name="entryFee" value="5.75" />
-		<property name="isFinal" value="true" />
+		<property name="status" value="FINAL" />
 		<property name="administrator" ref="administrator1" />
 		<property name="category" ref="SoftwareEngineering" />
 	</bean>
@@ -983,7 +1032,7 @@
 		<property name="startDate" value="01/04/2020 09:00" />
 		<property name="endDate" value="02/04/2020 09:30" />
 		<property name="entryFee" value="1000.00" />
-		<property name="isFinal" value="false" />
+		<property name="status" value="DRAFT" />
 		<property name="administrator" ref="administrator1" />
 		<property name="category" ref="Fungi" />
 	</bean>
@@ -1000,7 +1049,7 @@
 		<property name="startDate" value="02/04/2020 09:00" />
 		<property name="endDate" value="02/05/2020 22:00" />
 		<property name="entryFee" value="157.0" />
-		<property name="isFinal" value="false" />
+		<property name="status" value="DRAFT" />
 		<property name="administrator" ref="administrator1" />
 		<property name="category" ref="BigData" />
 	</bean>
@@ -1017,7 +1066,7 @@
 		<property name="startDate" value="03/04/2020 09:00" />
 		<property name="endDate" value="03/05/2020 22:00" />
 		<property name="entryFee" value="157.0" />
-		<property name="isFinal" value="false" />
+		<property name="status" value="DRAFT" />
 		<property name="administrator" ref="administrator2" />
 		<property name="category" ref="Regression" />
 	</bean>
@@ -1033,11 +1082,123 @@
 		<property name="startDate" value="05/04/2019 09:00" />
 		<property name="endDate" value="05/17/2019 22:00" />
 		<property name="entryFee" value="0.99" />
-		<property name="isFinal" value="true" />
+		<property name="status" value="NOTIFIED" />
 		<property name="administrator" ref="administrator2" />
 		<property name="category" ref="Physics" />
 	</bean>
-
+	
+	<bean id="conference8" class="domain.Conference">
+		<property name="title" value="Conferencia testeo en curso" />
+		<property name="acronym" value="CFEC" />
+		<property name="summary" value="Testeo con CFEC" />
+		<property name="venue" value="LOLOLOLOLOLOLO" />
+		<property name="submissionDeadline" value="06/19/2019 23:59" />
+		<property name="notificationDeadline" value="06/29/2019 23:59" />
+		<property name="cameraReadyDeadline" value="07/19/2019 23:59" />
+		<property name="startDate" value="08/18/2019 09:00" />
+		<property name="endDate" value="08/22/2019 9:00" />
+		<property name="entryFee" value="59.34" />
+		<property name="status" value="NOTIFIED" />
+		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="DeepLeaning" />
+	</bean>
+	
+	<bean id="conference9" class="domain.Conference">
+		<property name="title" value="Conferencia testeo de submissions" />
+		<property name="acronym" value="CTDS" />
+		<property name="summary" value="Testeo con CTDS" />
+		<property name="venue" value="LALALALALAL" />
+		<property name="submissionDeadline" value="09/19/2019 23:59" />
+		<property name="notificationDeadline" value="09/29/2019 23:59" />
+		<property name="cameraReadyDeadline" value="10/19/2019 23:59" />
+		<property name="startDate" value="10/18/2019 09:00" />
+		<property name="endDate" value="10/22/2019 9:00" />
+		<property name="entryFee" value="11.101" />
+		<property name="status" value="FINAL" />
+		<property name="administrator" ref="administrator2" />
+		<property name="category" ref="Methods" />
+	</bean>
+	
+	<bean id="conference10" class="domain.Conference">
+		<property name="title" value="Conferencia testeo Sub5" />
+		<property name="acronym" value="CTS5" />
+		<property name="summary" value="Testeo con CTS5" />
+		<property name="venue" value="Submissions last 5" />
+		<property name="submissionDeadline" value="08/19/2019 23:59" />
+		<property name="notificationDeadline" value="09/29/2019 23:59" />
+		<property name="cameraReadyDeadline" value="10/19/2019 23:59" />
+		<property name="startDate" value="10/18/2019 09:00" />
+		<property name="endDate" value="10/22/2019 9:00" />
+		<property name="entryFee" value="55.55" />
+		<property name="status" value="FINAL" />
+		<property name="administrator" ref="administrator2" />
+		<property name="category" ref="Regression" />
+	</bean>
+	
+	<bean id="conference11" class="domain.Conference">
+		<property name="title" value="Conferencia testeo Not5" />
+		<property name="acronym" value="CTS5" />
+		<property name="summary" value="Testeo con CTN5" />
+		<property name="venue" value="Notification less than 5" />
+		<property name="submissionDeadline" value="08/21/2019 23:59" />
+		<property name="notificationDeadline" value="08/22/2019 23:59" />
+		<property name="cameraReadyDeadline" value="08/25/2019 10:00" />
+		<property name="startDate" value="08/25/2019 22:00" />
+		<property name="endDate" value="10/22/2019 9:00" />
+		<property name="entryFee" value="55.55" />
+		<property name="status" value="FINAL" />
+		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="Regression" />
+	</bean>
+	
+	<bean id="conference12" class="domain.Conference">
+		<property name="title" value="Conferencia testeo cam5" />
+		<property name="acronym" value="CTC5" />
+		<property name="summary" value="Testeo con CTC5" />
+		<property name="venue" value="Camera-Ready less than 5" />
+		<property name="submissionDeadline" value="07/19/2019 23:59" />
+		<property name="notificationDeadline" value="07/29/2019 23:59" />
+		<property name="cameraReadyDeadline" value="08/23/2019 23:59" />
+		<property name="startDate" value="08/26/2019 09:00" />
+		<property name="endDate" value="10/22/2019 9:00" />
+		<property name="entryFee" value="55.55" />
+		<property name="status" value="DECISION-MADE" />
+		<property name="administrator" ref="administrator2" />
+		<property name="category" ref="Regression" />
+	</bean>
+	
+	<bean id="conference13" class="domain.Conference">
+		<property name="title" value="Conferencia testeo org5" />
+		<property name="acronym" value="CTO5" />
+		<property name="summary" value="Testeo con CTO5" />
+		<property name="venue" value="Organized less than 5" />
+		<property name="submissionDeadline" value="07/19/2019 23:59" />
+		<property name="notificationDeadline" value="07/29/2019 23:59" />
+		<property name="cameraReadyDeadline" value="08/21/2019 23:59" />
+		<property name="startDate" value="08/24/2019 09:00" />
+		<property name="endDate" value="10/22/2019 9:00" />
+		<property name="entryFee" value="55.55" />
+		<property name="status" value="DECISION-MADE" />
+		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="Regression" />
+	</bean>
+	
+	<bean id="conference14" class="domain.Conference">
+		<property name="title" value="Conferencia testeo start por horas" />
+		<property name="acronym" value="CTSPH" />
+		<property name="summary" value="Start por horas" />
+		<property name="venue" value="Organized less than 5" />
+		<property name="submissionDeadline" value="07/19/2019 23:59" />
+		<property name="notificationDeadline" value="07/29/2019 23:59" />
+		<property name="cameraReadyDeadline" value="07/21/2019 23:59" />
+		<property name="startDate" value="08/20/2019 13:00" />
+		<property name="endDate" value="10/22/2019 9:00" />
+		<property name="entryFee" value="55.55" />
+		<property name="status" value="NOTIFIED" />
+		<property name="administrator" ref="administrator1" />
+		<property name="category" ref="Regression" />
+	</bean>
+	
 	<!-- ***** CREDITCARD ***** -->
 
 	<bean id="creditCard1" class="domain.CreditCard">
@@ -1224,6 +1385,33 @@
 		<property name="conference" ref="conference7" />
 		<property name="paper" ref="paper4" />
 	</bean>
+	
+	<bean id="submission6" class="domain.Submission">
+		<property name="ticker" value="NJH-8OU6" />
+		<property name="status" value="UNDER-REVIEW" />
+		<property name="submissionMoment" value="04/30/2019 11:47" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference9" />
+		<property name="paper" ref="paper8" />
+	</bean>
+	
+	<bean id="submission7" class="domain.Submission">
+		<property name="ticker" value="NJH-8OU6" />
+		<property name="status" value="UNDER-REVIEW" />
+		<property name="submissionMoment" value="04/30/2019 11:47" />
+		<property name="author" ref="author1" />
+		<property name="conference" ref="conference11" />
+		<property name="paper" ref="paper9" />
+	</bean>
+	
+	<bean id="submission8" class="domain.Submission">
+		<property name="ticker" value="NJH-8OU6" />
+		<property name="status" value="UNDER-REVIEW" />
+		<property name="submissionMoment" value="04/30/2019 11:47" />
+		<property name="author" ref="author2" />
+		<property name="conference" ref="conference11" />
+		<property name="paper" ref="paper10" />
+	</bean>
 
 	<!-- SYSTEM CONFIGURATION -->
 
@@ -1235,9 +1423,9 @@
 			<util:map id="utilmap19" map-class="java.util.HashMap"
 				key-type="java.lang.String" value-type="java.lang.String">
 				<entry key="English"
-					value="Welcome to Acme Conference! Your scientific event manager" />
+					value="Welcome to Acme Conference! Your scientific event manager!" />
 				<entry key="Español"
-					value="¡Bienvenidos a Acme Conference! Su gestor de eventos científicos" />
+					value="¡Bienvenidos a Acme Conference! ¡Su gestor de eventos científicos!" />
 			</util:map>
 		</property>
 		<property name="topics">

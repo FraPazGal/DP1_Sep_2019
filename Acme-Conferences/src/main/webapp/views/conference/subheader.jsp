@@ -39,7 +39,7 @@
 					<li><a href="conference/list.do?catalog=5sub"><spring:message
 								code="conference.conference.list.5submission" /></a></li>
 								
-					<li><a href="conference/list.do?catalog=5not"><spring:message
+					<li><a href="conference/list.do?catalog=5noti"><spring:message
 								code="conference.conference.list.5notification" /></a></li>
 								
 					<li><a href="conference/list.do?catalog=5cam"><spring:message
@@ -50,7 +50,6 @@
 				</ul></li>
 				
 			</security:authorize>
-
 		</security:authorize>
 	</ul>
 </div>

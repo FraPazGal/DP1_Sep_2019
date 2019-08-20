@@ -42,14 +42,11 @@ public class SubmissionService {
 	// CRUD Methods ------------------------------------------
 
 	public Submission create() {
-		Actor principal;
-		Submission result;
+		Actor principal = this.utilityService.findByPrincipal();
+		Submission result = new Submission();
+		
+		this.utilityService.assertPrincipal("AUTHOR");
 
-		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(this.utilityService.checkAuthority(principal, "AUTHOR"),
-				"not.allowed");
-
-		result = new Submission();
 		result.setSubmissionMoment(new Date(System.currentTimeMillis() - 1));
 		result.setAuthor((Author) principal);
 		result.setTicker(this.generateTicker(principal));
@@ -63,12 +60,14 @@ public class SubmissionService {
 	}
 
 	public Submission findOne(final int submissionId) {
-		return this.submissionRepository.findOne(submissionId);
+		Submission result = this.submissionRepository.findOne(submissionId);
+		Assert.notNull(result,"wrong.id");
+		
+		return result;
 	}
 
 	public Submission save(final Submission submission) {
-		Actor principal;
-		Submission result;
+		Actor principal = this.utilityService.findByPrincipal();
 
 		Assert.notNull(submission.getTicker());
 		Assert.notNull(submission.getStatus());
@@ -77,26 +76,19 @@ public class SubmissionService {
 		Assert.notNull(submission.getConference());
 		Assert.notNull(submission.getPaper());
 
-		principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(principal.equals(submission.getAuthor()), "not.allowed");
+		Assert.isTrue(submission.getSubmissionMoment().before(
+						submission.getConference().getSubmissionDeadline()), "submissionDeadline.limit");
 
-		Assert.isTrue(
-				submission.getSubmissionMoment().before(
-						submission.getConference().getSubmissionDeadline()),
-				"submissionDeadline.limit");
-
-		result = this.submissionRepository.save(submission);
-
-		return result;
+		return this.submissionRepository.save(submission);
 	}
 
 	public void delete(final Submission submission) {
-		Actor principal;
+		Actor principal = this.utilityService.findByPrincipal();
 
-		Assert.notNull(submission);
+		Assert.notNull(submission, "wrong.id");
 		Assert.isTrue(submission.getId() != 0, "wrong.id");
 
-		principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(principal.equals(submission.getAuthor()));
 
 		this.submissionRepository.delete(submission.getId());
@@ -109,18 +101,36 @@ public class SubmissionService {
 	}
 
 	public Submission reconstruct(SubmissionForm form, BindingResult binding) {
-
 		Date now = new Date(System.currentTimeMillis() - 1);
-		Submission submission = this.create();
-
-		Assert.isTrue(form.getConference().getIsFinal(), "wrong.conference");
-		Assert.isTrue(
-				submission.getSubmissionMoment().before(
-						form.getConference().getSubmissionDeadline()),
-				"submissionDeadline.limit");
-		Assert.isTrue(
-				now.before(form.getConference().getCameraReadyDeadline()),
-				"cameraReadyDeadline.limit");
+		Submission submission = this.create();;
+		
+		if(form.getId() == 0) {
+			
+			submission.setConference(form.getConference());
+			
+			Assert.isTrue(submission.getConference().getStatus().equals("FINAL"), "wrong.conference");
+			
+		} else {
+			Submission aux = this.findOne(form.getId());
+			Assert.isTrue(aux.getStatus().equals("ACCEPTED"), "submission.not.accepted");
+			Assert.isTrue(aux.getConference().getStatus().equals("DECISION-MADE") ||
+					aux.getConference().getStatus().equals("NOTIFIED"), "wrong.conference");
+			
+			submission.setId(aux.getId());
+			submission.setVersion(aux.getVersion());
+			submission.setTicker(aux.getTicker());
+			submission.setConference(aux.getConference());
+			submission.setAuthor(aux.getAuthor());
+			submission.setPaper(aux.getPaper());
+			submission.setSubmissionMoment(aux.getSubmissionMoment());
+			submission.setStatus(aux.getStatus());
+			
+			
+		}
+		
+		Assert.isTrue(submission.getSubmissionMoment().before(
+						submission.getConference().getSubmissionDeadline()), "submissionDeadline.limit");
+		Assert.isTrue(now.before(submission.getConference().getCameraReadyDeadline()), "cameraReadyDeadline.limit");
 
 		/* Creating paper */
 		Paper paper = this.paperService.create();
@@ -190,9 +200,6 @@ public class SubmissionService {
 			Paper saved;
 
 			if (form.getId() != 0) {
-				submission = this.findOne(form.getId());
-				Assert.isTrue(submission.getStatus().equals("ACCEPTED"),
-						"submission.not.accepted");
 
 				saved = this.paperService.save(paper);
 
@@ -200,7 +207,6 @@ public class SubmissionService {
 			} else {
 				saved = this.paperService.save(paper);
 
-				submission.setConference(form.getConference());
 				submission.setPaper(saved);
 			}
 			this.validator.validate(submission, binding);
@@ -218,14 +224,12 @@ public class SubmissionService {
 		middleNameInitial = author.getMiddleName() == null ? "X" : author
 				.getMiddleName().substring(0, 1);
 
+		initials = nameInitial + middleNameInitial + surnameInitial;
+		
 		while (unique == false) {
 			alphaNum = this.randomString();
-			initials = nameInitial + middleNameInitial + surnameInitial;
 			uniqueTicker = initials + "-" + alphaNum;
-			for (final Submission submission : this.findAll())
-				if (submission.getTicker().equals(uniqueTicker))
-					continue;
-			unique = true;
+			unique = this.checkIfUniqueTicker(uniqueTicker);
 		}
 		return uniqueTicker;
 	}
@@ -243,6 +247,10 @@ public class SubmissionService {
 					.length())));
 		return stringBuilder.toString();
 
+	}
+	
+	private boolean checkIfUniqueTicker(String ticker) {
+		return this.submissionRepository.checkIfUniqueTicker(ticker);
 	}
 
 	public Submission findSubByPaper(int paperId) {
@@ -266,6 +274,7 @@ public class SubmissionService {
 	}
 
 	public Collection<Submission> submissionsAssigned() {
+		this.utilityService.assertPrincipal("ADMIN");
 		return this.submissionRepository.submissionsAssigned();
 	}
 	
@@ -278,6 +287,21 @@ public class SubmissionService {
 		return result;
 	}
 	
+	public Collection<Submission> acceptedSubmissions() {
+		this.utilityService.assertPrincipal("ADMIN");
+		return this.submissionRepository.acceptedSubmissions();
+	}
+	
+	public Collection<Submission> rejectedSubmissions() {
+		this.utilityService.assertPrincipal("ADMIN");
+		return this.submissionRepository.rejectedSubmissions();
+	}
+	
+	public Collection<Submission> underReviewSubmissions() {
+		this.utilityService.assertPrincipal("ADMIN");
+		return this.submissionRepository.underReviewSubmissions();
+	}
+	
 	public boolean checkPrincipal(Author author) {
 		boolean result = false;
 		Actor principal = this.utilityService.findByPrincipal();
@@ -286,5 +310,14 @@ public class SubmissionService {
 		}
 		
 		return result;
+	}
+	
+	public void saveChangeStatus(Submission submission) {
+		this.utilityService.assertPrincipal("ADMIN");
+		this.submissionRepository.save(submission);
+	}
+	
+	public Submission findOneByActorAndConference(Integer actorId, Integer conferenceId) {
+		return this.submissionRepository.findOneByActorAndConference(actorId, conferenceId);
 	}
 }

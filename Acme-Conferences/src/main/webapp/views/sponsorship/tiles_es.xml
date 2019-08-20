@@ -11,15 +11,19 @@
 <tiles-definitions>
 
 	<definition name="sponsorship/display" extends="master.page">
+		<put-attribute name="title" value="Ver patrocinio" />
 		<put-attribute name="body" value="/views/sponsorship/display.jsp" />
 	</definition>
 	<definition name="sponsorship/list" extends="master.page">
+		<put-attribute name="title" value="Listado de patrocinio" />
 		<put-attribute name="body" value="/views/sponsorship/list.jsp" />
 	</definition>
 	<definition name="sponsorship/create" extends="master.page">
+		<put-attribute name="title" value="Crear patrocinio" />
 		<put-attribute name="body" value="/views/sponsorship/edit.jsp" />
 	</definition>
 	<definition name="sponsorship/edit" extends="master.page">
+		<put-attribute name="title" value="Editar patrocinio" />
 		<put-attribute name="body" value="/views/sponsorship/edit.jsp" />
 	</definition>
 </tiles-definitions>

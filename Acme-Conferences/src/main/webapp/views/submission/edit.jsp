@@ -10,56 +10,49 @@
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<security:authorize access="hasAnyRole('AUTHOR','REVIEWER')">
-	<jstl:choose>
-		<jstl:when test="${errMsg ne null}">
-			<p>
-				<jstl:out value="${errMsg}" />
-			</p>
-		</jstl:when>
-		<jstl:when test="${isPrincipal and !cameraReady}">
-			<h1><spring:message	code="submission.title.paper" /></h1>
-			<form:form modelAttribute="submissionForm" action="submission/edit.do"
-				id="form">
-				
-				<form:hidden path="conference" />
-				
-				<acme:textbox code="submission.paper.title" path="titleP" size="70px" /><br>
-				<form:errors path="titleP" id="title" dir="title" element="title" cssClass="error" /><br>
-				<acme:textarea code="submission.paper.authors" path="authorsP" cols="40px" rows="3"/><br> <br>
-				<acme:textarea code="submission.paper.summary" path="summaryP" cols="80px" rows="4" /><br> <br>
-				<acme:textarea code="submission.paper.paperDocument" path="paperDocumentP" cols="80px" rows="8" /><br> <br>
-				
-				<acme:submit code="mp.save" name="save" />&nbsp;
-				<acme:cancel url="submission/list.do" code="mp.cancel" />
-				<br />
-		
-			</form:form>
-		</jstl:when>
-		
-		<jstl:when test="${isPrincipal and cameraReady}">
-			<h1><spring:message	code="submission.title.paper.cameraReady" /><jstl:out value="${submissionForm.conference.acronym }"/></h1>
-			<form:form modelAttribute="submissionForm" action="submission/edit.do"
-				id="form">
-				
-				<form:hidden path="id" />
-				
-				<acme:textbox code="submission.paper.title" path="titlePCR" size="70px" /><br> <br>
-				<acme:textarea code="submission.paper.authors" path="authorsPCR" cols="40px" rows="3"/><br> <br>
-				<acme:textarea code="submission.paper.summary" path="summaryPCR" cols="80px" rows="4" /><br> <br>
-				<acme:textarea code="submission.paper.paperDocument" path="paperDocumentPCR" cols="80px" rows="8" /><br> <br>
-				
-				<acme:submit code="mp.save" name="save" />&nbsp;
-				<acme:cancel url="submission/list.do" code="mp.cancel" />
-				<br />
-		
-			</form:form>
-		</jstl:when>
+<jstl:choose>
+	<jstl:when test="${!cameraReady}">
+		<h1><spring:message	code="submission.title.paper" /></h1>
+		<form:form modelAttribute="submissionForm" action="submission/edit.do"
+			id="form">
+			
+			<form:hidden path="conference" />
+			
+			<acme:textbox code="submission.paper.title" path="titleP" size="70px" />
+			<form:errors path="titleP" id="title" dir="title" element="title" cssClass="error" /><br>
+			<acme:textarea code="submission.paper.authors" path="authorsP" cols="40px" rows="3"/><br>
+			<acme:textarea code="submission.paper.summary" path="summaryP" cols="80px" rows="4" /><br>
+			<acme:textarea code="submission.paper.paperDocument" path="paperDocumentP" cols="80px" rows="8" /><br>
+			
+			<acme:submit code="mp.save" name="save" />&nbsp;
+			<acme:cancel url="submission/list.do" code="mp.cancel" />
+			<br />
 	
-	<jstl:otherwise>
-		<p>
-			<spring:message	code="submission.not.allowed" /><br>
-		</p>
-	</jstl:otherwise>
-	</jstl:choose>
-</security:authorize>
+		</form:form>
+	</jstl:when>
+	
+	<jstl:when test="${cameraReady}">
+		<h1><spring:message	code="submission.title.paper.cameraReady" /><jstl:out value="${submissionForm.conference.acronym }"/></h1>
+		<form:form modelAttribute="submissionForm" action="submission/edit.do"
+			id="form">
+			
+			<form:hidden path="id" />
+			
+			<acme:textbox code="submission.paper.title" path="titlePCR" size="70px" /><br> 
+			<acme:textarea code="submission.paper.authors" path="authorsPCR" cols="40px" rows="3"/><br> 
+			<acme:textarea code="submission.paper.summary" path="summaryPCR" cols="80px" rows="4" /><br> 
+			<acme:textarea code="submission.paper.paperDocument" path="paperDocumentPCR" cols="80px" rows="8" /><br>
+			
+			<acme:submit code="mp.save" name="save" />&nbsp;
+			<acme:cancel url="submission/list.do" code="mp.cancel" />
+			<br />
+	
+		</form:form>
+	</jstl:when>
+
+<jstl:otherwise>
+	<p>
+		<spring:message	code="submission.not.allowed" /><br>
+	</p>
+</jstl:otherwise>
+</jstl:choose>

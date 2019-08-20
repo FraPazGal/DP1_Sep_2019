@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.SystemConfigurationService;
 import services.UtilityService;
 import domain.Actor;
 
@@ -31,6 +32,9 @@ public class WelcomeController extends AbstractController {
 
 	@Autowired
 	private UtilityService utilityService;
+	
+	@Autowired
+	private SystemConfigurationService	systemConfigurationService;
 
 	public WelcomeController() {
 		super();
@@ -39,34 +43,24 @@ public class WelcomeController extends AbstractController {
 	// Index ------------------------------------------------------------------
 
 	@RequestMapping(value = "/index")
-	public ModelAndView index(
-			@RequestParam(required = false, defaultValue = "John Doe") final String name) {
-		ModelAndView result;
-		SimpleDateFormat formatter;
-		String moment;
-		Actor principal;
+	public ModelAndView index(@RequestParam(required = false, defaultValue = "John Doe") final String name) {
+		ModelAndView result = new ModelAndView("welcome/index");
+
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		String moment = formatter.format(new Date());
 
 		try {
-
-			principal = this.utilityService.findByPrincipal();
+			Actor principal = this.utilityService.findByPrincipal();
 			Assert.isTrue(principal != null);
 
-			formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-			moment = formatter.format(new Date());
-
-			result = new ModelAndView("welcome/index");
-			result.addObject("name",
-					principal.getName() + " " + principal.getSurname());
-			result.addObject("moment", moment);
-
-		} catch (Exception e) {
-			formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-			moment = formatter.format(new Date());
-
-			result = new ModelAndView("welcome/index");
+			result.addObject("name", principal.getName() + " " + principal.getSurname());
+			
+		} catch (Throwable oops) {
 			result.addObject("name", name);
-			result.addObject("moment", moment);
 		}
+		
+		result.addObject("moment", moment);
+		result.addObject("welcomeMsg", this.systemConfigurationService.findMySystemConfiguration().getWelcomeMessage());
 
 		return result;
 	}

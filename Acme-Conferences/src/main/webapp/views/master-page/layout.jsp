@@ -94,6 +94,10 @@
 		<br><br>
 			<tiles:insertAttribute name="subheader" />
 		</jstl:if>
+		<jstl:if test="${listSub}">
+		<br><br>
+			<tiles:insertAttribute name="subheaderSub" />
+		</jstl:if>
 		<tiles:insertAttribute name="body" />
 		<jstl:if test="${message != null}">
 			<br />

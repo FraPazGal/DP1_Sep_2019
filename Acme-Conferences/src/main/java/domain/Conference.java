@@ -10,6 +10,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
@@ -22,17 +23,15 @@ public class Conference extends DomainEntity {
 
 	/* Attributes */
 
-	private String title, acronym, summary, venue;
+	private String title, acronym, summary, venue, status;
 	private Date submissionDeadline, notificationDeadline, cameraReadyDeadline,
 			startDate, endDate;
 	private Double entryFee;
-	private boolean isFinal;
 	private Administrator administrator;
 	private Category category;
 
 	/* Getters and setters */
 
-	@NotNull
 	@NotBlank
 	public String getTitle() {
 		return title;
@@ -42,7 +41,6 @@ public class Conference extends DomainEntity {
 		this.title = title;
 	}
 
-	@NotNull
 	@NotBlank
 	public String getAcronym() {
 		return acronym;
@@ -52,7 +50,6 @@ public class Conference extends DomainEntity {
 		this.acronym = acronym;
 	}
 
-	@NotNull
 	@NotBlank
 	@Type(type="text")
 	public String getSummary() {
@@ -63,7 +60,6 @@ public class Conference extends DomainEntity {
 		this.summary = summary;
 	}
 
-	@NotNull
 	@NotBlank
 	@Type(type="text")
 	public String getVenue() {
@@ -72,6 +68,16 @@ public class Conference extends DomainEntity {
 
 	public void setVenue(String venue) {
 		this.venue = venue;
+	}
+	
+	@NotBlank
+	@Pattern(regexp = "^DRAFT|FINAL|DECISION-MADE|NOTIFIED$")
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@NotNull
@@ -132,14 +138,6 @@ public class Conference extends DomainEntity {
 
 	public void setEntryFee(Double entryFee) {
 		this.entryFee = entryFee;
-	}
-
-	public boolean getIsFinal() {
-		return isFinal;
-	}
-
-	public void setIsFinal(boolean isFinal) {
-		this.isFinal = isFinal;
 	}
 
 	@Valid

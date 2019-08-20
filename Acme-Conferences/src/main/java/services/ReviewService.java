@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.ReportRepository;
+import domain.Actor;
 import domain.Report;
 import domain.Reviewer;
 import domain.Submission;
@@ -27,6 +28,9 @@ public class ReviewService {
 
 	@Autowired
 	private SubmissionService submissionService;
+	
+	@Autowired
+	private UtilityService utilityService;
 
 	@Autowired
 	private Validator validator;
@@ -155,5 +159,15 @@ public class ReviewService {
 
 	public boolean isAssigned(int id) {
 		return this.reportRepository.findSubmissionReport(id) != null;
+	}
+	
+	public Collection<Report> findReportsOfSubmission (Integer submissionId) {
+		return this.reportRepository.findReportsOfSubmission(submissionId);
+	}
+	
+	public boolean checkIfAssigned (Integer submissionId) {
+		Actor principal = this.utilityService.findByPrincipal();
+		
+		return this.reportRepository.checkIfAssigned(submissionId, principal.getId());
 	}
 }

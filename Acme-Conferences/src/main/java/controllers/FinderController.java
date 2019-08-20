@@ -54,7 +54,7 @@ public class FinderController extends AbstractController {
 			result.addObject("categories", this.categoryService.findAll());
 			
 		} catch (Throwable oops) {
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do/");
 		}
 		result.addObject("requestUri", "finder/search.do");
 		return result;
@@ -70,9 +70,7 @@ public class FinderController extends AbstractController {
 			result.addObject("conferences", this.finderService.searchAnon(keyWord));
 			result.addObject("requestUri", "finder/anon/search.do");
 		} catch (Throwable oops) {
-			result = new ModelAndView("redirect:../welcome/index.do");
-
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do/");
 		}
 		return result;
 		
@@ -82,10 +80,9 @@ public class FinderController extends AbstractController {
 	@RequestMapping(value = "/search", method = RequestMethod.POST, params = "save")
 	public ModelAndView search(final Finder finder, BindingResult binding) {
 		ModelAndView result = new ModelAndView("finder/search");
-		Finder aux;
 		Collection<Conference> conferences = new ArrayList<>();
 		try {
-			aux = this.finderService.reconstruct(finder, binding);
+			Finder aux = this.finderService.reconstruct(finder, binding);
 			
 			if (binding.hasErrors()) {
 				result = this.createEditModelAndView(finder);
@@ -94,7 +91,7 @@ public class FinderController extends AbstractController {
 				conferences = this.finderService.search(aux);
 			}
 		} catch (Throwable oops) {
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do/");
 		}
 		result.addObject("categories", this.categoryService.findAll());
 		result.addObject("conferences", conferences);
@@ -107,16 +104,12 @@ public class FinderController extends AbstractController {
 		return this.createEditModelAndView(finder, null);
 	}
 
-	protected ModelAndView createEditModelAndView(final Finder finder,
-			final String messageCode) {
-		ModelAndView result;
-		final Collection<Conference> conferences;
-		conferences = finder.getResults();
+	protected ModelAndView createEditModelAndView(final Finder finder, final String messageCode) {
+		ModelAndView result = new ModelAndView("finder/search");
 
-		result = new ModelAndView("finder/search");
 		result.addObject("errMsg", messageCode);
 		result.addObject("finder", finder);
-		result.addObject("conferences", conferences);
+		result.addObject("conferences", finder.getResults());
 
 		return result;
 	}

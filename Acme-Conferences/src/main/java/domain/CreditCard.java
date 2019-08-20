@@ -23,7 +23,6 @@ public class CreditCard extends DomainEntity {
 
 	/* Getters and setters */
 
-	@NotNull
 	@NotBlank
 	public String getHolder() {
 		return holder;
@@ -33,7 +32,6 @@ public class CreditCard extends DomainEntity {
 		this.holder = holder;
 	}
 
-	@NotNull
 	@NotBlank
 	public String getMake() {
 		return make;
@@ -43,7 +41,6 @@ public class CreditCard extends DomainEntity {
 		this.make = make;
 	}
 
-	@NotNull
 	@NotBlank
 	@CreditCardNumber
 	public String getNumber() {

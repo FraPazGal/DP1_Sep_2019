@@ -11,15 +11,15 @@
 <tiles-definitions>
 
 	<definition name="registration/display" extends="master.page">
+		<put-attribute name="title" value="Ver registro" />
 		<put-attribute name="body" value="/views/registration/display.jsp" />
 	</definition>
 	<definition name="registration/list" extends="master.page">
+		<put-attribute name="title" value="Listado de registros" />
 		<put-attribute name="body" value="/views/registration/list.jsp" />
 	</definition>
-	<definition name="registration/create" extends="master.page">
-		<put-attribute name="body" value="/views/registration/edit.jsp" />
-	</definition>
 	<definition name="registration/edit" extends="master.page">
+		<put-attribute name="title" value="Editar registro" />
 		<put-attribute name="body" value="/views/registration/edit.jsp" />
 	</definition>
 	

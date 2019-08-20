@@ -5,7 +5,6 @@ import javax.persistence.AccessType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.NotBlank;
@@ -21,7 +20,6 @@ public class Paper extends DomainEntity {
 
 	/* Getters and setters */
 
-	@NotNull
 	@NotBlank
 	public String getTitle() {
 		return title;
@@ -31,7 +29,6 @@ public class Paper extends DomainEntity {
 		this.title = title;
 	}
 
-	@NotNull
 	@NotBlank
 	@Type(type="text")
 	public String getAuthors() {
@@ -42,7 +39,6 @@ public class Paper extends DomainEntity {
 		this.authors = authors;
 	}
 
-	@NotNull
 	@NotBlank
 	@Type(type="text")
 	public String getSummary() {
@@ -53,7 +49,6 @@ public class Paper extends DomainEntity {
 		this.summary = summary;
 	}
 
-	@NotNull
 	@NotBlank
 	@Type(type="text")
 	public String getPaperDocument() {

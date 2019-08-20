@@ -53,6 +53,10 @@
 			access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/conference/delete.do"
 			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/conference/review.do"
+			access="hasRole('ADMIN')" />
+		<security:intercept-url pattern="/conference/notify.do"
+			access="hasRole('ADMIN')" />
 
 		<security:intercept-url pattern="/finder/search.do"
 			access="isAuthenticated()" />

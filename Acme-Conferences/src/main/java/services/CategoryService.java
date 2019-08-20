@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
 import repositories.CategoryRepository;
-import domain.Actor;
 import domain.Category;
 import domain.Conference;
 import domain.SystemConfiguration;
@@ -48,12 +47,8 @@ public class CategoryService {
 
 	public Category create() {
 		Category result;
-		Actor principal;
 		
-		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(
-				this.utilityService.checkAuthority(principal, "ADMIN"),
-				"not.allowed");
+		this.utilityService.assertPrincipal("ADMIN");
 
 		result = new Category();
 		result.setTitle(new HashMap<String,String>());
@@ -64,7 +59,10 @@ public class CategoryService {
 	}
 	
 	public Category findOne(final int categoryId) {
-		return this.categoryRepository.findOne(categoryId);
+		Category result = this.categoryRepository.findOne(categoryId);
+		Assert.notNull(result, "wrong.id");
+		
+		return result;
 	}
 
 	public Collection<Category> findAll() {
@@ -75,12 +73,8 @@ public class CategoryService {
 		Category result,aux;
 		SystemConfiguration systemConf;
 		Set<String> idiomasCategory;
-		Actor principal;
 		
-		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(
-				this.utilityService.checkAuthority(principal, "ADMIN"),
-				"not.allowed");
+		this.utilityService.assertPrincipal("ADMIN");
 		
 		Assert.notNull(category.getChildCategories());
 		Assert.notNull(category.getConferences());
@@ -111,12 +105,8 @@ public class CategoryService {
 	}
 
 	public void delete(final Category category) {
-		Actor principal;
 		
-		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(
-				this.utilityService.checkAuthority(principal, "ADMIN"),
-				"not.allowed");
+		this.utilityService.assertPrincipal("ADMIN");
 		
 		Assert.notNull(category);
 		Assert.isTrue(category.getId() != 0);
@@ -136,14 +126,12 @@ public class CategoryService {
 
 	// Other business methods -------------------------------
 	
-	public Category reconstruct(Category category, String nameES,
-			String nameEN, BindingResult binding) {
-		Category res = this.create();
-		Map<String,String> aux = new HashMap<String,String>();
+	public Category reconstruct(Category category, String nameES, String nameEN, BindingResult binding) {
+		Category result = this.create();
+		Map<String,String> title = new HashMap<String,String>();
 		
-		Actor principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(this.utilityService.checkAuthority(principal,
-				"ADMIN"));
+		this.utilityService.assertPrincipal("ADMIN");
+		
 		try {
 			Assert.isTrue(!nameEN.isEmpty(), "no.both.names");
 			Assert.isTrue(!nameES.isEmpty(), "no.both.names");
@@ -151,19 +139,26 @@ public class CategoryService {
 			binding.rejectValue("title", "no.both.names");
 		}
 		
-		aux.put("Español", nameES);
-		aux.put("English", nameEN);
+		title.put("Español", nameES);
+		title.put("English", nameEN);
 		
 		if (category.getId() != 0) {
-			res = this.categoryRepository.findOne(category.getId());
+			Category aux = this.categoryRepository.findOne(category.getId());
+			
+			result.setId(aux.getId());
+			result.setVersion(aux.getVersion());
+			result.setChildCategories(aux.getChildCategories());
+			result.setConferences(aux.getConferences());
+			result.setParentCategory(aux.getParentCategory());
+			
 		} else {
-			res.setParentCategory(category.getParentCategory());
+			result.setParentCategory(category.getParentCategory());
 		}
-		res.setTitle(aux);
+		result.setTitle(title);
 
-		this.validator.validate(res, binding);
+		this.validator.validate(result, binding);
 
-		return res;
+		return result;
 	}
 	
 	private void transferConferences(Category category) {
@@ -250,9 +245,7 @@ public class CategoryService {
 	}
 	
 	public Collection<Category> findAllAsAdmin() {
-		Actor principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(this.utilityService.checkAuthority(principal,
-				"ADMIN"));
+		this.utilityService.assertPrincipal("ADMIN");
 
 		return this.categoryRepository.findAll();
 	}

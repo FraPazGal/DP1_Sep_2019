@@ -42,17 +42,19 @@ public class FinderService {
 	// CRUD Methods ------------------------------------------
 
 	public Finder create() {
-		Finder result;
+		Finder result = new Finder();
 		Actor principal = this.utilityService.findByPrincipal();
 
-		result = new Finder();
 		result.setResults(new ArrayList<Conference>());
 		result.setActor(principal);
 		return result;
 	}
 
 	public Finder findOne(final int finderId) {
-		return this.finderRepository.findOne(finderId);
+		Finder result = this.finderRepository.findOne(finderId);
+		Assert.notNull(result,"wrong.id");
+		
+		return result;
 	}
 
 	public Collection<Finder> findAll() {
@@ -61,12 +63,11 @@ public class FinderService {
 
 	public Finder save(Finder finder) {
 		Finder result;
-		Actor principal;
 
 		if (finder.getId() == 0) {
 			result = this.finderRepository.save(finder);
 		} else {
-			principal = this.utilityService.findByPrincipal();
+			Actor principal = this.utilityService.findByPrincipal();
 			
 			Assert.isTrue(principal.equals(finder.getActor()), "not.allowed");
 			Assert.notNull(finder, "not.allowed");
@@ -80,13 +81,10 @@ public class FinderService {
 	}
 
 	public void delete(Finder finder) {
-		Actor principal;
-		Finder aux;
-		
 		Assert.isTrue(finder.getId() != 0);
 		
-		principal = this.utilityService.findByPrincipal();
-		aux = this.findOne(finder.getId());
+		Actor principal = this.utilityService.findByPrincipal();
+		Finder aux = this.findOne(finder.getId());
 		
 		Assert.isTrue(principal.equals(aux.getActor()), "not.allowed");
 		
@@ -126,7 +124,6 @@ public class FinderService {
 	}
 
 	public Collection<Conference> search(Finder finder) {
-
 		Collection<Conference> results = new ArrayList<Conference>();
 		String keyWord;
 		Double maximumFee;
@@ -167,7 +164,6 @@ public class FinderService {
 			if(finder.getCategory() != null) {
 				results.retainAll(finder.getCategory().getConferences());
 			}
-
 		}
 
 		for (Conference p : results) {
@@ -190,10 +186,8 @@ public class FinderService {
 	}
 	
 	public Finder reconstruct (Finder finder, BindingResult binding) {
-		Finder aux;
 		Actor principal = this.utilityService.findByPrincipal();
-		
-		aux = this.findOne(finder.getId());
+		Finder aux = this.findOne(finder.getId());
 		
 		Assert.isTrue(aux.getActor().equals(principal), "not.allowed");
 		
@@ -212,11 +206,7 @@ public class FinderService {
 	}
 	
 	public Finder findFinderByActorId(int actorId) {
-		Finder result;
-		
-		result = this.finderRepository.findFinderByActorId(actorId);
-		
-		return result;
+		return this.finderRepository.findFinderByActorId(actorId);
 	}
 	
 	public Finder checkIfExpired() {

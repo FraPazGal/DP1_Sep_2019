@@ -46,7 +46,7 @@
 	</jstl:if>
 
 	<form:label path="${path}">
-		<spring:message code="${code}" />
+		<strong><spring:message code="${code}" /></strong>
 	</form:label>
 	<br>
 	<jstl:if test="${password eq null }">
