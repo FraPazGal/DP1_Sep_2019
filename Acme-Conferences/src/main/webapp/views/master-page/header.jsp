@@ -39,6 +39,8 @@
 					<security:authorize access="!hasRole('ADMIN')">
 						<li><a href="conference/list.do?catalog=future"><spring:message
 									code="master.page.conference.list" /></a></li>
+						<li><a href="category/list.do"><spring:message
+								code="master.page.categories" /></a></li>
 					</security:authorize>
 					<security:authorize access="hasRole('ADMIN')">
 						<li><a href="conference/list.do?catalog=unpublished"><spring:message
@@ -68,7 +70,6 @@
 					<li><a href="category/create.do"><spring:message
 								code="master.page.categories.new" /></a></li>
 				</ul></li>
-
 		</security:authorize>
 
 		<security:authorize access="hasRole('SPONSOR')">
@@ -81,8 +82,6 @@
 					<li><a href="sponsorship/create.do"><spring:message
 								code="master.page.sponsorship.new" /></a></li>
 				</ul></li>
-
-
 		</security:authorize>
 
 		<security:authorize access="hasRole('AUTHOR')">
