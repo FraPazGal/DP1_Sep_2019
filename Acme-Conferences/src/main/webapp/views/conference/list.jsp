@@ -12,7 +12,7 @@
 
 
 <jstl:choose>
-	<jstl:when test="${catalog eq null }">
+	<jstl:when test="${catalog eq null and category eq null}">
 		<h1><spring:message code="conference.title.list" /></h1>
 	</jstl:when>
 	<jstl:when test="${catalog == 'future' }">
@@ -38,6 +38,19 @@
 	</jstl:when>
 	<jstl:when test="${catalog == '5org' }">
 		<h1><spring:message	code="conference.conference.list.5organised" /></h1>
+	</jstl:when>
+	<jstl:when test="${category ne null}">
+		<h1>
+			<spring:message	code="conference.conference.list.category" />
+			<jstl:choose>
+				<jstl:when test="${pageContext.response.locale.language == 'es'}">
+					<jstl:out value="${category.title.get('Español')}" />
+				</jstl:when>
+				<jstl:otherwise>
+					<jstl:out value="${category.title.get('English')}" />
+				</jstl:otherwise>
+			</jstl:choose>
+		</h1>
 	</jstl:when>
 </jstl:choose>
 
@@ -212,11 +225,11 @@
 				<jstl:out value="${conference.title}" />
 			</display:column>
 			
-			<display:column titleKey="conference.submissionDeadline" sortable="true">
-				<jstl:if test="${catalog ne 'past' and catalog ne 'running'}">
+			<jstl:if test="${catalog ne 'past' and catalog ne 'running'}">
+				<display:column titleKey="conference.submissionDeadline" sortable="true">
 					<span><fmt:formatDate pattern="${format }" value="${conference.submissionDeadline}" /></span>
-				</jstl:if>
-			</display:column>
+				</display:column>
+			</jstl:if>
 							
 			<display:column titleKey="conference.startDate" sortable="true">
 				<span><fmt:formatDate pattern="${format }" value="${conference.startDate}" /></span>

@@ -31,6 +31,9 @@
 			<li><a href="conference/list.do?catalog=past"><spring:message
 						code="conference.conference.list.past" /></a></li>
 						
+			<li><a href="category/list.do"><spring:message
+								code="conference.categories.list" /></a></li>
+						
 			<security:authorize access="hasRole('ADMIN')">
 			
 				<li><a class="fNiv"><spring:message
