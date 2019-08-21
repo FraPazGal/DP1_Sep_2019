@@ -17,10 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 import services.ActivityService;
 import services.CommentService;
 import services.SectionService;
+import services.SubmissionService;
 import services.UtilityService;
 import domain.Activity;
 import domain.Actor;
 import domain.Comentario;
+import domain.Paper;
 import domain.Section;
 
 @Controller
@@ -35,6 +37,9 @@ public class ActivityController extends AbstractController {
 
 	@Autowired
 	private UtilityService utilityService;
+
+	@Autowired
+	private SubmissionService submissionService;
 
 	@Autowired
 	private CommentService commentService;
@@ -134,6 +139,7 @@ public class ActivityController extends AbstractController {
 		ModelAndView res;
 		Activity newActivity;
 		Actor principal;
+		Collection<Paper> crPapers;
 		boolean permission = false;
 
 		try {
@@ -145,8 +151,12 @@ public class ActivityController extends AbstractController {
 
 			newActivity = this.activityService.create(conferenceid);
 
+			crPapers = this.submissionService
+					.findCameraReadyPapersOfConference(conferenceid);
+
 			res = new ModelAndView("activity/edit");
 			res.addObject("activity", newActivity);
+			res.addObject("crPapers", crPapers);
 			res.addObject("permission", permission);
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
@@ -161,6 +171,7 @@ public class ActivityController extends AbstractController {
 		ModelAndView res;
 		Activity toEdit;
 		Actor principal;
+		Collection<Paper> crPapers;
 		boolean permission = false;
 
 		try {
@@ -172,9 +183,14 @@ public class ActivityController extends AbstractController {
 
 			toEdit = this.activityService.findOne(activityid);
 
+			crPapers = this.submissionService
+					.findCameraReadyPapersOfConference(toEdit.getConference()
+							.getId());
+
 			res = new ModelAndView("activity/edit");
 			res.addObject("activity", toEdit);
 			res.addObject("permission", permission);
+			res.addObject("crPapers", crPapers);
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
 		}
@@ -183,20 +199,33 @@ public class ActivityController extends AbstractController {
 
 	// Saving activity
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView save(@Valid Activity activity, BindingResult binding) {
+	public ModelAndView save(
+			@Valid Activity activity,
+			@RequestParam(required = false, value = "crpaperid") Integer crpaperid,
+			BindingResult binding) {
 		ModelAndView res;
 		Actor principal;
 
 		try {
 			if (binding.hasErrors()) {
+				Collection<Paper> crPapers = this.submissionService
+						.findCameraReadyPapersOfConference(activity.getConference()
+								.getId());
+				
 				res = new ModelAndView("activity/edit");
 				res.addObject(activity);
 				res.addObject("permission", true);
+				res.addObject("crPapers", crPapers);
 			} else {
 				principal = this.utilityService.findByPrincipal();
 				Assert.isTrue(this.utilityService.checkAuthority(principal,
 						"ADMIN"));
 
+				if (activity.getType().equalsIgnoreCase("PRESENTATION")) {
+					activity.setSubmission(this.submissionService
+							.findSubByPaper(crpaperid));
+				}
+				
 				this.activityService.save(activity);
 				res = new ModelAndView("redirect:list.do?conferenceid="
 						+ activity.getConference().getId());

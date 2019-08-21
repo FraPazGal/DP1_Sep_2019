@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import domain.Actor;
+import domain.Paper;
 import domain.Submission;
 
 @Repository
@@ -30,19 +31,22 @@ public interface SubmissionRepository extends
 
 	@Query("select s from Submission s where s.conference.id = ?1")
 	Collection<Submission> findConferenceSubmitions(Integer id);
-	
+
 	@Query("select case when (count(s) = 0) then true else false end from Submission s where s.ticker = ?1")
 	boolean checkIfUniqueTicker(String ticker);
-	
+
 	@Query("select s from Submission s where s.status = 'ACCEPTED'")
 	Collection<Submission> acceptedSubmissions();
-	
+
 	@Query("select s from Submission s where s.status = 'REJECTED'")
 	Collection<Submission> rejectedSubmissions();
-	
+
 	@Query("select s from Submission s where s.status = 'UNDER-REVIEW'")
 	Collection<Submission> underReviewSubmissions();
-	
+
 	@Query("select s from Submission s where s.author.id = ?1 and s.conference.id = ?2")
 	Submission findOneByActorAndConference(Integer actorId, Integer conferenceId);
+
+	@Query("select s.cameraReadyPaper from Submission s where s.conference.id = ?1")
+	Collection<Paper> findCameraReadyPapersOfConference(int conferenceid);
 }

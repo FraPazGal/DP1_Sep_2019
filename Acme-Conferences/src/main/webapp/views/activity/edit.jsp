@@ -9,17 +9,20 @@
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
 <SCRIPT>
-	function add() {
+	function checkIfPresentation(obj) {
 
-		var element = document.createElement("input");
+		var selectBox = obj;
+		var selected = selectBox.options[selectBox.selectedIndex].value;
+		var select = document.getElementById("paperSelect");
+		var label = document.getElementById("paperLabel");
 
-		element.setAttribute("type", "text");
-		element.setAttribute("name", "newSpeakerText");
-
-		var foo = document.getElementById("newSpeaker");
-
-		foo.appendChild(element);
-
+		if (selected === 'PRESENTATION') {
+			label.style.display = "block";
+			select.style.display = "block";
+		} else {
+			label.style.display = "none";
+			select.style.display = "none";
+		}
 	}
 </SCRIPT>
 
@@ -66,7 +69,9 @@
 				<spring:message code="activity.type" />
 			</form:label>
 			<br />
-			<form:select path="type" required="true" size="4">
+			<form:select path="type" required="true" size="4"
+				onfocus="checkIfPresentation(this)"
+				onchange="checkIfPresentation(this)">
 				<spring:message code='activity.selected' var="selected" />
 				<jstl:choose>
 					<jstl:when test="${activity.id == 0}">
@@ -82,6 +87,22 @@
 				<form:option value="PRESENTATION" label="PRESENTATION" />
 			</form:select>
 			<form:errors path="type" cssClass="error" />
+
+			<br>
+			<br>
+
+			<label id="paperLabel" hidden="true"> <spring:message
+					code="activity.crPaper" />
+			</label>
+			<jstl:if test="${not empty crPapers}">
+				<select id="paperSelect" name="crpaperid" hidden="true">
+					<jstl:forEach items="${crPapers}" var="paper">
+						<option value="${paper.id}">
+							<jstl:out value="${paper.title}" />
+						</option>
+					</jstl:forEach>
+				</select>
+			</jstl:if>
 
 			<br>
 			<br>

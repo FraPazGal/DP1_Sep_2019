@@ -64,7 +64,7 @@
 			<jstl:choose>
 				<jstl:when test="${not empty activity.submission}">
 					<input type="button"
-						onclick="redirect: location.href = 'submission/display.do?id=${activity.submission.id}';"
+						onclick="redirect: location.href = 'submission/display.do?submissionId=${activity.submission.id}';"
 						value="<spring:message code='activity.submission.display' />" />
 				</jstl:when>
 				<jstl:otherwise>
