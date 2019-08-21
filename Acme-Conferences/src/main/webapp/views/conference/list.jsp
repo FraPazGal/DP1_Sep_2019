@@ -93,7 +93,7 @@
 			</display:column>
 			
 			<display:column titleKey="conference.entryFee" sortable="true">
-				<jstl:out value="${conference.entryFee}" />
+				<jstl:out value="${conference.entryFee}" />  &#8364;
 			</display:column>
 			
 			<jstl:if test="${conference.status eq 'FINAL'}">

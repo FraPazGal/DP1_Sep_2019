@@ -2,6 +2,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ConferenceService;
 import services.SponsorshipService;
+import services.SystemConfigurationService;
 import services.UtilityService;
 import domain.Actor;
 import domain.Conference;
@@ -36,6 +38,9 @@ public class SponsorshipController extends AbstractController {
 	
 	@Autowired
 	private ConferenceService		conferenceService;
+	
+	@Autowired
+	private SystemConfigurationService		systemConfigurationService;
 
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -155,6 +160,8 @@ public class SponsorshipController extends AbstractController {
 		result.addObject("sponsorshipForm", sponsorshipForm);
 		result.addObject("errMsg", messageCode);
 		result.addObject("conferences", conferences);
+		String[] aux = this.systemConfigurationService.findMySystemConfiguration().getMakes().split(",");
+		result.addObject("makes", Arrays.asList(aux));
 
 		return result;
 	}

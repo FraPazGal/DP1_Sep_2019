@@ -18,16 +18,16 @@
 	<form:hidden path="id" />
 	<form:hidden path="idCC" />
 	
-	<acme:textbox code="sponsorship.banner" path="banner" size="100px" /><br> <br>
-	<acme:textbox code="sponsorship.targetPage" path="targetPage" size="100px" /><br> <br>
+	<acme:textbox code="sponsorship.banner" path="banner" size="100px" /><br> 
+	<acme:textbox code="sponsorship.targetPage" path="targetPage" size="100px" /><br> 
 	<acme:multipleSelect items="${conferences}" itemLabel="title" code="sponsorship.conferences" path="conferences"/><br>
 	
-	<acme:textbox code="sponsorship.holder" path="holder" size="100px" /><br> <br>
-	<acme:textbox code="sponsorship.make" path="make" size="100px" placeholder="make.placeholder"/><br> <br>
-	<acme:textbox code="sponsorship.number" path="number" size="100px" placeholder="ccnumber.placeholder"/><br> <br>
-	<acme:textbox code="sponsorship.expirationMonth" path="expirationMonth" size="100px" placeholder="expirationMonth.placeholder"/><br> <br>
-	<acme:textbox code="sponsorship.expirationYear" path="expirationYear" size="100px" placeholder="expirationMonth.placeholder"/><br> <br>
-	<acme:textbox code="sponsorship.CVV" path="CVV" size="100px" placeholder="cvv.placeholder"/><br> <br>
+	<acme:textbox code="sponsorship.holder" path="holder" size="100px" /><br> 
+	<acme:selectString items="${makes}" code="sponsorship.make" path="make"/><br/>
+	<acme:textbox code="sponsorship.number" path="number" size="100px" placeholder="ccnumber.placeholder"/><br>
+	<acme:textbox code="sponsorship.expirationMonth" path="expirationMonth" size="100px" placeholder="expirationMonth.placeholder"/><br>
+	<acme:textbox code="sponsorship.expirationYear" path="expirationYear" size="100px" placeholder="expirationMonth.placeholder"/><br> 
+	<acme:textbox code="sponsorship.CVV" path="CVV" size="100px" placeholder="cvv.placeholder"/><br> 
 	
 	<acme:submit code="mp.save" name="save" />&nbsp;
 	<acme:cancel url="sponsorship/list.do" code="mp.cancel" />

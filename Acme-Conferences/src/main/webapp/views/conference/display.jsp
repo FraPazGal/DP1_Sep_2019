@@ -53,7 +53,7 @@
 		</tr>
 
 		<jstl:choose>
-			<jstl:when test="${pageContext.response.locale.language == 'es'}">
+			<jstl:when test="${pageContext.response.locale.language == 'es'}"> 
 				<tr>
 					<td><strong> <spring:message
 								code="conference.category" /> :

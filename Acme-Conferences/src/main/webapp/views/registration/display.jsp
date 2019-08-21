@@ -29,6 +29,11 @@
 		<td><jstl:out value="${registration.conference.venue}"></jstl:out></td>
 	</tr>
 	
+	<tr>
+		<td><strong> <spring:message code="conference.entryFee" /> : </strong></td>
+		<td><jstl:out value="${registration.conference.entryFee}"/> &#8364;</td>
+	</tr>
+	
 	<spring:message code="date.dateFormat" var="format" /> 
 	<tr>
 		<td><strong> <spring:message code="conference.startDate" /> : </strong></td>
