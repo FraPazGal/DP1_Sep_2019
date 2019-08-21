@@ -87,7 +87,7 @@
 				<form:option value="TUTORIAL" label="TUTORIAL" />
 				<form:option value="PRESENTATION" label="PRESENTATION" />
 			</form:select>
-			<form:errors path="${type}" cssClass="error" />
+			<form:errors path="type" cssClass="error" />
 
 			<br>
 			<br>

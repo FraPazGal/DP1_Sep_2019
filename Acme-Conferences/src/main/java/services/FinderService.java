@@ -34,10 +34,9 @@ public class FinderService {
 
 	@Autowired
 	private SystemConfigurationService systemConfigurationService;
-	
+
 	@Autowired
 	private Validator validator;
-
 
 	// CRUD Methods ------------------------------------------
 
@@ -50,10 +49,19 @@ public class FinderService {
 		return result;
 	}
 
+	public Finder create(Actor newActor) {
+		Finder result;
+
+		result = new Finder();
+		result.setResults(new ArrayList<Conference>());
+		result.setActor(newActor);
+		return result;
+	}
+
 	public Finder findOne(final int finderId) {
 		Finder result = this.finderRepository.findOne(finderId);
-		Assert.notNull(result,"wrong.id");
-		
+		Assert.notNull(result, "wrong.id");
+
 		return result;
 	}
 
@@ -68,7 +76,7 @@ public class FinderService {
 			result = this.finderRepository.save(finder);
 		} else {
 			Actor principal = this.utilityService.findByPrincipal();
-			
+
 			Assert.isTrue(principal.equals(finder.getActor()), "not.allowed");
 			Assert.notNull(finder, "not.allowed");
 
@@ -82,12 +90,12 @@ public class FinderService {
 
 	public void delete(Finder finder) {
 		Assert.isTrue(finder.getId() != 0);
-		
+
 		Actor principal = this.utilityService.findByPrincipal();
 		Finder aux = this.findOne(finder.getId());
-		
+
 		Assert.isTrue(principal.equals(aux.getActor()), "not.allowed");
-		
+
 		finder.setActor(aux.getActor());
 		finder.setVersion(aux.getVersion());
 		finder.setResults(new ArrayList<Conference>());
@@ -108,7 +116,8 @@ public class FinderService {
 
 		timeChachedFind = this.systemConfigurationService
 				.findMySystemConfiguration().getTimeResultsCached();
-		maxLivedMoment = DateUtils.addHours(new Date(System.currentTimeMillis() - 1), -timeChachedFind);
+		maxLivedMoment = DateUtils.addHours(new Date(
+				System.currentTimeMillis() - 1), -timeChachedFind);
 		if (finder.getSearchMoment().before(maxLivedMoment)) {
 
 			finder.setResults(new ArrayList<Conference>());
@@ -135,18 +144,18 @@ public class FinderService {
 
 		nResults = this.systemConfigurationService.findMySystemConfiguration()
 				.getMaxResults();
-		
+
 		keyWord = (finder.getKeyWord() == null || finder.getKeyWord().isEmpty()) ? ""
 				: finder.getKeyWord();
 
 		maximumFee = (finder.getMaximumFee() == null) ? 100000 : finder
 				.getMaximumFee();
-		
-		aux = new GregorianCalendar(2000, 0, 1).getTime(); 
+
+		aux = new GregorianCalendar(2000, 0, 1).getTime();
 		minimumDate = (finder.getMinimumDate() == null) ? aux : finder
 				.getMinimumDate();
-		
-		aux = new GregorianCalendar(2050, 0, 1).getTime(); 
+
+		aux = new GregorianCalendar(2050, 0, 1).getTime();
 		maximumDate = (finder.getMaximumDate() == null) ? aux : finder
 				.getMaximumDate();
 
@@ -157,11 +166,11 @@ public class FinderService {
 				&& finder.getCategory() == null) {
 			results = this.allConferencesFinal();
 		} else {
-			
+
 			results = this.finderRepository.search(keyWord, maximumFee,
 					minimumDate, maximumDate);
 
-			if(finder.getCategory() != null) {
+			if (finder.getCategory() != null) {
 				results.retainAll(finder.getCategory().getConferences());
 			}
 		}
@@ -179,50 +188,51 @@ public class FinderService {
 
 		return resultsPageables;
 	}
-	
-	public Collection<Conference> searchAnon (String keyword) {
-		
+
+	public Collection<Conference> searchAnon(String keyword) {
+
 		return this.finderRepository.searchAnon(keyword);
 	}
-	
-	public Finder reconstruct (Finder finder, BindingResult binding) {
+
+	public Finder reconstruct(Finder finder, BindingResult binding) {
 		Actor principal = this.utilityService.findByPrincipal();
 		Finder aux = this.findOne(finder.getId());
-		
+
 		Assert.isTrue(aux.getActor().equals(principal), "not.allowed");
-		
+
 		finder.setVersion(aux.getVersion());
 		finder.setActor(aux.getActor());
 		finder.setResults(aux.getResults());
-		finder.setSearchMoment(new Date (System.currentTimeMillis() - 1));
+		finder.setSearchMoment(new Date(System.currentTimeMillis() - 1));
 
 		this.validator.validate(finder, binding);
-		
+
 		return finder;
 	}
 
 	private Collection<Conference> allConferencesFinal() {
 		return this.finderRepository.allConferencesFinal();
 	}
-	
+
 	public Finder findFinderByActorId(int actorId) {
 		return this.finderRepository.findFinderByActorId(actorId);
 	}
-	
+
 	public Finder checkIfExpired() {
 		Date maxLivedMoment = new Date();
 		Actor principal = this.utilityService.findByPrincipal();
 		Finder finder = this.findFinderByActorId(principal.getId());
-		
-		
+
 		if (finder.getSearchMoment() != null) {
-			final int timeChachedFind = this.systemConfigurationService.findMySystemConfiguration().getTimeResultsCached();
-			maxLivedMoment = DateUtils.addHours(maxLivedMoment, -timeChachedFind);
+			final int timeChachedFind = this.systemConfigurationService
+					.findMySystemConfiguration().getTimeResultsCached();
+			maxLivedMoment = DateUtils.addHours(maxLivedMoment,
+					-timeChachedFind);
 
 			if (finder.getSearchMoment().before(maxLivedMoment))
 				this.deleteExpiredFinder(finder);
 		}
-		
+
 		return finder;
 	}
 

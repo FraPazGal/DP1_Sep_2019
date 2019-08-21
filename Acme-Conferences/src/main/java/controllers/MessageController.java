@@ -26,7 +26,7 @@ import domain.Mensaje;
 
 @Controller
 @RequestMapping("/message")
-public class MessageController {
+public class MessageController extends AbstractController {
 
 	@Autowired
 	private MessageService messageService;
@@ -79,6 +79,8 @@ public class MessageController {
 
 			Collection<Actor> actors = this.actorService.findAll();
 			actors.remove((Actor) this.utilityService.findByPrincipal());
+			actors.remove((Actor) this.utilityService
+					.findByUsername("[Anonymous]"));
 
 			res.addObject("actors", actors);
 		} catch (Throwable oops) {
@@ -103,6 +105,8 @@ public class MessageController {
 
 				Collection<Actor> actors = this.actorService.findAll();
 				actors.remove((Actor) this.utilityService.findByPrincipal());
+				actors.remove((Actor) this.utilityService
+						.findByUsername("[Anonymous]"));
 
 				res.addObject("actors", actors);
 			} else {
@@ -122,8 +126,9 @@ public class MessageController {
 			@RequestParam(value = "type") String type,
 			@RequestParam(value = "id", required = false) Integer id) {
 		ModelAndView res;
+		String messageError;
 		Mensaje newMessage;
-		Collection<Actor> actors;
+		Collection<Actor> actors = new ArrayList<>();
 
 		try {
 			Assert.isTrue(this.utilityService.checkAuthority(
@@ -157,9 +162,12 @@ public class MessageController {
 				break;
 			}
 
+			messageError = (actors.isEmpty()) ? "reciever.error" : null;
+
 			res.addObject("mensaje", newMessage);
 			res.addObject("topics", this.systemConfigurationService
 					.findMySystemConfiguration().getTopics());
+			res.addObject("messageError", messageError);
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
 		}

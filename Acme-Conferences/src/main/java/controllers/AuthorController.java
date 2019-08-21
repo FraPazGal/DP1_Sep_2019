@@ -13,9 +13,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.AuthorService;
+import services.FinderService;
 import services.UtilityService;
 import domain.Actor;
 import domain.Author;
+import domain.Finder;
 import forms.ActorForm;
 import forms.ActorRegistrationForm;
 
@@ -30,6 +32,9 @@ public class AuthorController extends AbstractController {
 
 	@Autowired
 	private ActorService actorService;
+
+	@Autowired
+	private FinderService finderService;
 
 	@Autowired
 	private UtilityService utilityService;
@@ -108,6 +113,8 @@ public class AuthorController extends AbstractController {
 			final BindingResult binding) {
 
 		ModelAndView res;
+		Finder finder;
+		Author saved;
 
 		try {
 			Author author = this.authorService.reconstruct(registerFormObject,
@@ -122,7 +129,10 @@ public class AuthorController extends AbstractController {
 			} else {
 				try {
 
-					this.authorService.save(author);
+					saved = this.authorService.save(author);
+
+					finder = this.finderService.create(saved);
+					this.finderService.save(finder);
 
 					res = new ModelAndView("redirect:/");
 
@@ -182,7 +192,7 @@ public class AuthorController extends AbstractController {
 
 			if (binding.hasErrors()) {
 
-				res = new ModelAndView("administrator/edit");
+				res = new ModelAndView("author/edit");
 				res.addObject("editionFormObject", editionFormObject);
 				res.addObject("binding", binding);
 

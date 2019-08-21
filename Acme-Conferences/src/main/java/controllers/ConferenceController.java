@@ -17,7 +17,9 @@ import services.ActivityService;
 import services.CategoryService;
 import services.CommentService;
 import services.ConferenceService;
+import services.RegistrationService;
 import services.SponsorshipService;
+import services.SubmissionService;
 import services.UtilityService;
 import domain.Activity;
 import domain.Actor;
@@ -50,25 +52,44 @@ public class ConferenceController extends AbstractController {
 	@Autowired
 	private CommentService commentService;
 
+	@Autowired
+	private RegistrationService registrationService;
+
+	@Autowired
+	private SubmissionService submissionService;
+
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int conferenceId) {
+
 		ModelAndView result = new ModelAndView("conference/display");
-		Map<String, String> titleCat = new HashMap<>();
 		boolean isPrincipal = false;
+		boolean hasSubcriptions = false;
+		boolean hasSubmittions = false;
+		Map<String, String> titleCat = new HashMap<>();
 		Conference conference = null;
 		try {
-			Sponsorship spoBanner = this.sponsorshipService.findBanner(conferenceId);
-			Category category = this.categoryService.findOneByConferenceId(conferenceId);
+			Sponsorship spoBanner = this.sponsorshipService
+					.findBanner(conferenceId);
+			Category category = this.categoryService
+					.findOneByConferenceId(conferenceId);
 			titleCat.putAll(category.getTitle());
-			Collection<Activity> activities = this.activityService.getActivitiesOfConference(conferenceId);
-			Collection<Comentario> comments = this.commentService.getCommentsOfConference(conferenceId);
+			Collection<Activity> activities = this.activityService
+					.getActivitiesOfConference(conferenceId);
+			Collection<Comentario> comments = this.commentService
+					.getCommentsOfConference(conferenceId);
 			try {
 				Actor principal = this.utilityService.findByPrincipal();
-				conference = this.conferenceService.findOneToDisplay(conferenceId);
+				conference = this.conferenceService
+						.findOneToDisplay(conferenceId);
 				if (this.utilityService.checkAuthority(principal, "ADMIN"))
 					isPrincipal = true;
-
+				hasSubcriptions = (this.registrationService
+						.findActorsRegisteredTo(conferenceId).isEmpty()) ? false
+						: true;
+				hasSubmittions = (this.submissionService
+						.findActorsWithSubmitions(conferenceId).isEmpty()) ? false
+						: true;
 			} catch (final Throwable oops) {
 				conference = this.conferenceService.findOne(conferenceId);
 			}
@@ -79,6 +100,10 @@ public class ConferenceController extends AbstractController {
 			result.addObject("isPrincipal", isPrincipal);
 			result.addObject("activities", activities);
 			result.addObject("comments", comments);
+			result.addObject("hasSubcriptions", hasSubcriptions);
+			result.addObject("hasSubmittions", hasSubmittions);
+			result.addObject("requestURI",
+					"conference/display.do?conferenceId=" + conferenceId);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
 		}
@@ -159,14 +184,14 @@ public class ConferenceController extends AbstractController {
 				} catch (Throwable oops) {
 				}
 			}
-			
-
 			if (conferences == null) {
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} else {
 				result.addObject("conferences", conferences);
-				result.addObject("conferencesRegisteredTo",	conferencesRegisteredTo);
-				result.addObject("conferencesSubmittedTo",	conferencesSubmittedTo);
+				result.addObject("conferencesRegisteredTo",
+						conferencesRegisteredTo);
+				result.addObject("conferencesSubmittedTo",
+						conferencesSubmittedTo);
 				result.addObject("isPrincipal", isPrincipal);
 				result.addObject("catalog", catalog);
 				result.addObject("listConf", true);
@@ -198,7 +223,8 @@ public class ConferenceController extends AbstractController {
 	public ModelAndView edit(@RequestParam final int conferenceId) {
 		ModelAndView result;
 		try {
-			result = this.createEditModelAndView(this.conferenceService.findOneToEdit(conferenceId));
+			result = this.createEditModelAndView(this.conferenceService
+					.findOneToEdit(conferenceId));
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do/");
@@ -209,10 +235,12 @@ public class ConferenceController extends AbstractController {
 	/* Save as Draft */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(Conference conference, BindingResult binding) {
-		ModelAndView result = new ModelAndView("redirect:list.do?catalog=unpublished");
-		
+		ModelAndView result = new ModelAndView(
+				"redirect:list.do?catalog=unpublished");
+
 		try {
-			Conference toSave = this.conferenceService.reconstruct(conference, binding);
+			Conference toSave = this.conferenceService.reconstruct(conference,
+					binding);
 			if (binding.hasErrors()) {
 				conference.setStatus("DRAFT");
 
@@ -229,11 +257,14 @@ public class ConferenceController extends AbstractController {
 
 	/* Save as Final */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "saveFinal")
-	public ModelAndView saveFinal(final Conference conference, final BindingResult binding) {
-		ModelAndView result = new ModelAndView("redirect:list.do?catalog=future");
-		
+	public ModelAndView saveFinal(final Conference conference,
+			final BindingResult binding) {
+		ModelAndView result = new ModelAndView(
+				"redirect:list.do?catalog=future");
+
 		try {
-			Conference toSave = this.conferenceService.reconstruct(conference, binding);
+			Conference toSave = this.conferenceService.reconstruct(conference,
+					binding);
 			if (binding.hasErrors()) {
 
 				conference.setStatus("DRAFT");
@@ -241,7 +272,7 @@ public class ConferenceController extends AbstractController {
 				result = this.createEditModelAndView(conference);
 			} else
 				toSave.setStatus("FINAL");
-				this.conferenceService.save(toSave);
+			this.conferenceService.save(toSave);
 		} catch (final Throwable oops) {
 			result = this.createEditModelAndView(conference, oops.getMessage());
 		}
@@ -251,21 +282,26 @@ public class ConferenceController extends AbstractController {
 	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam final int conferenceId) {
-		ModelAndView result = new ModelAndView("redirect:list.do?catalog=unpublished");
+		ModelAndView result = new ModelAndView(
+				"redirect:list.do?catalog=unpublished");
 		try {
-			this.conferenceService.delete(this.conferenceService.findOne(conferenceId));
+			final Conference conference = this.conferenceService
+					.findOne(conferenceId);
+			this.activityService.deleteAll(this.activityService
+					.getActivitiesOfConference(conferenceId));
+			this.conferenceService.delete(conference);
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do/");
 		}
 		return result;
 	}
-	
+
 	/* Review submissions */
 	@RequestMapping(value = "/review", method = RequestMethod.GET)
 	public ModelAndView reviewSubmissions(@RequestParam final int conferenceId) {
 		ModelAndView result = new ModelAndView("redirect:list.do?catalog=5noti");
-		
+
 		try {
 			this.conferenceService.reviewSubmissions(conferenceId);
 		} catch (final Throwable oops) {
@@ -273,12 +309,12 @@ public class ConferenceController extends AbstractController {
 		}
 		return result;
 	}
-	
+
 	/* Review submissions */
 	@RequestMapping(value = "/notify", method = RequestMethod.GET)
 	public ModelAndView notifySubmissions(@RequestParam final int conferenceId) {
 		ModelAndView result = new ModelAndView("redirect:list.do?catalog=5noti");
-		
+
 		try {
 			this.conferenceService.notifySubmissions(conferenceId);
 		} catch (final Throwable oops) {
@@ -292,15 +328,16 @@ public class ConferenceController extends AbstractController {
 		return this.createEditModelAndView(conference, null);
 	}
 
-	protected ModelAndView createEditModelAndView(final Conference conference, final String messageCode) {
+	protected ModelAndView createEditModelAndView(final Conference conference,
+			final String messageCode) {
 		ModelAndView result = new ModelAndView("conference/edit");
-		
+
 		result.addObject("conference", conference);
 		result.addObject("categories", this.categoryService.findAll());
-		
-		if(conference.getCategory() != null) 
-			result.addObject("catId", conference.getCategory().getId());	
-			
+
+		if (conference.getCategory() != null)
+			result.addObject("catId", conference.getCategory().getId());
+
 		result.addObject("errMsg", messageCode);
 
 		return result;

@@ -153,7 +153,7 @@
 					<security:authorize access="hasRole('ADMIN')">
 						<li><a href="message/createbroadcast.do?type=aut"><spring:message
 									code="master.page.message.broadcast.authors" /> </a></li>
-						<li><a href="message/createbroadcast.do?type=aut"><spring:message
+						<li><a href="message/createbroadcast.do?type=all"><spring:message
 									code="master.page.message.broadcast.all" /> </a></li>
 					</security:authorize>
 				</ul></li>

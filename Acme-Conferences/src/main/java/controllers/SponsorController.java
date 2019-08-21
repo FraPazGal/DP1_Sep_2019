@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
+import services.FinderService;
 import services.SponsorService;
 import services.UtilityService;
 import domain.Actor;
+import domain.Finder;
 import domain.Sponsor;
 import forms.ActorForm;
 import forms.ActorRegistrationForm;
@@ -30,6 +32,9 @@ public class SponsorController extends AbstractController {
 
 	@Autowired
 	private ActorService actorService;
+
+	@Autowired
+	private FinderService finderService;
 
 	@Autowired
 	private UtilityService utilityService;
@@ -108,6 +113,8 @@ public class SponsorController extends AbstractController {
 			final BindingResult binding) {
 
 		ModelAndView res;
+		Finder finder;
+		Sponsor saved;
 
 		Sponsor sponsor = this.sponsorService.reconstruct(registerFormObject,
 				binding);
@@ -121,7 +128,10 @@ public class SponsorController extends AbstractController {
 		} else {
 			try {
 
-				this.sponsorService.save(sponsor);
+				saved = this.sponsorService.save(sponsor);
+
+				finder = this.finderService.create(saved);
+				this.finderService.save(finder);
 
 				res = new ModelAndView("redirect:/");
 

@@ -9,10 +9,11 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-
 <spring:message code="date.dateFormat" var="format" />
 
-<h1><jstl:out value="${conference.title}" /></h1>
+<h1>
+	<jstl:out value="${conference.title}" />
+</h1>
 <div>
 	<table class="displayStyle">
 
@@ -24,15 +25,15 @@
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message
-						code="conference.acronym" /> :
+			<td><strong> <spring:message code="conference.acronym" />
+					:
 			</strong></td>
 			<td><jstl:out value="${conference.acronym}"></jstl:out></td>
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message
-						code="conference.summary" /> :
+			<td><strong> <spring:message code="conference.summary" />
+					:
 			</strong></td>
 			<td><jstl:out value="${conference.summary}"></jstl:out></td>
 		</tr>
@@ -45,11 +46,10 @@
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message
-						code="conference.entryFee" /> :
+			<td><strong> <spring:message code="conference.entryFee" />
+					:
 			</strong></td>
-			<td><jstl:out value="${conference.entryFee}"></jstl:out>
-				&#8364;</td>
+			<td><jstl:out value="${conference.entryFee}"></jstl:out> &#8364;</td>
 		</tr>
 
 		<jstl:choose>
@@ -75,8 +75,8 @@
 			<td><strong> <spring:message
 						code="conference.submissionDeadline" /> :
 			</strong></td>
-			<td> <span><fmt:formatDate
-						pattern="${format }" value="${conference.submissionDeadline}" /></span></td>
+			<td><span><fmt:formatDate pattern="${format }"
+						value="${conference.submissionDeadline}" /></span></td>
 		</tr>
 
 		<tr>
@@ -104,29 +104,31 @@
 		</tr>
 
 		<tr>
-			<td><strong> <spring:message
-						code="conference.endDate" /> :
+			<td><strong> <spring:message code="conference.endDate" />
+					:
 			</strong></td>
 			<td><span><fmt:formatDate pattern="${format }"
 						value="${conference.endDate}" /></span></td>
 		</tr>
 
 		<jstl:if test="${conference.status eq 'FINAL'}">
-				<spring:message var="status" code='conference.status.final' />
-			</jstl:if>
-			<jstl:if test="${conference.status eq 'DRAFT'}">
-				<spring:message var="status" code='conference.status.draft' />
-			</jstl:if>
-			<jstl:if test="${conference.status eq 'DECISION-MADE'}">
-				<spring:message var="status" code='conference.status.decisionmade' />
-			</jstl:if>
-			<jstl:if test="${conference.status eq 'NOTIFIED'}">
-				<spring:message var="status" code='conference.status.notified' />
-			</jstl:if>
+			<spring:message var="status" code='conference.status.final' />
+		</jstl:if>
+		<jstl:if test="${conference.status eq 'DRAFT'}">
+			<spring:message var="status" code='conference.status.draft' />
+		</jstl:if>
+		<jstl:if test="${conference.status eq 'DECISION-MADE'}">
+			<spring:message var="status" code='conference.status.decisionmade' />
+		</jstl:if>
+		<jstl:if test="${conference.status eq 'NOTIFIED'}">
+			<spring:message var="status" code='conference.status.notified' />
+		</jstl:if>
 
 		<jstl:if test="${isPrincipal }">
 			<tr>
-				<td><strong> <spring:message code="conference.status" /> :	</strong></td>
+				<td><strong> <spring:message code="conference.status" />
+						:
+				</strong></td>
 				<td>${status}</td>
 			</tr>
 
@@ -151,19 +153,25 @@
 		<input type="button"
 			onclick="redirect: location.href = 'activity/create.do?conferenceid=${conference.id}';"
 			value="<spring:message code='activity.create' />" />
-		<input type="button"
-			onclick="redirect: location.href = 'message/createbroadcast.do?type=reg&id=${conference.id}';"
-			value="<spring:message code='broadcast.reg' />" />
-		<input type="button"
-			onclick="redirect: location.href = 'message/createbroadcast.do?type=sub&id=${conference.id}';"
-			value="<spring:message code='broadcast.sub' />" />
+		<jstl:if test="${hasSubcriptions}">
+			<input type="button"
+				onclick="redirect: location.href = 'message/createbroadcast.do?type=reg&id=${conference.id}';"
+				value="<spring:message code='broadcast.reg' />" />
+		</jstl:if>
+		<jstl:if test="${hasSubmittions}">
+			<input type="button"
+				onclick="redirect: location.href = 'message/createbroadcast.do?type=sub&id=${conference.id}';"
+				value="<spring:message code='broadcast.sub' />" />
+		</jstl:if>
 	</jstl:if>
 
 	<jstl:if test="${not empty comments}">
-	
-		<h2><strong><spring:message code="comments" /></strong></h2>
-		<display:table style="width: 80%" class="displaytag"
-			name="comments" pagesize="5"
+
+		<h2>
+			<strong><spring:message code="comments" /></strong>
+		</h2>
+		<display:table style="width: 80%" class="displaytag" name="comments"
+			pagesize="5"
 			requestURI="conference/display.do?conferenceId=${conference.id}"
 			id="comment">
 
