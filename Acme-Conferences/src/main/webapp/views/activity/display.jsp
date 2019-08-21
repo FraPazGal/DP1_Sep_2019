@@ -144,7 +144,7 @@
 
 		</jstl:if>
 
-		<jstl:if test="${permission}">
+		<jstl:if test="${permission and activity.type == 'TUTORIAL'}">
 			<input type="button"
 				onclick="redirect: location.href = 'section/create.do?activityid=${activity.id}';"
 				value="<spring:message code='section.create' />" />

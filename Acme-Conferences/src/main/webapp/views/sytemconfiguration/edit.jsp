@@ -91,7 +91,7 @@
 				test="${not empty binding.getFieldError('timeResultsCached').getCode()}">
 				<p class="error">
 					<spring:message
-						code="${binding.getFieldError('timeResultsCached').getCode()}" />
+						code="cache.error" />
 				</p>
 			</jstl:if>
 
@@ -114,8 +114,7 @@
 			<jstl:if
 				test="${not empty binding.getFieldError('maxResults').getCode()}">
 				<p class="error">
-					<spring:message
-						code="${binding.getFieldError('maxResults').getCode()}" />
+					<spring:message code="results.error" />
 				</p>
 			</jstl:if>
 

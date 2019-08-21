@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.ActivityService;
 import services.SectionService;
 import services.UtilityService;
-import domain.Section;
+import domain.Activity;
 import domain.Actor;
+import domain.Section;
 
 @Controller
 @RequestMapping("/section")
@@ -25,6 +27,9 @@ public class SectionController extends AbstractController {
 
 	@Autowired
 	private SectionService sectionService;
+
+	@Autowired
+	private ActivityService activityService;
 
 	@Autowired
 	private UtilityService utilityService;
@@ -64,6 +69,7 @@ public class SectionController extends AbstractController {
 	public ModelAndView create(@RequestParam Integer activityid) {
 		ModelAndView res;
 		Section newSection;
+		Activity a;
 		Actor principal;
 		boolean permission = false;
 
@@ -71,6 +77,9 @@ public class SectionController extends AbstractController {
 			principal = this.utilityService.findByPrincipal();
 			Assert.isTrue(this.utilityService
 					.checkAuthority(principal, "ADMIN"));
+
+			a = this.activityService.findOne(activityid);
+			Assert.isTrue(a.getType().equalsIgnoreCase("TUTORIAL"));
 
 			permission = true;
 

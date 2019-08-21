@@ -21,12 +21,6 @@
 		foo.appendChild(element);
 
 	}
-
-	function unify() {
-		var string = document.getElementById('newSpeakerText').value;
-
-		console.log(string);
-	}
 </SCRIPT>
 
 <security:authorize access="hasRole('ADMIN')">
@@ -36,7 +30,7 @@
 			<spring:message code="activity.legend" />
 		</legend>
 		<form:form action="activity/edit.do" modelAttribute="activity"
-			id="form" onsubmit="unify()">
+			id="form">
 
 			<form:hidden path="id" />
 			<form:hidden path="version" />
