@@ -163,10 +163,13 @@
 			access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/send.do"
 			access="isAuthenticated()" />
+		<security:intercept-url pattern="/message/delete.do"
+			access="isAuthenticated()" />
 		<security:intercept-url pattern="/message/createbroadcast.do"
 			access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/message/broadcast.do"
 			access="hasRole('ADMIN')" />
+
 
 		<security:intercept-url pattern="/review/admin/assign.do"
 			access="hasRole('ADMIN')" />

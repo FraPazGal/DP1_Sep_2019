@@ -24,7 +24,7 @@
 					<input type="hidden" name="submissionid" value="${submissionid}">
 
 					<label><spring:message code="review.available" /></label> <br />
-					<br /> <select name="reviewerid">
+					<br /> <select multiple="multiple" name="reviewerid">
 
 						<jstl:forEach var="reviewer" items="${reviewers}">
 							<option value="${reviewer.id}">

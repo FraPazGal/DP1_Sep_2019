@@ -47,15 +47,29 @@ public class MessageController extends AbstractController {
 	private UtilityService utilityService;
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(
+			@RequestParam(required = false, value = "topic") String topic,
+			@RequestParam(required = false, value = "sender") String sender,
+			@RequestParam(required = false, value = "receiver") String receiver) {
 		ModelAndView res;
 		Collection<Mensaje> messages;
 
 		try {
 			messages = this.messageService.findByPrincipal();
+			if (topic != null) {
+				messages = this.messageService.findByTopic(messages, topic);
+			} else if (sender != null) {
+				messages = this.messageService.findBySender(messages, sender);
+			} else if (receiver != null) {
+				messages = this.messageService.findByReceiver(messages,
+						receiver);
+			}
 
 			res = new ModelAndView("message/list");
 			res.addObject("mensajes", messages);
+			res.addObject("topics", this.systemConfigurationService
+					.findMySystemConfiguration().getTopics());
+			res.addObject("principal", this.utilityService.findByPrincipal());
 
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
@@ -192,6 +206,29 @@ public class MessageController extends AbstractController {
 			}
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
+		}
+
+		return res;
+	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(
+			@RequestParam(value = "messageid") Integer messageid) {
+		ModelAndView res;
+		Actor principal;
+		Mensaje toDelete;
+
+		try {
+			principal = this.utilityService.findByPrincipal();
+			toDelete = this.messageService.findOne(messageid);
+
+			Assert.isTrue(toDelete.getSender().getId() == principal.getId());
+
+			this.messageService.delete(toDelete);
+
+			res = new ModelAndView("redirect:list.do");
+		} catch (Throwable oops) {
+			res = new ModelAndView("redirect:list.do");
 		}
 
 		return res;

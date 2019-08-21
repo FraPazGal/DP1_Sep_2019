@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.FinderService;
 import services.ReviewService;
 import services.SubmissionService;
 import services.UtilityService;
@@ -128,7 +127,7 @@ public class ReviewController extends AbstractController {
 
 	@RequestMapping(value = "/admin/assign", method = RequestMethod.POST)
 	public ModelAndView assign(
-			@RequestParam(value = "reviewerid") Integer reviewerid,
+			@RequestParam(value = "reviewerid") Integer[] reviewerids,
 			@RequestParam(value = "submissionid") Integer submissionid) {
 		ModelAndView res;
 		Report newReport;
@@ -137,11 +136,13 @@ public class ReviewController extends AbstractController {
 			Assert.isTrue(this.utilityService.checkAuthority(
 					this.utilityService.findByPrincipal(), "ADMIN"));
 
-			newReport = this.reviewService.create(reviewerid, submissionid);
+			for (Integer i : reviewerids) {
+				newReport = this.reviewService.create(i, submissionid);
+				this.reviewService.save(newReport);
+			}
 
-			this.reviewService.save(newReport);
-
-			res = new ModelAndView("redirect:/submission/list.do?catalog=underR");
+			res = new ModelAndView(
+					"redirect:/submission/list.do?catalog=underR");
 		} catch (Throwable oops) {
 			Collection<Reviewer> availableReviewers = this.reviewService
 					.findReviewersNotAssigned();
@@ -174,7 +175,8 @@ public class ReviewController extends AbstractController {
 
 			this.reviewService.assign(submissionsToAssign, reviewers);
 
-			res = new ModelAndView("redirect:/submission/list.do?catalog=underR");
+			res = new ModelAndView(
+					"redirect:/submission/list.do?catalog=underR");
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
 		}

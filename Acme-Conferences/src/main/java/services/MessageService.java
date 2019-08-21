@@ -46,20 +46,6 @@ public class MessageService {
 		this.messageRepository.delete(message);
 	}
 
-	public Collection<Mensaje> findByPrincipal() {
-		Collection<Mensaje> res = new ArrayList<>();
-		Actor principal = this.utilityService.findByPrincipal();
-		Collection<Mensaje> messages = this.messageRepository.findAll();
-
-		for (Mensaje m : messages) {
-			if (m.getReciever().contains(principal)
-					|| m.getSender().getId() == principal.getId()) {
-				res.add(m);
-			}
-		}
-		return res;
-	}
-
 	public void validate(final Mensaje message, final BindingResult binding) {
 
 		try {
@@ -99,5 +85,64 @@ public class MessageService {
 
 		this.validator.validate(message, binding);
 
+	}
+
+	public Collection<Mensaje> findByPrincipal() {
+		Collection<Mensaje> res = new ArrayList<>();
+		Actor principal = this.utilityService.findByPrincipal();
+		Collection<Mensaje> messages = this.messageRepository.findAll();
+
+		for (Mensaje m : messages) {
+			if (m.getReciever().contains(principal)
+					|| m.getSender().getId() == principal.getId()) {
+				res.add(m);
+			}
+		}
+		return res;
+	}
+
+	public Collection<Mensaje> findByTopic(Collection<Mensaje> messages,
+			String topic) {
+		Collection<Mensaje> res = new ArrayList<>();
+
+		for (Mensaje m : messages) {
+			if (m.getTopic().equalsIgnoreCase(topic)) {
+				res.add(m);
+			}
+		}
+		return res;
+	}
+
+	public Collection<Mensaje> findBySender(Collection<Mensaje> messages,
+			String sender) {
+		Collection<Mensaje> res = new ArrayList<>();
+
+		for (Mensaje m : messages) {
+			if (m.getSender().getUserAccount().getUsername()
+					.equalsIgnoreCase(sender)
+					|| m.getSender().getName().equalsIgnoreCase(sender)
+					|| (m.getSender().getName() + " " + m.getSender()
+							.getSurname()).equalsIgnoreCase(sender)) {
+				res.add(m);
+			}
+		}
+		return res;
+	}
+
+	public Collection<Mensaje> findByReceiver(Collection<Mensaje> messages,
+			String receiver) {
+		Collection<Mensaje> res = new ArrayList<>();
+		Actor a = this.utilityService.findByUsername(receiver);
+
+		for (Mensaje m : messages) {
+			if (m.getReciever().contains(a)) {
+				res.add(m);
+			}
+		}
+		return res;
+	}
+
+	public Mensaje findOne(Integer messageid) {
+		return this.messageRepository.findOne(messageid);
 	}
 }
