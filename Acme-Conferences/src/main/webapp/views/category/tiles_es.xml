@@ -11,14 +11,17 @@
 <tiles-definitions>
 
 	<definition name="category/display" extends="master.page">
+		<put-attribute name="title" value="Ver categoría" />
 		<put-attribute name="body" value="/views/category/display.jsp" />
 	</definition>
 
 	<definition name="category/list" extends="master.page">
+		<put-attribute name="title" value="Lista de categorías" />
 		<put-attribute name="body" value="/views/category/list.jsp" />
 	</definition>
 
 	<definition name="category/edit" extends="master.page">
+		<put-attribute name="title" value="Editar categoría" />
 		<put-attribute name="body" value="/views/category/edit.jsp" />
 	</definition>
 	

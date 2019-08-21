@@ -9,177 +9,188 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<security:authorize access="hasAnyRole('AUTHOR','REVIEWER','ADMIN')">
-	<h1>
-		<spring:message code="submission.title.list" />
-	</h1>
-	<spring:message code="date.dateFormat" var="format" />
 
-	<jstl:choose>
-		<jstl:when test="${errMsg ne null}">
-			<p>
-				<jstl:out value="${errMsg}" />
-			</p>
-		</jstl:when>
-		<jstl:when test="${isPrincipal == 'AUTHOR'}">
-			<display:table class="displaytag" name="submissions" pagesize="5"
-				requestURI="submission/list.do" id="submission" style="width: 90%;">
+<jstl:choose>
+	<jstl:when test="${catalog eq null }">
+		<h1><spring:message code="submission.title.list" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == 'underR' }">
+		<h1><spring:message	code="submission.submission.list.underreview" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == 'accepted' }">
+		<h1><spring:message	code="submission.submission.list.accepted" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == 'rejected' }">
+		<h1><spring:message	code="submission.submission.list.rejected" /></h1>
+	</jstl:when>
+</jstl:choose>
 
-				<display:column titleKey="submission.ticker" sortable="true">
-					<jstl:out value="${submission.ticker}" />
-				</display:column>
+<jsp:useBean id="now" class="java.util.Date" />
+<spring:message code="date.dateFormat" var="format" />
 
-				<spring:message code="submission.under.review" var="message1" />
-				<spring:message code="submission.rejected" var="message2" />
-				<spring:message code="submission.accepted" var="message3" />
+<jstl:choose>
+	<jstl:when test="${isPrincipal == 'AUTHOR'}">
+		<display:table class="displaytag" name="submissions" pagesize="5"
+			requestURI="submission/list.do" id="submission" style="width: 90%;">
 
-				<display:column titleKey="submission.status" sortable="true">
-					<jstl:choose>
-						<jstl:when test="${submission.status == 'UNDER-REVIEW'}">
-							<jstl:out value='${message1}' />
-						</jstl:when>
-						<jstl:when test="${submission.status == 'REJECTED'}">
-							<jstl:out value="${message2}" />
-						</jstl:when>
-						<jstl:otherwise>
-							<jstl:out value="${message3}" />
-						</jstl:otherwise>
-					</jstl:choose>
-				</display:column>
+			<display:column titleKey="submission.ticker" sortable="true">
+				<jstl:out value="${submission.ticker}" />
+			</display:column>
 
-				<display:column titleKey="submission.submissionMoment"
-					sortable="true">
-					<fmt:formatDate pattern="${format }"
-						value="${submission.submissionMoment}" />
-				</display:column>
+			<spring:message code="submission.under.review" var="message1" />
+			<spring:message code="submission.rejected" var="message2" />
+			<spring:message code="submission.accepted" var="message3" />
 
-				<display:column titleKey="submission.conference" sortable="true">
-					<a
-						href="conference/display.do?conferenceId=${submission.conference.id}">
-						<jstl:out value="${submission.conference.acronym}" />
+			<display:column titleKey="submission.status" sortable="true">
+				<jstl:choose>
+					<jstl:when test="${submission.status == 'UNDER-REVIEW'}">
+						<jstl:out value='${message1}' />
+					</jstl:when>
+					<jstl:when test="${submission.status == 'REJECTED'}">
+						<jstl:out value="${message2}" />
+					</jstl:when>
+					<jstl:otherwise>
+						<jstl:out value="${message3}" />
+					</jstl:otherwise>
+				</jstl:choose>
+			</display:column>
+
+			<display:column titleKey="submission.submissionMoment"
+				sortable="true">
+				<fmt:formatDate pattern="${format }"
+					value="${submission.submissionMoment}" />
+			</display:column>
+
+			<display:column titleKey="submission.conference" sortable="true">
+				<a
+					href="conference/display.do?conferenceId=${submission.conference.id}">
+					<jstl:out value="${submission.conference.acronym}" />
+				</a>
+			</display:column>
+
+			<display:column titleKey="submission.paper" sortable="true">
+				<jstl:out value="${submission.paper.title}" />
+			</display:column>
+
+			<display:column
+				titleKey="submission.conference.submission.deadline"
+				sortable="true">
+				<fmt:formatDate pattern="${format }"
+					value="${submission.conference.submissionDeadline}" />
+			</display:column>
+			
+			<display:column
+				titleKey="submission.conference.notification.deadline"
+				sortable="true">
+				<fmt:formatDate pattern="${format }"
+					value="${submission.conference.notificationDeadline}" />
+			</display:column>
+
+			<display:column
+				titleKey="submission.conference.cameraReady.deadline"
+				sortable="true">
+				<fmt:formatDate pattern="${format }"
+					value="${submission.conference.cameraReadyDeadline}" />
+			</display:column>
+
+			<display:column>
+				<a href="submission/display.do?submissionId=${submission.id}">
+					<spring:message code="mp.display" />
+				</a>
+			</display:column>
+
+			<display:column>
+				<jstl:if test="${submission.cameraReadyPaper == null and submission.status == 'ACCEPTED' and now lt submission.conference.cameraReadyDeadline}">
+					<a href="submission/edit.do?submissionId=${submission.id}"> <spring:message
+							code="submission.submit" />
 					</a>
-				</display:column>
+				</jstl:if>
+			</display:column>
 
-				<display:column titleKey="submission.author" sortable="true">
-					<jstl:out
-						value="${submission.author.name} ${submission.author.surname}" />
-				</display:column>
+		</display:table>
+	</jstl:when>
+	<jstl:when test="${isPrincipal == 'ADMIN'}">
+		<display:table class="displaytag" name="submissions" pagesize="5"
+			requestURI="submission/list.do" id="submission" style="width: 90%;">
 
-				<display:column titleKey="submission.paper" sortable="true">
-					<jstl:out value="${submission.paper.title}" />
-				</display:column>
+			<display:column titleKey="submission.ticker" sortable="true">
+				<jstl:out value="${submission.ticker}" />
+			</display:column>
 
-				<display:column
-					titleKey="submission.conference.notification.deadline"
-					sortable="true">
-					<fmt:formatDate pattern="${format }"
-						value="${submission.conference.notificationDeadline}" />
-				</display:column>
+			<spring:message code="submission.under.review" var="message1" />
+			<spring:message code="submission.rejected" var="message2" />
+			<spring:message code="submission.accepted" var="message3" />
 
-				<display:column
-					titleKey="submission.conference.cameraReady.deadline"
-					sortable="true">
-					<fmt:formatDate pattern="${format }"
-						value="${submission.conference.cameraReadyDeadline}" />
-				</display:column>
+			<display:column titleKey="submission.status" sortable="true">
+				<jstl:choose>
+					<jstl:when test="${submission.status == 'UNDER-REVIEW'}">
+						<jstl:out value='${message1}' />
+					</jstl:when>
+					<jstl:when test="${submission.status == 'REJECTED'}">
+						<jstl:out value="${message2}" />
+					</jstl:when>
+					<jstl:otherwise>
+						<jstl:out value="${message3}" />
+					</jstl:otherwise>
+				</jstl:choose>
+			</display:column>
 
-				<display:column>
-					<a href="submission/display.do?submissionId=${submission.id}">
-						<spring:message code="mp.display" />
-					</a>
-				</display:column>
+			<display:column titleKey="submission.submissionMoment"
+				sortable="true">
+				<fmt:formatDate pattern="${format }"
+					value="${submission.submissionMoment}" />
+			</display:column>
 
-				<display:column>
-					<jstl:if
-						test="${submission.cameraReadyPaper == null and submission.status == 'ACCEPTED'}">
-						<a href="submission/edit.do?submissionId=${submission.id}"> <spring:message
-								code="submission.submit" />
-						</a>
-					</jstl:if>
-				</display:column>
+			<display:column titleKey="submission.conference" sortable="true">
+				<a
+					href="conference/display.do?conferenceId=${submission.conference.id}">
+					<jstl:out value="${submission.conference.acronym}" />
+				</a>
+			</display:column>
 
-			</display:table>
-		</jstl:when>
-		<jstl:when test="${isPrincipal == 'ADMIN'}">
-			<display:table class="displaytag" name="submissions" pagesize="5"
-				requestURI="submission/list.do" id="submission" style="width: 90%;">
+			<display:column titleKey="submission.author" sortable="true">
+				<jstl:out
+					value="${submission.author.name} ${submission.author.surname}" />
+			</display:column>
 
-				<display:column titleKey="submission.ticker" sortable="true">
-					<jstl:out value="${submission.ticker}" />
-				</display:column>
+			<display:column titleKey="submission.paper" sortable="true">
+				<jstl:out value="${submission.paper.title}" />
+			</display:column>
 
-				<spring:message code="submission.under.review" var="message1" />
-				<spring:message code="submission.rejected" var="message2" />
-				<spring:message code="submission.accepted" var="message3" />
+			<display:column
+				titleKey="submission.conference.submission.deadline"
+				sortable="true">
+				<fmt:formatDate pattern="${format }"
+					value="${submission.conference.submissionDeadline}" />
+			</display:column>
+			
+			<display:column
+				titleKey="submission.conference.notification.deadline"
+				sortable="true">
+				<fmt:formatDate pattern="${format }"
+					value="${submission.conference.notificationDeadline}" />
+			</display:column>
 
-				<display:column titleKey="submission.status" sortable="true">
-					<jstl:choose>
-						<jstl:when test="${submission.status == 'UNDER-REVIEW'}">
-							<jstl:out value='${message1}' />
-						</jstl:when>
-						<jstl:when test="${submission.status == 'REJECTED'}">
-							<jstl:out value="${message2}" />
-						</jstl:when>
-						<jstl:otherwise>
-							<jstl:out value="${message3}" />
-						</jstl:otherwise>
-					</jstl:choose>
-				</display:column>
+			<display:column
+				titleKey="submission.conference.cameraReady.deadline"
+				sortable="true">
+				<fmt:formatDate pattern="${format }"
+					value="${submission.conference.cameraReadyDeadline}" />
+			</display:column>
 
-				<display:column titleKey="submission.submissionMoment"
-					sortable="true">
-					<fmt:formatDate pattern="${format }"
-						value="${submission.submissionMoment}" />
-				</display:column>
+			<display:column>
+				<a href="submission/display.do?submissionId=${submission.id}">
+					<spring:message code="mp.display" />
+				</a>
+			</display:column>
 
-				<display:column titleKey="submission.conference" sortable="true">
-					<a
-						href="conference/display.do?conferenceId=${submission.conference.id}">
-						<jstl:out value="${submission.conference.acronym}" />
-					</a>
-				</display:column>
-
-				<display:column titleKey="submission.author" sortable="true">
-					<jstl:out
-						value="${submission.author.name} ${submission.author.surname}" />
-				</display:column>
-
-				<display:column titleKey="submission.paper" sortable="true">
-					<jstl:out value="${submission.paper.title}" />
-				</display:column>
-
-				<display:column
-					titleKey="submission.conference.notification.deadline"
-					sortable="true">
-					<fmt:formatDate pattern="${format }"
-						value="${submission.conference.notificationDeadline}" />
-				</display:column>
-
-				<display:column
-					titleKey="submission.conference.cameraReady.deadline"
-					sortable="true">
-					<fmt:formatDate pattern="${format }"
-						value="${submission.conference.cameraReadyDeadline}" />
-				</display:column>
-
-				<display:column>
-					<a href="submission/display.do?submissionId=${submission.id}">
-						<spring:message code="mp.display" />
-					</a>
-				</display:column>
-
-			</display:table>
-
+		</display:table>
+		<jstl:if test="${catalog == 'underR' and not empty submissions}">
 			<input type="button" value="<spring:message code="assign.all"/>"
-				onclick="location.href = 'review/admin/automaticassign.do';"
-				formmethod="post">
+			onclick="location.href = 'review/admin/automaticassign.do';"
+			formmethod="post">
+		</jstl:if>
+		
 
-		</jstl:when>
-		<jstl:otherwise>
-			<p>
-				<spring:message code="submission.not.allowed" />
-				<br>
-			</p>
-		</jstl:otherwise>
-	</jstl:choose>
-</security:authorize>
+	</jstl:when>
+</jstl:choose>

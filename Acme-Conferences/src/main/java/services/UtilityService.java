@@ -77,4 +77,13 @@ public class UtilityService {
 	public Actor findByUsername(String username) {
 		return this.actorRepository.findByUsername(username);
 	}
+	
+	public boolean assertPrincipal (String authority) {
+		boolean result = true;
+		
+		Actor principal = this.findByPrincipal();
+		Assert.isTrue(this.checkAuthority(principal, authority), "not.allowed");
+		
+		return result;
+	}
 }

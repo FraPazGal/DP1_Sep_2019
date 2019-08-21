@@ -21,8 +21,8 @@
 	</definition>
 
 	<definition name="administrator/statistics" extends="master.page">
-		<put-attribute name="body"
-			value="/views/administrator/statistics.jsp" />
+		<put-attribute name="title" value="System statistics" />
+		<put-attribute name="body" value="/views/administrator/statistics.jsp" />
 	</definition>
 
 	<definition name="administrator/edit" extends="master.page">

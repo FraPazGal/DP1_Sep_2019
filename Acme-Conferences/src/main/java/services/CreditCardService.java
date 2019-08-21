@@ -34,16 +34,11 @@ public class CreditCardService {
 	// CRUD Methods ------------------------------------------
 	
 	public CreditCard create() {
-		Actor principal;
-		CreditCard result;
+		Actor principal = this.utilityService.findByPrincipal();
+		Assert.isTrue(this.utilityService.checkAuthority(principal, "SPONSOR") || 
+				this.utilityService.checkAuthority(principal, "AUTHOR") ,"not.allowed");
 
-		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(this.utilityService.checkAuthority(principal, "SPONSOR") || this.utilityService.checkAuthority(principal, "AUTHOR") ,
-				"not.allowed");
-
-		result = new CreditCard();
-
-		return result;
+		return new CreditCard();
 	}
 
 	public Collection<CreditCard> findAll() {
@@ -51,14 +46,16 @@ public class CreditCardService {
 	}
 
 	public CreditCard findOne(final int creditCardId) {
-		return this.creditCardRepository.findOne(creditCardId);
+		CreditCard result = this.creditCardRepository.findOne(creditCardId);
+		Assert.notNull(result,"wrong.id");
+		
+		return result;
 	}
 	
 	public CreditCard save(final CreditCard creditCard) {
-		Actor principal;
-		CreditCard result;
+		Actor principal = this.utilityService.findByPrincipal();
 		
-		Assert.notNull(creditCard);
+		Assert.notNull(creditCard, "not.allowed");
 		Assert.notNull(creditCard.getCVV());
 		Assert.notNull(creditCard.getExpirationMonth());
 		Assert.notNull(creditCard.getExpirationYear());
@@ -66,24 +63,22 @@ public class CreditCardService {
 		Assert.notNull(creditCard.getMake());
 		Assert.notNull(creditCard.getNumber());
 		
-		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(this.utilityService.checkAuthority(principal, "SPONSOR") || this.utilityService.checkAuthority(principal, "AUTHOR") ,
-				"not.allowed");
+		Assert.isTrue(this.utilityService.checkAuthority(principal, "SPONSOR") || 
+				this.utilityService.checkAuthority(principal, "AUTHOR") ,"not.allowed");
 		
-		result = this.creditCardRepository.save(creditCard);
+		CreditCard result = this.creditCardRepository.save(creditCard);
+		Assert.notNull(result);
 
 		return result;
 	}
 	
 	public void delete(final CreditCard creditCard) {
-		Actor principal;
-
-		Assert.notNull(creditCard);
+		Actor principal = this.utilityService.findByPrincipal();
+		Assert.notNull(creditCard, "not.allowed");
 		Assert.isTrue(creditCard.getId() != 0, "wrong.id");
 
-		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(this.utilityService.checkAuthority(principal, "SPONSOR") || this.utilityService.checkAuthority(principal, "AUTHOR") ,
-				"not.allowed");
+		Assert.isTrue(this.utilityService.checkAuthority(principal, "SPONSOR") || 
+				this.utilityService.checkAuthority(principal, "AUTHOR") ,"not.allowed");
 		
 		this.creditCardRepository.delete(creditCard.getId());
 	}

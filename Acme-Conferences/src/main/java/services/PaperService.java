@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import repositories.PaperRepository;
-import domain.Actor;
 import domain.Paper;
 
 @Transactional
@@ -29,16 +28,9 @@ public class PaperService {
 	// CRUD Methods ------------------------------------------
 	
 	public Paper create() {
-		Actor principal;
-		Paper result;
+		this.utilityService.assertPrincipal("AUTHOR");
 
-		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(this.utilityService.checkAuthority(principal, "AUTHOR"),
-				"not.allowed");
-
-		result = new Paper();
-
-		return result;
+		return new Paper();
 	}
 
 	public Collection<Paper> findAll() {
@@ -46,15 +38,17 @@ public class PaperService {
 	}
 
 	public Paper findOne(final int paperId) {
-		return this.paperRepository.findOne(paperId);
+		Paper result = this.paperRepository.findOne(paperId);
+		Assert.notNull(result, "wrong.id");
+		
+		return result;
 	}
 	
 	public Paper save(final Paper paper) {
-		Actor principal;
+		Assert.notNull(paper, "wrong.id");
 		Paper result;
 
-		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(this.utilityService.checkAuthority(principal, "AUTHOR"), "not.allowed");
+		this.utilityService.assertPrincipal("AUTHOR");
 		
 		Assert.notNull(paper.getTitle());
 		Assert.notNull(paper.getAuthors());
@@ -67,14 +61,10 @@ public class PaperService {
 	}
 	
 	public void delete(final Paper paper) {
-		Actor principal;
-
 		Assert.notNull(paper);
 		Assert.isTrue(paper.getId() != 0, "wrong.id");
 
-		principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(this.utilityService.checkAuthority(principal, "AUTHOR"),
-				"not.allowed");
+		this.utilityService.assertPrincipal("AUTHOR");
 
 		this.paperRepository.delete(paper.getId());
 	}

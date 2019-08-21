@@ -44,16 +44,13 @@ public class SponsorshipService {
 	// CRUD Methods ------------------------------------------
 	
 	public Sponsorship create() {
-		Actor principal;
-		Sponsorship result;
-		Collection<Conference> conferences = new ArrayList<>();
+		Actor principal = this.utilityService.findByPrincipal();
+		Sponsorship result = new Sponsorship();
 
-		principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(this.utilityService.checkAuthority(principal, "SPONSOR"),
 				"not.allowed");
 
-		result = new Sponsorship();
-		result.setConferences(conferences);
+		result.setConferences(new ArrayList<Conference>());
 		result.setSponsor((Sponsor) principal);
 		
 		return result;
@@ -64,24 +61,20 @@ public class SponsorshipService {
 	}
 
 	public Sponsorship findOne(final int sponsorshipId) {
-		return this.sponsorshipRepository.findOne(sponsorshipId);
+		Sponsorship result = this.sponsorshipRepository.findOne(sponsorshipId);
+		Assert.notNull(result,"wrong.id");
+		
+		return result;
 	}
 	
 	public Sponsorship save(final Sponsorship sponsorship) {
 		Sponsorship result;
 
 		Actor principal = this.utilityService.findByPrincipal();
-		Assert.isTrue(this.utilityService.checkAuthority(principal, "SPONSOR") ,
-				"not.allowed");
-		
-		if(sponsorship.getId() != 0) {
-			if (this.utilityService.checkAuthority(principal, "SPONSOR")) {
-				Assert.isTrue(sponsorship.getSponsor().equals((Sponsor) (principal)), "not.allowed");
-			}
-		}
+		Assert.isTrue(sponsorship.getSponsor().equals((Sponsor) (principal)), "not.allowed");
 		
 		for(Conference conference : sponsorship.getConferences()) {
-			Assert.isTrue(conference.getIsFinal());
+			Assert.isTrue(!conference.getStatus().equals("DRAFT"));
 		}
 		
 		Assert.notNull(sponsorship.getBanner());
@@ -95,12 +88,11 @@ public class SponsorshipService {
 	}
 	
 	public void delete(final Sponsorship sponsorship) {
-		Actor principal;
+		Actor principal = this.utilityService.findByPrincipal();
 
 		Assert.notNull(sponsorship);
 		Assert.isTrue(sponsorship.getId() != 0, "wrong.id");
 
-		principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(sponsorship.getSponsor().equals((Sponsor) principal),
 				"not.allowed");
 
@@ -109,8 +101,7 @@ public class SponsorshipService {
 	
 	// Other business methods -------------------------------
 		
-	public Sponsorship reconstruct(SponsorshipForm form,
-			BindingResult binding) {
+	public Sponsorship reconstruct(SponsorshipForm form, BindingResult binding) {
 		
 		Sponsorship sponsorship = this.create();
 
@@ -149,23 +140,19 @@ public class SponsorshipService {
 		if(!binding.hasErrors()) {
 			/* Credit card */
 			try {
-				Assert.isTrue(
-						!this.creditCardService.checkIfExpired(
+				Assert.isTrue(!this.creditCardService.checkIfExpired(
 								creditCard.getExpirationMonth(),
-								creditCard.getExpirationYear()),
-						"card.date.error");
+								creditCard.getExpirationYear()), "card.date.error");
 			} catch (Throwable oops) {
 				binding.rejectValue("expirationMonth", "card.date.error");
 			}
 			
 			if (!binding.hasErrors()) {
-				CreditCard saved;
-				saved = this.creditCardService.save(creditCard);
+				CreditCard saved = this.creditCardService.save(creditCard);
 				
 				sponsorship.setCreditCard(saved);
 			}
 		}
-		
 		this.validator.validate(sponsorship, binding);
 		
 		return sponsorship;

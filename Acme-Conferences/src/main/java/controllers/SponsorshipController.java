@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,28 +40,17 @@ public class SponsorshipController extends AbstractController {
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int sponsorshipId) {
-		ModelAndView result;
-		Sponsorship sponsorship;
-		boolean isPrincipal = false;
-		Actor principal;
+		ModelAndView result = new ModelAndView("sponsorship/display");
 
 		try {
-			sponsorship = this.sponsorshipService.findOne(sponsorshipId);
-			try {
-				principal = this.utilityService.findByPrincipal();
-				if (sponsorship.getSponsor().equals((Sponsor) principal)) {
-						isPrincipal = true;
-				}
-			} catch (final Throwable oops) {}
+			Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
+			Actor principal = this.utilityService.findByPrincipal();
+			Assert.isTrue(sponsorship.getSponsor().equals((Sponsor) principal), "not.allowed");
 
-			result = new ModelAndView("sponsorship/display");
 			result.addObject("sponsorship", sponsorship);
-			result.addObject("isPrincipal", isPrincipal);
-			result.addObject("requestURI", "sponsorship/display.do?sponsorshipId=" + sponsorshipId);
+			//result.addObject("requestURI", "sponsorship/display.do?sponsorshipId=" + sponsorshipId);
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:list.do");
-			
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do/");
 		}
 		return result;
 	}
@@ -91,15 +81,10 @@ public class SponsorshipController extends AbstractController {
 		ModelAndView result;
 		
 		try {
-			final SponsorshipForm sponsorshipForm = new SponsorshipForm();
-
-			result = this.createEditModelAndView(sponsorshipForm);
-			result.addObject("isPrincipal", true);
+			result = this.createEditModelAndView(new SponsorshipForm());
 
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:list.do");
-
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return result;
@@ -109,24 +94,15 @@ public class SponsorshipController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int sponsorshipId) {
 		ModelAndView result;
-		Sponsorship sponsorship;
-		boolean isPrincipal = false;
 		
 		try {
 			Actor principal = this.utilityService.findByPrincipal();
-			sponsorship = this.sponsorshipService.findOne(sponsorshipId);
+			Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
+			Assert.isTrue(sponsorship.getSponsor().equals((Sponsor) principal), "not.allowed");
 			
-			if(sponsorship.getSponsor().equals((Sponsor) principal)) {
-				isPrincipal = true;
-			}
-			final SponsorshipForm editSponsorshipFormObject = new SponsorshipForm(sponsorship);
-
-			result = this.createEditModelAndView(editSponsorshipFormObject);
-			result.addObject("isPrincipal", isPrincipal);
+			result = this.createEditModelAndView(new SponsorshipForm(sponsorship));
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:list.do");
-			
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return result;
 	}
@@ -141,15 +117,12 @@ public class SponsorshipController extends AbstractController {
 			
 			if (binding.hasErrors()) {
 				result = this.createEditModelAndView(editSponsorshipFormObject);
-				result.addObject("isPrincipal", true);
 			}
 			else {
 				this.sponsorshipService.save(sponsorship);
 			}
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:list.do");
-			
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do");
 		}
 		
 		return result;
@@ -164,7 +137,7 @@ public class SponsorshipController extends AbstractController {
 			this.sponsorshipService.delete(sponsorship);
 			
 		} catch (final Throwable oops) {
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return result;
 	}

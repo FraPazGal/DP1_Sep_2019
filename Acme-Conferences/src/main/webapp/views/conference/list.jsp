@@ -10,19 +10,42 @@
 <%@taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 
-<security:authorize access="permitAll">
 
-<h1><spring:message	code="conference.list" />
-<jstl:out value="${conference.conference.title}" /></h1>
+<jstl:choose>
+	<jstl:when test="${catalog eq null }">
+		<h1><spring:message code="conference.title.list" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == 'future' }">
+		<h1><spring:message	code="conference.conference.list.future" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == 'past' }">
+		<h1><spring:message	code="conference.conference.list.past" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == 'running' }">
+		<h1><spring:message	code="conference.conference.list.running" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == 'unpublished' }">
+		<h1><spring:message	code="conference.conference.list.unpublished" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == '5sub' }">
+		<h1><spring:message	code="conference.conference.list.5submission" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == '5noti' }">
+		<h1><spring:message	code="conference.conference.list.5notification" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == '5cam' }">
+		<h1><spring:message	code="conference.conference.list.5camera" /></h1>
+	</jstl:when>
+	<jstl:when test="${catalog == '5org' }">
+		<h1><spring:message	code="conference.conference.list.5organised" /></h1>
+	</jstl:when>
+</jstl:choose>
+
+<jsp:useBean id="now" class="java.util.Date" />
 
 <spring:message code="date.dateFormat" var="format" /> 
 
 <jstl:choose>
-	<jstl:when test="${errMsg ne null}">
-		<p>
-			<jstl:out value="${errMsg}"/>
-		</p>
-	</jstl:when>
 	<jstl:when test="${isPrincipal eq 'ADMIN'}">
 	
 		<display:table class="displaytag" name="conferences" pagesize="5" 
@@ -60,14 +83,20 @@
 				<jstl:out value="${conference.entryFee}" />
 			</display:column>
 			
-			<jstl:if test="${conference.isFinal eq true}">
-				<spring:message var="status" code='conference.isFinal.true' />
+			<jstl:if test="${conference.status eq 'FINAL'}">
+				<spring:message var="status" code='conference.status.final' />
 			</jstl:if>
-			<jstl:if test="${conference.isFinal eq false}">
-				<spring:message var="status" code='conference.isFinal.false' />
+			<jstl:if test="${conference.status eq 'DRAFT'}">
+				<spring:message var="status" code='conference.status.draft' />
+			</jstl:if>
+			<jstl:if test="${conference.status eq 'DECISION-MADE'}">
+				<spring:message var="status" code='conference.status.decisionmade' />
+			</jstl:if>
+			<jstl:if test="${conference.status eq 'NOTIFIED'}">
+				<spring:message var="status" code='conference.status.notified' />
 			</jstl:if>
 			
-			<display:column titleKey="conference.isFinal" sortable="true">
+			<display:column titleKey="conference.status" sortable="true">
 				<jstl:out value="${status}" />
 			</display:column>
 			
@@ -77,7 +106,7 @@
 				</a>
 			</display:column>
 			
-			<jstl:if test="${conference.isFinal eq false}">
+			<jstl:if test="${catalog eq 'unpublished'}">
 				<display:column>
 					<a href="conference/edit.do?conferenceId=${conference.id}"> <spring:message
 							code="mp.edit" />
@@ -90,6 +119,27 @@
 					</a>
 				</display:column>
 			</jstl:if>
+			
+			<jstl:if test="${catalog eq '5noti'}">
+				<display:column>
+					<jstl:if test="${conference.status eq 'FINAL' and now gt conference.submissionDeadline}">
+						<a href="conference/review.do?conferenceId=${conference.id}" 
+							onclick="return confirm('<spring:message code="conference.confirm.review"/>')" > <spring:message
+								code="conference.review" />
+						</a>
+					</jstl:if>
+				</display:column>
+			
+				<display:column>
+					<jstl:if test="${conference.status eq 'DECISION-MADE' and catalog eq '5noti'}">
+						<a href="conference/notify.do?conferenceId=${conference.id}" 
+							onclick="return confirm('<spring:message code="conference.confirm.notification"/>')" > <spring:message
+								code="conference.notify" />
+						</a>
+					</jstl:if>
+				</display:column>
+			</jstl:if>
+			
 		</display:table>
 		<jstl:if test="${ catalog eq 'unpublished'}">
 		<input type="button"
@@ -123,8 +173,8 @@
 						code="mp.display" />
 				</a>
 			</display:column>
+			
 			<jstl:if test="${catalog eq 'future'}">
-				
 				<display:column>
 					<jstl:set var="contains" value="false" />
 					<jstl:forEach var="conf" items="${conferencesRegisteredTo}">
@@ -138,9 +188,6 @@
 						</a>
 					</jstl:if>
 				</display:column>
-				
-				<jsp:useBean id="now" class="java.util.Date" />
-				
 				<display:column>
 					<jstl:set var="contains" value="false" />
 					<jstl:forEach var="conf" items="${conferencesSubmittedTo}">
@@ -154,7 +201,6 @@
 						</a>
 					</jstl:if>
 				</display:column>
-			
 			</jstl:if>
 		</display:table>
 	</jstl:when>
@@ -165,9 +211,11 @@
 			<display:column titleKey="conference.title" sortable="true">
 				<jstl:out value="${conference.title}" />
 			</display:column>
-
+			
 			<display:column titleKey="conference.submissionDeadline" sortable="true">
-				<span><fmt:formatDate pattern="${format }" value="${conference.submissionDeadline}" /></span>
+				<jstl:if test="${catalog ne 'past' and catalog ne 'running'}">
+					<span><fmt:formatDate pattern="${format }" value="${conference.submissionDeadline}" /></span>
+				</jstl:if>
 			</display:column>
 							
 			<display:column titleKey="conference.startDate" sortable="true">
@@ -186,4 +234,3 @@
 		</display:table>
 	</jstl:otherwise>
 </jstl:choose>
-</security:authorize>

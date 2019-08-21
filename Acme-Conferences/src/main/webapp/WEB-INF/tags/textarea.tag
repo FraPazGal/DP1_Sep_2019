@@ -40,9 +40,9 @@
 
 <div class="form-group">
 	<form:label path="${path}">
-		<spring:message code="${code}" />
+		<strong><spring:message code="${code}" /></strong>
 	</form:label>
-	<br> <br>
+	<br>
 	<form:textarea path="${path}" readonly="${readonly}" cols="${cols}"
 		required="${required}" rows="${rows }" />
 	<br>

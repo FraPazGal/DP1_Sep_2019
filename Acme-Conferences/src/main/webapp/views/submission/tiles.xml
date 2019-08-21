@@ -11,15 +11,15 @@
 <tiles-definitions>
 
 	<definition name="submission/display" extends="master.page">
+		<put-attribute name="title" value="Submission overview" />
 		<put-attribute name="body" value="/views/submission/display.jsp" />
 	</definition>
 	<definition name="submission/list" extends="master.page">
+		<put-attribute name="title" value="List of submissions" />
 		<put-attribute name="body" value="/views/submission/list.jsp" />
 	</definition>
-	<definition name="submission/create" extends="master.page">
-		<put-attribute name="body" value="/views/submission/edit.jsp" />
-	</definition>
 	<definition name="submission/edit" extends="master.page">
+		<put-attribute name="title" value="Edit submission" />
 		<put-attribute name="body" value="/views/submission/edit.jsp" />
 	</definition>
 	

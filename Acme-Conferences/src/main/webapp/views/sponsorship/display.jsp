@@ -8,30 +8,18 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
-<security:authorize access="hasAnyRole('SPONSOR')">
-<jstl:choose>
-<jstl:when test="${errMsg ne null}">
-		<p>
-			<jstl:out value="${errMsg}" />
-		</p>
-</jstl:when>
-<jstl:when test="${isPrincipal }">
-
 
 <h1><spring:message code="sponsorship.title.display" /></h1>
 <table class="displayStyle">
-	
+
 	<tr>
 		<td><strong> <spring:message code="sponsorship.banner" /> : </strong></td>
-		<td><jstl:out value="${sponsorship.banner}"></jstl:out></td>
+		<td><img src="${sponsorship.banner}" alt="${sponsorship.banner}" style="margin-bottom: 0.5em; max-height: 150px;" /></td>
 	</tr>
-	
 	<tr>
 		<td><strong> <spring:message code="sponsorship.targetPage" /> : </strong></td>
 		<td><jstl:out value="${sponsorship.targetPage}"></jstl:out></td>
 	</tr>
-	
-	
 </table>
 
 <h2><spring:message code="sponsorship.title.creditcard.display" /></h2>
@@ -85,14 +73,3 @@
 	<input type="button" name="back"
 		value="<spring:message code="mp.back" />"
 		onclick="window.history.back()" />
-
-</jstl:when>
-<jstl:otherwise>
-<p>
-	<spring:message	code="sponsorship.not.allowed" /><br>
-</p>
-
-</jstl:otherwise>
-</jstl:choose>
-
-</security:authorize>

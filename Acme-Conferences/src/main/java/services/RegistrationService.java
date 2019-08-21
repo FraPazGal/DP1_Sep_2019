@@ -41,10 +41,9 @@ public class RegistrationService {
 	// CRUD Methods ------------------------------------------
 
 	public Registration create() {
-		Registration result;
+		Registration result = new Registration();
 		Actor principal = this.utilityService.findByPrincipal();
 
-		result = new Registration();
 		result.setAuthor((Author) principal);
 
 		return result;
@@ -58,23 +57,21 @@ public class RegistrationService {
 	}
 
 	public Registration findOne(final int registrationId) {
-		Registration result;
-		result = this.registrationRepository.findOne(registrationId);
-
+		Registration result = this.registrationRepository.findOne(registrationId);
+		Assert.notNull(result,"wrong.id");
+		
 		return result;
 	}
 
 	public Registration save(final Registration registration) {
 		Registration result;
-		Actor principal;
 
 		Assert.notNull(registration);
 		Assert.isTrue(registration.getId() == 0);
-
 		Assert.notNull(registration.getConference());
 		Assert.notNull(registration.getCreditCard());
 
-		principal = this.utilityService.findByPrincipal();
+		Actor principal = this.utilityService.findByPrincipal();
 		Assert.isTrue(registration.getAuthor().equals(principal), "not.allowed");
 
 		result = this.registrationRepository.save(registration);
@@ -85,21 +82,21 @@ public class RegistrationService {
 
 	// Other business methods -------------------------------
 
-	public Collection<Registration> registrationsPerAuthor(int authorId) {
-
-		return this.registrationRepository.registrationsPerAuthor(authorId);
+	public Collection<Registration> registrationsPerAuthor() {
+		
+		Actor principal = this.utilityService.findByPrincipal();
+		Assert.isTrue(this.utilityService.checkAuthority(principal, "AUTHOR"), "not.allowed");
+		
+		return this.registrationRepository.registrationsPerAuthor(principal.getId());
 	}
 
 	public Registration reconstruct(RegistrationForm form, BindingResult binding) {
-
 		Registration registration = this.create();
 
 		Assert.isTrue(!this.isAlreadyRegistered(form.getConference().getId(), registration.getAuthor().getId()), "already.registered");
-		Assert.isTrue(form.getConference().getIsFinal(), "wrong.conference");
-		Assert.isTrue(
-				form.getConference().getStartDate()
-						.after(new Date(System.currentTimeMillis() - 1)),
-				"wrong.conference");
+		Assert.isTrue(!form.getConference().getStatus().equals("DRAFT"), "wrong.conference");
+		Assert.isTrue(form.getConference().getStartDate()
+						.after(new Date(System.currentTimeMillis() - 1)), "wrong.conference");
 		registration.setConference(form.getConference());
 
 		/* Creating credit card */
@@ -136,20 +133,27 @@ public class RegistrationService {
 				registration.setCreditCard(saved);
 			}
 		}
-
 		this.validator.validate(registration, binding);
 		
 		return registration;
 	}
 
 	public boolean isAlreadyRegistered(int conferenceId, int actorId) {
-
-		return this.registrationRepository.isAlreadyRegistered(conferenceId,
-				actorId);
+		
+		return this.registrationRepository.isAlreadyRegistered(conferenceId, actorId);
 	}
 
 	public Collection<Actor> findActorsRegisteredTo(Integer id) {
 		return this.registrationRepository.findActorsRegisteredTo(id);
+	}
+	
+	public Registration findOneByAuthor(int registrationId) {
+		Registration result = this.findOne(registrationId);
+		
+		Actor principal = this.utilityService.findByPrincipal();
+		Assert.isTrue(result.getAuthor().equals((Author) principal), "not.allowed");
+		
+		return result;
 	}
 
 }

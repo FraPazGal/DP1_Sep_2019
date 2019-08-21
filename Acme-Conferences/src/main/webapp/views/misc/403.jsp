@@ -19,10 +19,12 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 
-<div style=" margin-top: 2%; margin-bottom: 2%; text-align: center;"><img alt="Error" src="../images/sadface.png" height="150px" /></div>
-<p style=" text-align: center; font-size: 30">Oops! You don't have access to this resource.</p>
+<div style=" margin-top: 2%; margin-bottom: 2%; text-align: center;">
+	<img alt="Error" src="https://image.flaticon.com/icons/svg/61/61875.svg" height="150px" />
+</div>
+<p style=" text-align: center; font-size: 30"><spring:message code="welcome.oops" /></p>
 
 <p style="text-align: center; font-size: 18">
-	<a href="<spring:url value='/' />">Return to the welcome page</a>
+	<a href="<spring:url value='/' />"><spring:message code="welcome.return" /></a>
 <p>
 

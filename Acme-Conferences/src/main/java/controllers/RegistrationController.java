@@ -1,9 +1,6 @@
 
 package controllers;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -14,9 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ConferenceService;
 import services.RegistrationService;
-import services.UtilityService;
-import domain.Actor;
-import domain.Author;
 import domain.Registration;
 import forms.RegistrationForm;
 
@@ -25,9 +19,6 @@ import forms.RegistrationForm;
 public class RegistrationController extends AbstractController {
 
 	/* Services */
-	
-	@Autowired
-	private UtilityService	utilityService;
 
 	@Autowired
 	private RegistrationService		registrationService;
@@ -38,23 +29,12 @@ public class RegistrationController extends AbstractController {
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	public ModelAndView display(@RequestParam final int registrationId) {
-		ModelAndView result;
-		Registration registration;
-		Actor principal;
-
+		ModelAndView result = new ModelAndView("registration/display");
 		try {
-			registration = this.registrationService.findOne(registrationId);
-			principal = this.utilityService.findByPrincipal();
-			if (! registration.getAuthor().equals((Author) principal)) {
-				result = new ModelAndView("redirect:../misc/403.do");
-			} else {
-				result = new ModelAndView("registration/display");
-				result.addObject("registration", registration);
-			}
+			result.addObject("registration", this.registrationService.findOneByAuthor(registrationId));
+			
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:list.do");
-
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do/");
 		}
 		return result;
 	}
@@ -63,14 +43,8 @@ public class RegistrationController extends AbstractController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result = new ModelAndView("registration/list");
-		Collection<Registration> registrations = new ArrayList<>();
-
 		try {
-			Actor principal = this.utilityService.findByPrincipal();
-			if (this.utilityService.checkAuthority(principal, "AUTHOR")) {
-				registrations = this.registrationService.registrationsPerAuthor(principal.getId());
-			}
-			result.addObject("registrations", registrations);
+			result.addObject("registrations", this.registrationService.registrationsPerAuthor());
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
@@ -82,16 +56,13 @@ public class RegistrationController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView createRegistration(@RequestParam final int conferenceId) {
 		ModelAndView result;
-
 		try {
 			final RegistrationForm registrationForm = new RegistrationForm();
 			registrationForm.setConference(this.conferenceService.findOne(conferenceId));
 
 			result = this.createEditModelAndView(registrationForm);
 		} catch (Throwable oops) {
-			result = new ModelAndView("redirect:list.do");
-
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return result;
 	}
@@ -100,24 +71,15 @@ public class RegistrationController extends AbstractController {
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public ModelAndView edit(@RequestParam final int registrationId) {
 		ModelAndView result;
-		Registration registration;
-		
 		try {
-			Actor principal = this.utilityService.findByPrincipal();
-			registration = this.registrationService.findOne(registrationId);
+			Registration registration = this.registrationService.findOneByAuthor(registrationId);
 			
-			if (! registration.getAuthor().equals((Author) principal)) {
-				result = new ModelAndView("redirect:../misc/403.do");
-			} else {
-				final RegistrationForm editRegistrationFormObject = new RegistrationForm(registration);
+			final RegistrationForm editRegistrationFormObject = new RegistrationForm(registration);
 
-				result = this.createEditModelAndView(editRegistrationFormObject);
-			}
+			result = this.createEditModelAndView(editRegistrationFormObject);
 			
 		} catch (final Throwable oops) {
-			result = new ModelAndView("redirect:list.do");
-
-			result.addObject("errMsg", oops.getMessage());
+			result = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return result;
 	}
@@ -148,9 +110,8 @@ public class RegistrationController extends AbstractController {
 	}
 
 	protected ModelAndView createEditModelAndView(final RegistrationForm registrationForm, final String messageCode) {
-		ModelAndView result;
+		ModelAndView result = new ModelAndView("registration/edit");
 		
-		result = new ModelAndView("registration/edit");
 		result.addObject("registrationForm", registrationForm);
 		result.addObject("errMsg", messageCode);
 

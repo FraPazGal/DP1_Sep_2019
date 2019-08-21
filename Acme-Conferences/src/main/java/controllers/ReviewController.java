@@ -141,7 +141,7 @@ public class ReviewController extends AbstractController {
 
 			this.reviewService.save(newReport);
 
-			res = new ModelAndView("redirect:/submission/list.do");
+			res = new ModelAndView("redirect:/submission/list.do?catalog=underR");
 		} catch (Throwable oops) {
 			Collection<Reviewer> availableReviewers = this.reviewService
 					.findReviewersNotAssigned();
@@ -174,7 +174,7 @@ public class ReviewController extends AbstractController {
 
 			this.reviewService.assign(submissionsToAssign, reviewers);
 
-			res = new ModelAndView("redirect:/submission/list.do");
+			res = new ModelAndView("redirect:/submission/list.do?catalog=underR");
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
 		}

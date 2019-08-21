@@ -29,7 +29,6 @@ public class Sponsorship extends DomainEntity {
 
 	/* Getters and setters */
 
-	@NotNull
 	@NotBlank
 	@URL
 	public String getBanner() {
@@ -40,7 +39,6 @@ public class Sponsorship extends DomainEntity {
 		this.banner = banner;
 	}
 
-	@NotNull
 	@NotBlank
 	@URL
 	public String getTargetPage() {

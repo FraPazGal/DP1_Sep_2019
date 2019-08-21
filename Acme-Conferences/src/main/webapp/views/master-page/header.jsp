@@ -97,15 +97,20 @@
 
 		</security:authorize>
 
-		<security:authorize access="hasAnyRole('AUTHOR', 'REVIEWER','ADMIN')">
+		<security:authorize access="hasRole('AUTHOR')">
 			<li><a class="fNiv"><spring:message
 						code="master.page.submission" /></a>
 				<ul>
 					<li class="arrow"></li>
-					<li><a href="submission/list.do"><spring:message
-								code="master.page.submission.list" /></a></li>
+						<li><a href="submission/list.do"><spring:message
+									code="master.page.submission.list" /></a></li>
 				</ul></li>
 
+		</security:authorize>
+
+		<security:authorize access="hasRole('ADMIN')">
+			<li><a href="submission/list.do?catalog=underR"><spring:message
+						code="master.page.submission" /></a></li>
 		</security:authorize>
 
 		<security:authorize access="hasRole('REVIEWER')">
