@@ -1,6 +1,8 @@
 
 package controllers;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ConferenceService;
 import services.RegistrationService;
+import services.SystemConfigurationService;
 import domain.Registration;
 import forms.RegistrationForm;
 
@@ -25,6 +28,9 @@ public class RegistrationController extends AbstractController {
 	
 	@Autowired
 	private ConferenceService		conferenceService;
+	
+	@Autowired
+	private SystemConfigurationService		systemConfigurationService;
 
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -114,6 +120,8 @@ public class RegistrationController extends AbstractController {
 		
 		result.addObject("registrationForm", registrationForm);
 		result.addObject("errMsg", messageCode);
+		String[] aux = this.systemConfigurationService.findMySystemConfiguration().getMakes().split(",");
+		result.addObject("makes", Arrays.asList(aux));
 
 		return result;
 	}

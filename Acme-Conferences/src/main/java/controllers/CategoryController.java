@@ -29,7 +29,7 @@ public class CategoryController extends AbstractController {
 		ModelAndView result = new ModelAndView("category/list");
 
 		try {
-			result.addObject("categories", this.categoryService.findAllAsAdmin());
+			result.addObject("categories", this.categoryService.findAll());
 		} catch (Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
 		}

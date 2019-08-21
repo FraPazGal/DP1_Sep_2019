@@ -112,8 +112,8 @@ public class ConferenceController extends AbstractController {
 
 	/* Listing */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(
-			@RequestParam(required = false) final String catalog) {
+	public ModelAndView list(@RequestParam (required = false) final String catalog, 
+			@RequestParam (required = false) final Integer categoryId) {
 		ModelAndView result = new ModelAndView("conference/list");
 		Collection<Conference> conferences = null;
 		Collection<Conference> conferencesRegisteredTo = new ArrayList<>();
@@ -122,65 +122,69 @@ public class ConferenceController extends AbstractController {
 		String isPrincipal = null;
 
 		try {
-			switch (catalog) {
-			case "future":
-				conferences = this.conferenceService.futureConferences();
-				break;
+			if (categoryId != null) {
+				Category category = this.categoryService.findOne(categoryId);
+				conferences = category.getConferences();
+				
+				result.addObject("category", category);
+			} else {
+				switch (catalog) {
+				case "future":
+					conferences = this.conferenceService.futureConferences();
+					break;
 
-			case "past":
-				conferences = this.conferenceService.pastConferences();
-				break;
+				case "past":
+					conferences = this.conferenceService.pastConferences();
+					break;
 
-			case "running":
-				conferences = this.conferenceService.runningConferences();
-				break;
-			}
-			try {
-				principal = this.utilityService.findByPrincipal();
-				if (this.utilityService.checkAuthority(principal, "ADMIN")) {
-					isPrincipal = "ADMIN";
-					if (conferences == null) {
-						switch (catalog) {
-						case "unpublished":
-							conferences = this.conferenceService
-									.findConferencesUnpublishedAndMine(principal
-											.getId());
-							break;
-
-						case "5sub":
-							conferences = this.conferenceService
-									.findSubmissionLastFive();
-							break;
-
-						case "5noti":
-							conferences = this.conferenceService
-									.findNotificationInFive();
-							break;
-
-						case "5cam":
-							conferences = this.conferenceService
-									.findCameraInFive();
-							break;
-
-						case "5org":
-							conferences = this.conferenceService
-									.findStartInFive();
-							break;
-						}
-					}
-				} else if (this.utilityService.checkAuthority(principal,
-						"AUTHOR")) {
-					isPrincipal = "AUTHOR";
-
-					conferencesRegisteredTo = this.conferenceService
-							.conferencesRegisteredTo(principal.getId());
-					conferencesSubmittedTo = this.conferenceService
-							.conferencesSubmittedTo(principal.getId());
+				case "running":
+					conferences = this.conferenceService.runningConferences();
+					break;
 				}
-			} catch (Throwable oops) {
-			}
+				try {
+					principal = this.utilityService.findByPrincipal();
+					if (this.utilityService.checkAuthority(principal, "ADMIN")) {
+						isPrincipal = "ADMIN";
+						if (conferences == null) {
+							switch (catalog) {
+							case "unpublished":
+								conferences = this.conferenceService
+									.findConferencesUnpublishedAndMine(principal.getId());
+								break;
 
-			if (catalog == null || conferences == null) {
+							case "5sub":
+								conferences = this.conferenceService
+										.findSubmissionLastFive();
+								break;
+
+							case "5noti":
+								conferences = this.conferenceService
+										.findNotificationInFive();
+								break;
+
+							case "5cam":
+								conferences = this.conferenceService
+										.findCameraInFive();
+								break;
+
+							case "5org":
+								conferences = this.conferenceService
+										.findStartInFive();
+								break;
+							}
+						}
+					} else if (this.utilityService.checkAuthority(principal, "AUTHOR")) {
+						isPrincipal = "AUTHOR";
+						
+						conferencesRegisteredTo = this.conferenceService
+								.conferencesRegisteredTo(principal.getId());
+						conferencesSubmittedTo = this.conferenceService
+								.conferencesSubmittedTo(principal.getId());
+					}
+				} catch (Throwable oops) {
+				}
+			}
+			if (conferences == null) {
 				result = new ModelAndView("redirect:/welcome/index.do");
 			} else {
 				result.addObject("conferences", conferences);

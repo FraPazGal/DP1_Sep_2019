@@ -21,7 +21,7 @@
 
 
 <h1><spring:message	code="category.title.list" /></h1>
-<display:table style="width: 80%" class="displaytag" name="categories" pagesize="5" 
+<display:table class="displaytag" name="categories" pagesize="5" 
 	requestURI="category/list.do" id="category">
 
 	<jstl:choose>
@@ -36,66 +36,83 @@
 			</display:column>
 		</jstl:otherwise>
 	</jstl:choose>
-	<display:column titleKey="category.parentCategory" sortable="true">
-		<jstl:choose>
-			<jstl:when test="${not empty category.parentCategory}">
-				<jstl:choose>
-					<jstl:when test="${pageContext.response.locale.language == 'es'}">
-						<jstl:out value="${category.parentCategory.title.get('Español')}" />
-					</jstl:when>
-					<jstl:otherwise>
-						<jstl:out value="${category.parentCategory.title.get('English')}" />
-					</jstl:otherwise>
-				</jstl:choose>
-			</jstl:when>
-			<jstl:otherwise>
-				<spring:message	code="category.no.parent" />
-			</jstl:otherwise>
-		</jstl:choose>
-	</display:column>
 	
-	<display:column titleKey="category.childCategories" sortable="true">
-		<jstl:choose>
-			<jstl:when test="${not empty category.childCategories}">
-				<jstl:choose>
-					<jstl:when test="${pageContext.response.locale.language == 'es'}">
-						-
-						<jstl:forEach var="child" items="${category.childCategories}">
-							<jstl:out value="${child.title.get('Español')}" />
+	<security:authorize access="hasRole('ADMIN')">
+	
+		<display:column titleKey="category.parentCategory" sortable="true">
+			<jstl:choose>
+				<jstl:when test="${not empty category.parentCategory}">
+					<jstl:choose>
+						<jstl:when test="${pageContext.response.locale.language == 'es'}">
+							<jstl:out value="${category.parentCategory.title.get('Español')}" />
+						</jstl:when>
+						<jstl:otherwise>
+							<jstl:out value="${category.parentCategory.title.get('English')}" />
+						</jstl:otherwise>
+					</jstl:choose>
+				</jstl:when>
+				<jstl:otherwise>
+					<spring:message	code="category.no.parent" />
+				</jstl:otherwise>
+			</jstl:choose>
+		</display:column>
+		
+		<display:column titleKey="category.childCategories" sortable="true">
+			<jstl:choose>
+				<jstl:when test="${not empty category.childCategories}">
+					<jstl:choose>
+						<jstl:when test="${pageContext.response.locale.language == 'es'}">
 							-
-						</jstl:forEach>
-					</jstl:when>
-					<jstl:otherwise>
-						-
-						<jstl:forEach var="child" items="${category.childCategories}">
-							<jstl:out value="${child.title.get('English')}" />
+							<jstl:forEach var="child" items="${category.childCategories}">
+								<jstl:out value="${child.title.get('Español')}" />
+								-
+							</jstl:forEach>
+						</jstl:when>
+						<jstl:otherwise>
 							-
-						</jstl:forEach>
-					</jstl:otherwise>
-				</jstl:choose>
-			</jstl:when>
-			<jstl:otherwise>
-				<spring:message	code="category.no.children" />
-			</jstl:otherwise>
-		</jstl:choose>
-	</display:column>
-			
-	<display:column style="width: 10%">
-		<jstl:if test="${not empty category.parentCategory}">
-			<a href="category/edit.do?categoryId=${category.id}"><spring:message
-					code="mp.edit" /></a>
+							<jstl:forEach var="child" items="${category.childCategories}">
+								<jstl:out value="${child.title.get('English')}" />
+								-
+							</jstl:forEach>
+						</jstl:otherwise>
+					</jstl:choose>
+				</jstl:when>
+				<jstl:otherwise>
+					<spring:message	code="category.no.children" />
+				</jstl:otherwise>
+			</jstl:choose>
+		</display:column>
+				
+		<display:column>
+			<jstl:if test="${not empty category.parentCategory}">
+				<a href="category/edit.do?categoryId=${category.id}"><spring:message
+						code="mp.edit" /></a>
+			</jstl:if>
+		</display:column>
+		
+		
+		<display:column>
+			<jstl:if test="${not empty category.parentCategory}">
+				<a href="category/delete.do?categoryId=${category.id}"><spring:message
+						code="mp.delete" /></a>
+			</jstl:if>
+		</display:column>
+	</security:authorize>
+	
+	<display:column>
+		<jstl:if test="${not empty category.conferences}">
+			<a href="conference/list.do?categoryId=${category.id}"><spring:message
+					code="category.conferences" /></a>
 		</jstl:if>
-	</display:column>
-	
-	
-	<display:column style="width: 10%">
-		<jstl:if test="${not empty category.parentCategory}">
-			<a href="category/delete.do?categoryId=${category.id}"><spring:message
-					code="mp.delete" /></a>
+		<jstl:if test="${empty category.conferences}">
+			<spring:message code="category.no.conferences" />
 		</jstl:if>
 	</display:column>
 	
 </display:table>
-<input type="button"
-	onclick="redirect: location.href = 'category/create.do';"
-	value="<spring:message code='category.create' />" />
+<security:authorize access="hasRole('ADMIN')">
+
+	<input type="button"
+		onclick="redirect: location.href = 'category/create.do';"
+		value="<spring:message code='category.create' />" />
+</security:authorize>
