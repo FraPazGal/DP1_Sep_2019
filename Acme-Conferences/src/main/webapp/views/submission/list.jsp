@@ -92,6 +92,14 @@
 				<fmt:formatDate pattern="${format }"
 					value="${submission.conference.cameraReadyDeadline}" />
 			</display:column>
+			
+			<display:column>
+				<jstl:if test="${submission.status == 'ACCEPTED' or submission.status == 'REJECTED'}">
+					<a href="review/list.do?submissionId=${submission.id}">
+							<spring:message code="submission.display.reports" />
+					</a>
+				</jstl:if>
+			</display:column>
 
 			<display:column>
 				<a href="submission/display.do?submissionId=${submission.id}">

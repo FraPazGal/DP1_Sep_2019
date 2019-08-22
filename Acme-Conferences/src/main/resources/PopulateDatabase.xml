@@ -1412,6 +1412,68 @@
 		<property name="conference" ref="conference11" />
 		<property name="paper" ref="paper10" />
 	</bean>
+	
+	<!-- ****** REVIEW/REPORT ****** -->
+
+	<bean id="report1" class="domain.Report">
+		<property name="originalityScore" value="7.5" />
+		<property name="qualityScore" value="8.1" />
+		<property name="readabilityScore" value="9.0" />
+		<property name="status" value="ACCEPTED" />
+		<property name="comments" value="Pedazo de submission macho" />
+		<property name="isWritten" value="true" />
+		<property name="reviewer" ref="reviewer1" />
+		<property name="submission" ref="submission3" />
+	</bean>
+	
+	<bean id="report2" class="domain.Report">
+		<property name="originalityScore" value="8.2" />
+		<property name="qualityScore" value="9.1" />
+		<property name="readabilityScore" value="9.4" />
+		<property name="status" value="ACCEPTED" />
+		<property name="comments" value="BRAVISIMO!!!!" />
+		<property name="isWritten" value="true" />
+		<property name="reviewer" ref="reviewer2" />
+		<property name="submission" ref="submission3" />
+	</bean>
+	
+	<bean id="report3" class="domain.Report">
+		<property name="originalityScore" value="5.2" />
+		<property name="qualityScore" value="6.1" />
+		<property name="readabilityScore" value="4.4" />
+		<property name="status" value="BORDER-LINE" />
+		<property name="comments" value="En fin..." />
+		<property name="isWritten" value="true" />
+		<property name="reviewer" ref="reviewer1" />
+		<property name="submission" ref="submission4" />
+	</bean>
+	
+	<bean id="report4" class="domain.Report">
+		<property name="originalityScore" value="3.3" />
+		<property name="qualityScore" value="4.0" />
+		<property name="readabilityScore" value="2.1" />
+		<property name="status" value="REJECTED" />
+		<property name="comments" value="Basura" />
+		<property name="isWritten" value="true" />
+		<property name="reviewer" ref="reviewer1" />
+		<property name="submission" ref="submission5" />
+	</bean>
+	
+	<bean id="report5" class="domain.Report">
+		<property name="originalityScore" value="4" />
+		<property name="qualityScore" value="3.6" />
+		<property name="readabilityScore" value="1.5" />
+		<property name="status" value="REJECTED" />
+		<property name="isWritten" value="true" />
+		<property name="reviewer" ref="reviewer2" />
+		<property name="submission" ref="submission5" />
+	</bean>
+	
+	<bean id="report6" class="domain.Report">
+		<property name="isWritten" value="false" />
+		<property name="reviewer" ref="reviewer1" />
+		<property name="submission" ref="submission7" />
+	</bean>
 
 	<!-- SYSTEM CONFIGURATION -->
 

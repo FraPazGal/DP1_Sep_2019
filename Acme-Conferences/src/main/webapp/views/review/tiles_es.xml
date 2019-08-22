@@ -29,5 +29,10 @@
 		<put-attribute name="title" value="Mis críticas" />
 		<put-attribute name="body" value="/views/review/myreviews.jsp" />
 	</definition>
-
+	
+	<definition name="review/list" extends="master.page">
+		<put-attribute name="title" value="Listado de críticas" />
+		<put-attribute name="body" value="/views/review/list.jsp" />
+	</definition>
+	
 </tiles-definitions>

@@ -176,13 +176,15 @@
 		<security:intercept-url pattern="/review/admin/automaticassign.do"
 			access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/review/display.do"
-			access="hasAnyRole('ADMIN','REVIEWER')" />
+			access="hasAnyRole('ADMIN','REVIEWER','AUTHOR')" />
 		<security:intercept-url pattern="/review/reviewer/myreports.do"
 			access="hasRole('REVIEWER')" />
 		<security:intercept-url pattern="/review/admin/conferencereports.do"
 			access="hasRole('ADMIN')" />
 		<security:intercept-url pattern="/review/reviewer/edit.do"
 			access="hasRole('REVIEWER')" />
+		<security:intercept-url pattern="/review/list.do"
+			access="hasRole('AUTHOR')" />
 
 
 		<security:intercept-url pattern="/**"

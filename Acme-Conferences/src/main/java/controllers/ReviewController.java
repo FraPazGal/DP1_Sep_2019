@@ -74,32 +74,52 @@ public class ReviewController extends AbstractController {
 
 		return res;
 	}
-
-	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam(value = "id") Integer id) {
-		ModelAndView res;
-		Actor principal;
-		Boolean isOwner;
-		Report toShow;
+	
+	/* Listing */
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list(@RequestParam final int submissionId) {
+		ModelAndView result = new ModelAndView("review/list");
 
 		try {
-			principal = this.utilityService.findByPrincipal();
-			Assert.isTrue(this.utilityService.checkAuthority(principal,
-					"REVIEWER")
-					|| this.utilityService.checkAuthority(principal, "ADMIN"));
-
-			toShow = this.reviewService.findOne(id);
-
-			isOwner = toShow.getReviewer().getId() == principal.getId();
-
-			res = new ModelAndView("report/display");
-			res.addObject("report", toShow);
-			res.addObject("isOwner", isOwner);
+			Submission submission = this.submissionService.findOne(submissionId);
+			if(this.utilityService.checkAuthority(this.utilityService.findByPrincipal(), "AUTHOR")) {
+				Assert.isTrue(submission.getStatus().equals("ACCEPTED") ||
+						submission.getStatus().equals("REJECTED"));
+			}
+			result.addObject("reviews", this.reviewService.findReportsOfSubmission(submissionId));
+			result.addObject("submission", submission);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			result = new ModelAndView("redirect:../welcome/index.do");
 		}
+		return result;
+	}
 
-		return res;
+	/* Display */
+	@RequestMapping(value = "/display", method = RequestMethod.GET)
+	public ModelAndView display(@RequestParam(value = "id") Integer id) {
+		ModelAndView result = new ModelAndView("review/display");
+
+		try {
+			Actor principal = this.utilityService.findByPrincipal();
+			Assert.isTrue(this.utilityService.checkAuthority(principal, "REVIEWER") || 
+					this.utilityService.checkAuthority(principal, "ADMIN") ||
+					this.utilityService.checkAuthority(principal, "AUTHOR"));
+
+			Report toShow = this.reviewService.findOne(id);
+			
+			if(this.utilityService.checkAuthority(principal, "AUTHOR")) {
+				Assert.isTrue(toShow.getSubmission().getStatus().equals("ACCEPTED") ||
+						toShow.getSubmission().getStatus().equals("REJECTED"));
+				Assert.isTrue(toShow.getSubmission().getAuthor().equals(principal));
+				
+			} else if(this.utilityService.checkAuthority(principal, "REVIEWER")) {
+				Assert.isTrue(this.reviewService.checkIfAssigned(toShow.getSubmission().getId()));
+			}
+			result.addObject("review", toShow);
+		} catch (Throwable oops) {
+			result = new ModelAndView("redirect:../welcome/index.do");
+		}
+		return result;
 	}
 
 	@RequestMapping(value = "/admin/assign", method = RequestMethod.GET)

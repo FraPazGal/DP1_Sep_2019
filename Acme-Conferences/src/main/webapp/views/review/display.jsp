@@ -10,74 +10,57 @@
 
 
 <jstl:choose>
-	<jstl:when test="${found}">
-		<!-- Actor Attributes -->
-		<fieldset>
-			<legend style="font-size: 21px">
-				<spring:message code="actor.personalData" />
-			</legend>
-
-			<div style="float: left;">
-				<div>
-					<strong><spring:message code="actor.name" />: </strong>
-					<jstl:out value="${reviewer.name}" />
-				</div>
-
-				<br />
-
-				<div>
-					<strong><spring:message code="actor.middleName" />: </strong>
-					<jstl:out value="${reviewer.middleName}" />
-				</div>
-
-				<br />
-
-				<div>
-					<strong><spring:message code="actor.surname" />: </strong>
-					<jstl:out value="${reviewer.surname}" />
-				</div>
-
-				<br />
-
-				<div>
-					<strong><spring:message code="actor.email" />: </strong>
-					<jstl:out value="${reviewer.email}" />
-				</div>
-
-				<br />
-
-				<div>
-					<strong><spring:message code="actor.phone" />: </strong>
-					<jstl:out value="${reviewer.phoneNumber}" />
-				</div>
-
-				<br />
-
-				<div>
-					<strong><spring:message code="actor.address" />: </strong>
-					<jstl:out value="${reviewer.address}" />
-				</div>
-
-				<br />
-
-				<div>
-					<strong><spring:message code="actor.keywords" />: </strong>
-					<jstl:out value="${reviewer.keywords}" />
-				</div>
-
-			</div>
-
-			<div style="float: right;">
-				<img style="width: 200px; height: 200px" src="${reviewer.photo}"
-					alt="User photo">
-			</div>
-
-		</fieldset>
-
+	<jstl:when test="${review.status eq 'BORDER-LINE'}">
+		<spring:message var="status" code='review.status.borderline' />
 	</jstl:when>
-	<jstl:otherwise>
-		<p class="error">
-			<spring:message code="some.error" />
-		</p>
-	</jstl:otherwise>
+	<jstl:when test="${review.status eq 'ACCEPTED'}">
+		<spring:message var="status" code='review.status.accepted' />
+	</jstl:when>
+	<jstl:when test="${review.status eq 'REJECTED'}">
+		<spring:message var="status" code='review.status.rejected' />
+	</jstl:when>
 </jstl:choose>
+
+<table class="displayStyle">
+
+		<tr>
+			<td><strong> <spring:message code="review.submission" />: </strong></td>
+			<td><jstl:out value="${review.submission.ticker}"></jstl:out></td>
+		</tr>
+
+		<tr>
+			<td><strong> <spring:message code="review.status" />: </strong></td>
+			<td><jstl:out value="${status}"></jstl:out></td>
+		</tr>
+		
+		<tr>
+			<td><strong> <spring:message code="review.originality" />: </strong></td>
+			<td><jstl:out value="${review.originalityScore}"></jstl:out></td>
+		</tr>
+		
+		<tr>
+			<td><strong> <spring:message code="review.quality" />: </strong></td>
+			<td><jstl:out value="${review.qualityScore}"></jstl:out></td>
+		</tr>
+		
+		<tr>
+			<td><strong> <spring:message code="review.readability" />: </strong></td>
+			<td><jstl:out value="${review.readabilityScore}"></jstl:out></td>
+		</tr>
+		
+		<tr>
+			<td><strong> <spring:message code="review.reviewer" />: </strong></td>
+			<td><jstl:out value="${review.reviewer.userAccount.username}"></jstl:out></td>
+		</tr>
+		<jstl:if test="${not empty review.comments }">
+			<tr>
+				<td><strong> <spring:message code="review.comments" />: </strong></td>
+				<td><jstl:out value="${review.comments}"></jstl:out></td>
+			</tr>
+		</jstl:if>
+</table>
+
+<input type="button" name="back"
+	value="<spring:message code="mp.back" />"
+	onclick="redirect: location.href = 'review/list.do?submissionId=${review.submission.id}';" />
+	
