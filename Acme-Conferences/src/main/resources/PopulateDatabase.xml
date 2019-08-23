@@ -1373,7 +1373,7 @@
 		<property name="status" value="ACCEPTED" />
 		<property name="submissionMoment" value="06/15/2019 17:14" />
 		<property name="author" ref="author2" />
-		<property name="conference" ref="conference3" />
+		<property name="conference" ref="conference7" />
 		<property name="paper" ref="paper5" />
 	</bean>
 

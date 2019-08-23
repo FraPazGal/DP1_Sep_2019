@@ -15,6 +15,7 @@ import org.springframework.validation.Validator;
 import repositories.SubmissionRepository;
 import domain.Actor;
 import domain.Author;
+import domain.Conference;
 import domain.Paper;
 import domain.Submission;
 import forms.SubmissionForm;
@@ -46,7 +47,7 @@ public class SubmissionService {
 		Submission result = new Submission();
 
 		this.utilityService.assertPrincipal("AUTHOR");
-
+		
 		result.setSubmissionMoment(new Date(System.currentTimeMillis() - 1));
 		result.setAuthor((Author) principal);
 		result.setTicker(this.generateTicker(principal));
@@ -336,5 +337,9 @@ public class SubmissionService {
 	public Collection<Paper> findCameraReadyPapersOfConference(int conferenceid) {
 		return this.submissionRepository
 				.findCameraReadyPapersOfConference(conferenceid);
+	}
+	
+	public boolean noPreviousSubmissions(Conference conference) {
+		return this.submissionRepository.noPreviousSubmissions(conference.getId(), this.utilityService.findByPrincipal().getId());
 	}
 }

@@ -325,11 +325,12 @@ public class ConferenceService {
 	}
 	
 	public Conference findOneToDisplay(Integer conferenceId) {
-		Actor principal = this.utilityService.findByPrincipal();
 		Conference result = this.findOne(conferenceId);
 		
 		if(result.getStatus().equals("DRAFT")) {
-			Assert.isTrue(result.getAdministrator().equals((Administrator) principal));
+			Actor actor = this.utilityService.findByPrincipal();
+			Assert.notNull(actor, "not.allowed");
+			Assert.isTrue(result.getAdministrator().equals((Administrator) actor));
 		} else {
 			Assert.isTrue(!result.getStatus().equals("DRAFT"), "not.allowed");
 		}

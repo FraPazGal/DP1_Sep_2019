@@ -69,6 +69,7 @@ public class ConferenceController extends AbstractController {
 		Map<String, String> titleCat = new HashMap<>();
 		Conference conference = null;
 		try {
+			Actor principal = null;
 			Sponsorship spoBanner = this.sponsorshipService
 					.findBanner(conferenceId);
 			Category category = this.categoryService
@@ -78,21 +79,18 @@ public class ConferenceController extends AbstractController {
 					.getActivitiesOfConference(conferenceId);
 			Collection<Comentario> comments = this.commentService
 					.getCommentsOfConference(conferenceId);
+			
+			hasSubcriptions = (this.registrationService.findActorsRegisteredTo(conferenceId).isEmpty()) ? false	: true;
+			hasSubmittions = (this.submissionService.findActorsWithSubmitions(conferenceId).isEmpty()) ? false : true;
+			
 			try {
-				Actor principal = this.utilityService.findByPrincipal();
-				conference = this.conferenceService
-						.findOneToDisplay(conferenceId);
+				principal = this.utilityService.findByPrincipal();
 				if (this.utilityService.checkAuthority(principal, "ADMIN"))
 					isPrincipal = true;
-				hasSubcriptions = (this.registrationService
-						.findActorsRegisteredTo(conferenceId).isEmpty()) ? false
-						: true;
-				hasSubmittions = (this.submissionService
-						.findActorsWithSubmitions(conferenceId).isEmpty()) ? false
-						: true;
-			} catch (final Throwable oops) {
-				conference = this.conferenceService.findOne(conferenceId);
-			}
+				
+			} catch (final Throwable oops) {}
+			
+			conference = this.conferenceService.findOneToDisplay(conferenceId);
 
 			result.addObject("conference", conference);
 			result.addObject("spoBanner", spoBanner);

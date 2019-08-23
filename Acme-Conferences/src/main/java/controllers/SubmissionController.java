@@ -124,6 +124,8 @@ public class SubmissionController extends AbstractController {
 		ModelAndView result;
 		try {
 			Conference conference = this.conferenceService.findOne(conferenceId);
+			
+			Assert.isTrue(this.submissionService.noPreviousSubmissions(conference), "not.allowed");
 
 			SubmissionForm submissionForm = new SubmissionForm();
 			submissionForm.setConference(conference);
