@@ -105,7 +105,7 @@ public class Activity extends DomainEntity {
 	}
 
 	@NotNull
-	@Range(min = 0, message = "duration.error")
+	@Range(min = 0)
 	public Double getDuration() {
 		return duration;
 	}
