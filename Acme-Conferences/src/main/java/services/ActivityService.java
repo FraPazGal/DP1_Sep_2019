@@ -23,9 +23,6 @@ public class ActivityService {
 	@Autowired
 	private ConferenceService conferenceService;
 
-	// @Autowired
-	// private UtilityService utilityService;
-
 	public Collection<Activity> listAll() {
 		return this.activityRepository.findAll();
 	}

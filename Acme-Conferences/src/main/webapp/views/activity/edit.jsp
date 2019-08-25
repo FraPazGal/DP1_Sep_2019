@@ -88,21 +88,31 @@
 			</form:select>
 			<form:errors path="type" cssClass="error" />
 
-			<br>
-			<br>
+			<jstl:choose>
+				<jstl:when test="${not empty crPapers}">
+					<br>
+					<br>
 
-			<label id="paperLabel" hidden="true"> <spring:message
-					code="activity.crPaper" />
-			</label>
-			<jstl:if test="${not empty crPapers}">
-				<select id="paperSelect" name="crpaperid" hidden="true">
-					<jstl:forEach items="${crPapers}" var="paper">
-						<option value="${paper.id}">
-							<jstl:out value="${paper.title}" />
-						</option>
-					</jstl:forEach>
-				</select>
-			</jstl:if>
+					<label id="paperLabel" hidden="true"> <spring:message
+							code="activity.crPaper" />
+					</label>
+
+					<select id="paperSelect" name="crpaperid" hidden="true">
+						<jstl:forEach items="${crPapers}" var="paper">
+							<option value="${paper.id}">
+								<jstl:out value="${paper.title}" />
+							</option>
+						</jstl:forEach>
+					</select>
+				</jstl:when>
+				<jstl:otherwise>
+					<br>
+					<br>
+					<label id="paperLabel" hidden="true"> <spring:message
+							code="activity.no.crPaper" />
+					</label>
+				</jstl:otherwise>
+			</jstl:choose>
 
 			<br>
 			<br>

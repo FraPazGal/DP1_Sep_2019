@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.ReviewService;
+import services.ReviewerService;
 import services.SubmissionService;
 import services.UtilityService;
 import domain.Actor;
@@ -31,6 +32,9 @@ public class ReviewController extends AbstractController {
 
 	@Autowired
 	private SubmissionService submissionService;
+
+	@Autowired
+	private ReviewerService reviewerService;
 
 	@RequestMapping(value = "/reviewer/myreports", method = RequestMethod.GET)
 	public ModelAndView list() {
@@ -74,19 +78,22 @@ public class ReviewController extends AbstractController {
 
 		return res;
 	}
-	
+
 	/* Listing */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam final int submissionId) {
 		ModelAndView result = new ModelAndView("review/list");
 
 		try {
-			Submission submission = this.submissionService.findOne(submissionId);
-			if(this.utilityService.checkAuthority(this.utilityService.findByPrincipal(), "AUTHOR")) {
-				Assert.isTrue(submission.getStatus().equals("ACCEPTED") ||
-						submission.getStatus().equals("REJECTED"));
+			Submission submission = this.submissionService
+					.findOne(submissionId);
+			if (this.utilityService.checkAuthority(
+					this.utilityService.findByPrincipal(), "AUTHOR")) {
+				Assert.isTrue(submission.getStatus().equals("ACCEPTED")
+						|| submission.getStatus().equals("REJECTED"));
 			}
-			result.addObject("reviews", this.reviewService.findReportsOfSubmission(submissionId));
+			result.addObject("reviews",
+					this.reviewService.findReportsOfSubmission(submissionId));
 			result.addObject("submission", submission);
 		} catch (Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
@@ -101,19 +108,25 @@ public class ReviewController extends AbstractController {
 
 		try {
 			Actor principal = this.utilityService.findByPrincipal();
-			Assert.isTrue(this.utilityService.checkAuthority(principal, "REVIEWER") || 
-					this.utilityService.checkAuthority(principal, "ADMIN") ||
-					this.utilityService.checkAuthority(principal, "AUTHOR"));
+			Assert.isTrue(this.utilityService.checkAuthority(principal,
+					"REVIEWER")
+					|| this.utilityService.checkAuthority(principal, "ADMIN")
+					|| this.utilityService.checkAuthority(principal, "AUTHOR"));
 
 			Report toShow = this.reviewService.findOne(id);
-			
-			if(this.utilityService.checkAuthority(principal, "AUTHOR")) {
-				Assert.isTrue(toShow.getSubmission().getStatus().equals("ACCEPTED") ||
-						toShow.getSubmission().getStatus().equals("REJECTED"));
-				Assert.isTrue(toShow.getSubmission().getAuthor().equals(principal));
-				
-			} else if(this.utilityService.checkAuthority(principal, "REVIEWER")) {
-				Assert.isTrue(this.reviewService.checkIfAssigned(toShow.getSubmission().getId()));
+
+			if (this.utilityService.checkAuthority(principal, "AUTHOR")) {
+				Assert.isTrue(toShow.getSubmission().getStatus()
+						.equals("ACCEPTED")
+						|| toShow.getSubmission().getStatus()
+								.equals("REJECTED"));
+				Assert.isTrue(toShow.getSubmission().getAuthor()
+						.equals(principal));
+
+			} else if (this.utilityService
+					.checkAuthority(principal, "REVIEWER")) {
+				Assert.isTrue(this.reviewService.checkIfAssigned(toShow
+						.getSubmission().getId()));
 			}
 			result.addObject("review", toShow);
 		} catch (Throwable oops) {
@@ -132,7 +145,7 @@ public class ReviewController extends AbstractController {
 			Assert.isTrue(this.utilityService.checkAuthority(
 					this.utilityService.findByPrincipal(), "ADMIN"));
 
-			availableReviewers = this.reviewService.findReviewersNotAssigned();
+			availableReviewers = this.reviewerService.findAll();
 
 			res = new ModelAndView("review/assign");
 			res.addObject("reviewers", availableReviewers);
@@ -179,6 +192,7 @@ public class ReviewController extends AbstractController {
 	@RequestMapping(value = "/admin/automaticassign")
 	public ModelAndView assign() {
 		ModelAndView res;
+		String mensaje = null;
 		Collection<Reviewer> reviewers;
 		Collection<Submission> submissionsToAssign;
 
@@ -191,12 +205,23 @@ public class ReviewController extends AbstractController {
 			submissionsToAssign.remove(this.submissionService
 					.submissionsAssigned());
 
-			reviewers = this.reviewService.findReviewersNotAssigned();
+			reviewers = this.reviewerService.findAll();
 
 			this.reviewService.assign(submissionsToAssign, reviewers);
 
 			res = new ModelAndView(
 					"redirect:/submission/list.do?catalog=underR");
+
+			submissionsToAssign = this.submissionService.findAll();
+
+			submissionsToAssign.remove(this.submissionService
+					.submissionsAssigned());
+
+			if (!submissionsToAssign.isEmpty()) {
+				mensaje = "submissions.not.assign";
+			}
+
+			res.addObject("mensaje", mensaje);
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
 		}

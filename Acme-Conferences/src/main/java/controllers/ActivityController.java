@@ -3,12 +3,12 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.validation.Valid;
-
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,6 +44,9 @@ public class ActivityController extends AbstractController {
 	@Autowired
 	private CommentService commentService;
 
+	@Autowired
+	private Validator validator;
+
 	// Displaying an activity
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
@@ -72,6 +75,10 @@ public class ActivityController extends AbstractController {
 			res.addObject("sections", sections);
 			res.addObject("comments", comments);
 			res.addObject("permission", permission);
+			res.addObject(
+					"conferenceStarted",
+					LocalDate.now().toDate()
+							.before(activity.getConference().getStartDate()));
 		} catch (Throwable oops) {
 			res = new ModelAndView("welcome/index");
 		}
@@ -151,6 +158,9 @@ public class ActivityController extends AbstractController {
 
 			newActivity = this.activityService.create(conferenceid);
 
+			Assert.isTrue(LocalDate.now().toDate()
+					.before(newActivity.getConference().getStartDate()));
+
 			crPapers = this.submissionService
 					.findCameraReadyPapersOfConference(conferenceid);
 
@@ -183,6 +193,9 @@ public class ActivityController extends AbstractController {
 
 			toEdit = this.activityService.findOne(activityid);
 
+			Assert.isTrue(LocalDate.now().toDate()
+					.before(toEdit.getConference().getStartDate()));
+
 			crPapers = this.submissionService
 					.findCameraReadyPapersOfConference(toEdit.getConference()
 							.getId());
@@ -200,18 +213,19 @@ public class ActivityController extends AbstractController {
 	// Saving activity
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(
-			@Valid Activity activity,
+			Activity activity,
 			@RequestParam(required = false, value = "crpaperid") Integer crpaperid,
 			BindingResult binding) {
 		ModelAndView res;
 		Actor principal;
 
 		try {
+			this.validator.validate(activity, binding);
 			if (binding.hasErrors()) {
 				Collection<Paper> crPapers = this.submissionService
-						.findCameraReadyPapersOfConference(activity.getConference()
-								.getId());
-				
+						.findCameraReadyPapersOfConference(activity
+								.getConference().getId());
+
 				res = new ModelAndView("activity/edit");
 				res.addObject(activity);
 				res.addObject("permission", true);
@@ -225,7 +239,7 @@ public class ActivityController extends AbstractController {
 					activity.setSubmission(this.submissionService
 							.findSubByPaper(crpaperid));
 				}
-				
+
 				this.activityService.save(activity);
 				res = new ModelAndView("redirect:list.do?conferenceid="
 						+ activity.getConference().getId());

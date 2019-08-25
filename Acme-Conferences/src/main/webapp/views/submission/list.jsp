@@ -9,19 +9,33 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<script type="text/javascript">
+	function submissionAlert(men) {
+		console.log(men);
+		window.alert(men);
+	}
+</script>
 
 <jstl:choose>
 	<jstl:when test="${catalog eq null }">
-		<h1><spring:message code="submission.title.list" /></h1>
+		<h1>
+			<spring:message code="submission.title.list" />
+		</h1>
 	</jstl:when>
 	<jstl:when test="${catalog == 'underR' }">
-		<h1><spring:message	code="submission.submission.list.underreview" /></h1>
+		<h1>
+			<spring:message code="submission.submission.list.underreview" />
+		</h1>
 	</jstl:when>
 	<jstl:when test="${catalog == 'accepted' }">
-		<h1><spring:message	code="submission.submission.list.accepted" /></h1>
+		<h1>
+			<spring:message code="submission.submission.list.accepted" />
+		</h1>
 	</jstl:when>
 	<jstl:when test="${catalog == 'rejected' }">
-		<h1><spring:message	code="submission.submission.list.rejected" /></h1>
+		<h1>
+			<spring:message code="submission.submission.list.rejected" />
+		</h1>
 	</jstl:when>
 </jstl:choose>
 
@@ -72,13 +86,12 @@
 				<jstl:out value="${submission.paper.title}" />
 			</display:column>
 
-			<display:column
-				titleKey="submission.conference.submission.deadline"
+			<display:column titleKey="submission.conference.submission.deadline"
 				sortable="true">
 				<fmt:formatDate pattern="${format }"
 					value="${submission.conference.submissionDeadline}" />
 			</display:column>
-			
+
 			<display:column
 				titleKey="submission.conference.notification.deadline"
 				sortable="true">
@@ -86,29 +99,30 @@
 					value="${submission.conference.notificationDeadline}" />
 			</display:column>
 
-			<display:column
-				titleKey="submission.conference.cameraReady.deadline"
+			<display:column titleKey="submission.conference.cameraReady.deadline"
 				sortable="true">
 				<fmt:formatDate pattern="${format }"
 					value="${submission.conference.cameraReadyDeadline}" />
 			</display:column>
-			
+
 			<display:column>
-				<jstl:if test="${submission.status == 'ACCEPTED' or submission.status == 'REJECTED'}">
-					<a href="review/list.do?submissionId=${submission.id}">
-							<spring:message code="submission.display.reports" />
+				<jstl:if
+					test="${submission.status == 'ACCEPTED' or submission.status == 'REJECTED'}">
+					<a href="review/list.do?submissionId=${submission.id}"> <spring:message
+							code="submission.display.reports" />
 					</a>
 				</jstl:if>
 			</display:column>
 
 			<display:column>
-				<a href="submission/display.do?submissionId=${submission.id}">
-					<spring:message code="mp.display" />
+				<a href="submission/display.do?submissionId=${submission.id}"> <spring:message
+						code="mp.display" />
 				</a>
 			</display:column>
 
 			<display:column>
-				<jstl:if test="${submission.cameraReadyPaper == null and submission.status == 'ACCEPTED' and now lt submission.conference.cameraReadyDeadline}">
+				<jstl:if
+					test="${submission.cameraReadyPaper == null and submission.status == 'ACCEPTED' and now lt submission.conference.cameraReadyDeadline}">
 					<a href="submission/edit.do?submissionId=${submission.id}"> <spring:message
 							code="submission.submit" />
 					</a>
@@ -165,13 +179,12 @@
 				<jstl:out value="${submission.paper.title}" />
 			</display:column>
 
-			<display:column
-				titleKey="submission.conference.submission.deadline"
+			<display:column titleKey="submission.conference.submission.deadline"
 				sortable="true">
 				<fmt:formatDate pattern="${format }"
 					value="${submission.conference.submissionDeadline}" />
 			</display:column>
-			
+
 			<display:column
 				titleKey="submission.conference.notification.deadline"
 				sortable="true">
@@ -179,26 +192,31 @@
 					value="${submission.conference.notificationDeadline}" />
 			</display:column>
 
-			<display:column
-				titleKey="submission.conference.cameraReady.deadline"
+			<display:column titleKey="submission.conference.cameraReady.deadline"
 				sortable="true">
 				<fmt:formatDate pattern="${format }"
 					value="${submission.conference.cameraReadyDeadline}" />
 			</display:column>
 
 			<display:column>
-				<a href="submission/display.do?submissionId=${submission.id}">
-					<spring:message code="mp.display" />
+				<a href="submission/display.do?submissionId=${submission.id}"> <spring:message
+						code="mp.display" />
 				</a>
 			</display:column>
 
 		</display:table>
 		<jstl:if test="${catalog == 'underR' and not empty submissions}">
+			<spring:message var="mensaje"
+				code='<%=request.getParameter("mensaje")%>' />
+			<jstl:if test="${not empty mensaje}">
+				<p class="error">
+					<jstl:out value="${mensaje}" />
+			</jstl:if>
 			<input type="button" value="<spring:message code="assign.all"/>"
-			onclick="location.href = 'review/admin/automaticassign.do';"
-			formmethod="post">
+				onclick="location.href = 'review/admin/automaticassign.do';"
+				formmethod="post">
 		</jstl:if>
-		
+
 
 	</jstl:when>
 </jstl:choose>

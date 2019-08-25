@@ -28,7 +28,7 @@ public class ReviewService {
 
 	@Autowired
 	private SubmissionService submissionService;
-	
+
 	@Autowired
 	private UtilityService utilityService;
 
@@ -84,6 +84,30 @@ public class ReviewService {
 			Assert.notNull(report.getSubmission());
 		} catch (Throwable oops) {
 			binding.rejectValue("submission", "submission.error");
+		}
+
+		try {
+			Assert.notNull(report.getOriginalityScore());
+		} catch (Throwable oops) {
+			binding.rejectValue("originalityScore", "originality.error");
+		}
+
+		try {
+			Assert.notNull(report.getQualityScore());
+		} catch (Throwable oops) {
+			binding.rejectValue("qualityScore", "quality.error");
+		}
+
+		try {
+			Assert.notNull(report.getReadabilityScore());
+		} catch (Throwable oops) {
+			binding.rejectValue("readabilityScore", "readability.error");
+		}
+
+		try {
+			Assert.isTrue(!report.getComments().isEmpty());
+		} catch (Throwable oops) {
+			binding.rejectValue("comments", "comments.error");
 		}
 
 		validator.validate(report, binding);
@@ -158,16 +182,17 @@ public class ReviewService {
 	}
 
 	public boolean isAssigned(int id) {
-		return this.reportRepository.findSubmissionReport(id) != null;
+		return !this.reportRepository.findSubmissionReport(id).isEmpty();
 	}
-	
-	public Collection<Report> findReportsOfSubmission (Integer submissionId) {
+
+	public Collection<Report> findReportsOfSubmission(Integer submissionId) {
 		return this.reportRepository.findReportsOfSubmission(submissionId);
 	}
-	
-	public boolean checkIfAssigned (Integer submissionId) {
+
+	public boolean checkIfAssigned(Integer submissionId) {
 		Actor principal = this.utilityService.findByPrincipal();
-		
-		return this.reportRepository.checkIfAssigned(submissionId, principal.getId());
+
+		return this.reportRepository.checkIfAssigned(submissionId,
+				principal.getId());
 	}
 }

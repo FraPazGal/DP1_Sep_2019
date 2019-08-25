@@ -46,7 +46,8 @@
 				<td><strong> <spring:message
 							code="activity.attachement" /> :
 				</strong></td>
-				<td><jstl:out value="${activity.attachement}"></jstl:out></td>
+				<td><a href="${activity.attachement}"><jstl:out
+							value="${activity.attachement}" /></a></td>
 			</tr>
 
 			<tr>
@@ -101,7 +102,7 @@
 
 		</table>
 
-		<jstl:if test="${permission}">
+		<jstl:if test="${permission and conferenceStarted}">
 			<input type="button"
 				onclick="redirect: location.href = 'activity/edit.do?activityid=${activity.id}';"
 				value="<spring:message code='activity.edit' />" />
