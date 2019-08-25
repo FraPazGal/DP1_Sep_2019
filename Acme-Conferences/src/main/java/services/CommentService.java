@@ -40,13 +40,25 @@ public class CommentService {
 
 		res = new Comentario();
 
-		Conference conference = this.conferenceService.findOne(conferenceid);
-		Assert.notNull(conference);
+		try {
+			Conference conference = this.conferenceService
+					.findOne(conferenceid);
+			Assert.notNull(conference);
 
-		res.setAuthor("[Anonymous]");
-		res.setWriter(this.utilityService.findByUsername("[Anonymous]"));
-		res.setConference(conference);
-		res.setPublishedDate(LocalDate.now().toDate());
+			res.setAuthor("[Anonymous]");
+			res.setWriter(this.utilityService.findByUsername("[Anonymous]"));
+			res.setConference(conference);
+			res.setPublishedDate(LocalDate.now().toDate());
+
+		} catch (Throwable oops) {
+			Activity activity = this.activityService.findOne(activityid);
+			Assert.notNull(activity);
+
+			res.setAuthor("[Anonymous]");
+			res.setWriter(this.utilityService.findByUsername("[Anonymous]"));
+			res.setActivity(activity);
+			res.setPublishedDate(LocalDate.now().toDate());
+		}
 
 		return res;
 

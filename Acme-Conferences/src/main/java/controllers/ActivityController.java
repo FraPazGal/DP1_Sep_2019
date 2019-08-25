@@ -80,7 +80,7 @@ public class ActivityController extends AbstractController {
 					LocalDate.now().toDate()
 							.before(activity.getConference().getStartDate()));
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -109,7 +109,7 @@ public class ActivityController extends AbstractController {
 			res.addObject("activities", activities);
 			res.addObject("requestUri", requestUri);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -134,7 +134,7 @@ public class ActivityController extends AbstractController {
 			res.addObject("activities", activities);
 			res.addObject("requestUri", requestUri);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -169,7 +169,7 @@ public class ActivityController extends AbstractController {
 			res.addObject("crPapers", crPapers);
 			res.addObject("permission", permission);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -205,7 +205,7 @@ public class ActivityController extends AbstractController {
 			res.addObject("permission", permission);
 			res.addObject("crPapers", crPapers);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -245,7 +245,7 @@ public class ActivityController extends AbstractController {
 						+ activity.getConference().getId());
 			}
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -266,7 +266,7 @@ public class ActivityController extends AbstractController {
 			res = new ModelAndView("redirect:list.do?conferenceid="
 					+ activity.getConference().getId());
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}

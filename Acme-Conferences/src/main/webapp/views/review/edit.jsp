@@ -24,7 +24,7 @@
 			</legend>
 
 			<acme:textbox path="originalityScore" code="review.originality"
-				size="60" required="true" />
+				size="60"  />
 			<jstl:if
 				test="${not empty binding.getFieldError('originalityScore')}">
 				<p class="error">
@@ -35,7 +35,7 @@
 			<br />
 
 			<acme:textbox path="qualityScore" code="review.quality" size="60"
-				required="true" />
+				 />
 			<jstl:if test="${not empty binding.getFieldError('qualityScore')}">
 				<p class="error">
 					<spring:message code="quality.error" />
@@ -45,7 +45,7 @@
 			<br />
 
 			<acme:textbox path="readabilityScore" code="review.readability"
-				size="60" required="true" />
+				size="60"  />
 			<jstl:if
 				test="${not empty binding.getFieldError('readabilityScore')}">
 				<p class="error">
@@ -55,7 +55,7 @@
 
 			<br />
 
-			<acme:textarea path="comments" code="review.comments" required="true" />
+			<acme:textarea path="comments" code="review.comments"  />
 			<jstl:if test="${not empty binding.getFieldError('comments')}">
 				<p class="error">
 					<spring:message code="comments.error" />
@@ -64,7 +64,7 @@
 
 			<br />
 
-			<form:select path="status" titleKey="review.status" required="true">
+			<form:select path="status" titleKey="review.status" >
 				<form:option value="---------">---------</form:option>
 				<form:option value="ACCEPTED">Accepted</form:option>
 				<form:option value="BORDER-LINE">Border-line</form:option>

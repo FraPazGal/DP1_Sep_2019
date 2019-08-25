@@ -10,9 +10,9 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 
-import repositories.ReportRepository;
+import repositories.ReviewRepository;
 import domain.Actor;
-import domain.Report;
+import domain.Review;
 import domain.Reviewer;
 import domain.Submission;
 
@@ -21,7 +21,7 @@ import domain.Submission;
 public class ReviewService {
 
 	@Autowired
-	private ReportRepository reportRepository;
+	private ReviewRepository reportRepository;
 
 	@Autowired
 	private ReviewerService reviewerService;
@@ -35,10 +35,10 @@ public class ReviewService {
 	@Autowired
 	private Validator validator;
 
-	public Report create(Integer reviewerid, Integer submissionid) {
+	public Review create(Integer reviewerid, Integer submissionid) {
 		Reviewer reviewer;
 		Submission submission;
-		Report res = new Report();
+		Review res = new Review();
 
 		reviewer = this.reviewerService.findOne(reviewerid);
 		Assert.notNull(reviewer);
@@ -53,8 +53,8 @@ public class ReviewService {
 		return res;
 	}
 
-	public Report create(Report report) {
-		Report res = new Report();
+	public Review create(Review report) {
+		Review res = new Review();
 
 		res.setOriginalityScore(report.getOriginalityScore());
 		res.setQualityScore(report.getQualityScore());
@@ -69,16 +69,16 @@ public class ReviewService {
 		return res;
 	}
 
-	public Report save(Report report) {
+	public Review save(Review report) {
 		return this.reportRepository.save(report);
 	}
 
-	public void delete(Report report) {
+	public void delete(Review report) {
 		this.reportRepository.delete(report);
 	}
 
-	public Report reconstruct(Report report, BindingResult binding) {
-		Report res;
+	public Review reconstruct(Review report, BindingResult binding) {
+		Review res;
 
 		try {
 			Assert.notNull(report.getSubmission());
@@ -120,26 +120,26 @@ public class ReviewService {
 		return res;
 	}
 
-	public Collection<Report> findMyReports(Integer id) {
+	public Collection<Review> findMyReports(Integer id) {
 		return this.reportRepository.findMyReports(id);
 	}
 
-	public Collection<Report> findConferenceReports(Integer id) {
+	public Collection<Review> findConferenceReports(Integer id) {
 		return this.reportRepository.findConferenceReports(id);
 	}
 
-	public Report findOne(Integer id) {
+	public Review findOne(Integer id) {
 		return this.reportRepository.findOne(id);
 	}
 
 	public Collection<Reviewer> findReviewersNotAssigned() {
 		Collection<Reviewer> res;
-		Collection<Report> reports;
+		Collection<Review> reports;
 
 		res = this.reviewerService.findAll();
 		reports = this.findAll();
 
-		for (Report r : reports) {
+		for (Review r : reports) {
 			if (res.contains(r.getReviewer()) && !r.getIsWritten()) {
 				res.remove(r.getReviewer());
 			}
@@ -148,7 +148,7 @@ public class ReviewService {
 		return res;
 	}
 
-	private Collection<Report> findAll() {
+	private Collection<Review> findAll() {
 		return this.reportRepository.findAll();
 	}
 
@@ -166,7 +166,7 @@ public class ReviewService {
 								.contains(keyword)
 								|| s.getConference().getSummary().toLowerCase()
 										.contains(keyword)) {
-							Report report = this.create(r.getId(), s.getId());
+							Review report = this.create(r.getId(), s.getId());
 							this.save(report);
 							this.reportRepository.flush();
 							i++;
@@ -185,7 +185,7 @@ public class ReviewService {
 		return !this.reportRepository.findSubmissionReport(id).isEmpty();
 	}
 
-	public Collection<Report> findReportsOfSubmission(Integer submissionId) {
+	public Collection<Review> findReportsOfSubmission(Integer submissionId) {
 		return this.reportRepository.findReportsOfSubmission(submissionId);
 	}
 

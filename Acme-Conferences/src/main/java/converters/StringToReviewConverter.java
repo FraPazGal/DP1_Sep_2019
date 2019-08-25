@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.StringUtils;
 
-import repositories.ReportRepository;
-import domain.Report;
+import repositories.ReviewRepository;
+import domain.Review;
 
-public class StringToReportConverter implements Converter<String, Report> {
+public class StringToReviewConverter implements Converter<String, Review> {
 
 	@Autowired
-	ReportRepository reportRepository;
+	ReviewRepository reportRepository;
 
 	@Override
-	public Report convert(final String text) {
-		Report result;
+	public Review convert(final String text) {
+		Review result;
 
 		int id;
 

@@ -72,7 +72,7 @@ public class MessageController extends AbstractController {
 			res.addObject("principal", this.utilityService.findByPrincipal());
 
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;
@@ -98,7 +98,7 @@ public class MessageController extends AbstractController {
 
 			res.addObject("actors", actors);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -129,7 +129,7 @@ public class MessageController extends AbstractController {
 				res = new ModelAndView("redirect:list.do");
 			}
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;
@@ -183,7 +183,7 @@ public class MessageController extends AbstractController {
 					.findMySystemConfiguration().getTopics());
 			res.addObject("messageError", messageError);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -205,7 +205,7 @@ public class MessageController extends AbstractController {
 				res = new ModelAndView("redirect:list.do");
 			}
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;

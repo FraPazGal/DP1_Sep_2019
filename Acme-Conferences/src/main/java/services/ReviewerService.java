@@ -17,7 +17,7 @@ import repositories.ReviewerRepository;
 import security.Authority;
 import security.UserAccount;
 import domain.Actor;
-import domain.Report;
+import domain.Review;
 import domain.Reviewer;
 import forms.ReviewerForm;
 import forms.ReviewerRegistrationForm;
@@ -295,13 +295,13 @@ public class ReviewerService {
 	}
 
 	public boolean isReviewing(Integer reviewerid) {
-		Collection<Report> reports = this.reviewerRepository
+		Collection<Review> reports = this.reviewerRepository
 				.isReviewing(reviewerid);
 		return (reports == null || reports.size() == 0);
 	}
 
 	public boolean isNotAssigned(Integer reviewerid) {
-		Collection<Report> reports = this.reviewerRepository
+		Collection<Review> reports = this.reviewerRepository
 				.isReviewing(reviewerid);
 		return reports.isEmpty();
 	}

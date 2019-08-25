@@ -16,7 +16,7 @@ import services.ReviewerService;
 import services.SubmissionService;
 import services.UtilityService;
 import domain.Actor;
-import domain.Report;
+import domain.Review;
 import domain.Reviewer;
 import domain.Submission;
 
@@ -40,7 +40,7 @@ public class ReviewController extends AbstractController {
 	public ModelAndView list() {
 		ModelAndView res;
 		Actor principal;
-		Collection<Report> myReports;
+		Collection<Review> myReports;
 
 		try {
 			principal = this.utilityService.findByPrincipal();
@@ -53,7 +53,7 @@ public class ReviewController extends AbstractController {
 			res.addObject("reports", myReports);
 
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;
@@ -62,7 +62,7 @@ public class ReviewController extends AbstractController {
 	@RequestMapping(value = "/admin/conferencereports", method = RequestMethod.GET)
 	public ModelAndView list(@RequestParam(value = "id") Integer id) {
 		ModelAndView res;
-		Collection<Report> conferenceReports;
+		Collection<Review> conferenceReports;
 
 		try {
 			Assert.isTrue(this.utilityService.checkAuthority(
@@ -73,7 +73,7 @@ public class ReviewController extends AbstractController {
 			res = new ModelAndView("report/conference");
 			res.addObject("reports", conferenceReports);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;
@@ -113,7 +113,7 @@ public class ReviewController extends AbstractController {
 					|| this.utilityService.checkAuthority(principal, "ADMIN")
 					|| this.utilityService.checkAuthority(principal, "AUTHOR"));
 
-			Report toShow = this.reviewService.findOne(id);
+			Review toShow = this.reviewService.findOne(id);
 
 			if (this.utilityService.checkAuthority(principal, "AUTHOR")) {
 				Assert.isTrue(toShow.getSubmission().getStatus()
@@ -152,7 +152,7 @@ public class ReviewController extends AbstractController {
 			res.addObject("submissionid", submissionid);
 
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;
@@ -163,7 +163,7 @@ public class ReviewController extends AbstractController {
 			@RequestParam(value = "reviewerid") Integer[] reviewerids,
 			@RequestParam(value = "submissionid") Integer submissionid) {
 		ModelAndView res;
-		Report newReport;
+		Review newReport;
 
 		try {
 			Assert.isTrue(this.utilityService.checkAuthority(
@@ -223,7 +223,7 @@ public class ReviewController extends AbstractController {
 
 			res.addObject("mensaje", mensaje);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;
@@ -233,7 +233,7 @@ public class ReviewController extends AbstractController {
 	public ModelAndView edit(@RequestParam(value = "reviewid") int reviewid) {
 		ModelAndView res;
 		Actor principal;
-		Report toWrite;
+		Review toWrite;
 
 		try {
 			principal = this.utilityService.findByPrincipal();
@@ -248,17 +248,17 @@ public class ReviewController extends AbstractController {
 			res.addObject("review", toWrite);
 
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;
 	}
 
 	@RequestMapping(value = "/reviewer/edit", method = RequestMethod.POST)
-	public ModelAndView save(Report review, BindingResult binding) {
+	public ModelAndView save(Review review, BindingResult binding) {
 		ModelAndView res;
 		Actor principal;
-		Report toSave;
+		Review toSave;
 
 		try {
 			principal = this.utilityService.findByPrincipal();
@@ -280,7 +280,7 @@ public class ReviewController extends AbstractController {
 
 			}
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;

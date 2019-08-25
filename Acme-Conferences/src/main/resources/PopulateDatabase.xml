@@ -86,7 +86,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="userReviewer3" class="security.UserAccount">
 		<property name="username" value="reviewer3" />
 		<property name="password" value="315d31e7c8f3a136610aafa220d689be" />
@@ -227,7 +227,7 @@
 		<property name="keywords" value="evil,fabulous,vampire,stand user,time-saver" />
 		<property name="userAccount" ref="userReviewer2" />
 	</bean>
-	
+
 	<bean id="reviewer3" class="domain.Reviewer">
 		<property name="name" value="Test" />
 		<property name="surname" value="Test" />
@@ -236,7 +236,8 @@
 		<property name="email" value="Test@outlook.com" />
 		<property name="phoneNumber" value="+34685742458" />
 		<property name="address" value="C/ Test Blood" />
-		<property name="keywords" value="evil,fabulous,vampire,stand user,time-saver,conferencia,conference,la" />
+		<property name="keywords"
+			value="evil,fabulous,vampire,stand user,time-saver,conferencia,conference,la" />
 		<property name="userAccount" ref="userReviewer3" />
 	</bean>
 
@@ -1446,7 +1447,7 @@
 
 	<!-- ****** REVIEW/REPORT ****** -->
 
-	<bean id="report1" class="domain.Report">
+	<bean id="report1" class="domain.Review">
 		<property name="originalityScore" value="7.5" />
 		<property name="qualityScore" value="8.1" />
 		<property name="readabilityScore" value="9.0" />
@@ -1457,7 +1458,7 @@
 		<property name="submission" ref="submission3" />
 	</bean>
 
-	<bean id="report2" class="domain.Report">
+	<bean id="report2" class="domain.Review">
 		<property name="originalityScore" value="8.2" />
 		<property name="qualityScore" value="9.1" />
 		<property name="readabilityScore" value="9.4" />
@@ -1468,7 +1469,7 @@
 		<property name="submission" ref="submission3" />
 	</bean>
 
-	<bean id="report3" class="domain.Report">
+	<bean id="report3" class="domain.Review">
 		<property name="originalityScore" value="5.2" />
 		<property name="qualityScore" value="6.1" />
 		<property name="readabilityScore" value="4.4" />
@@ -1479,7 +1480,7 @@
 		<property name="submission" ref="submission4" />
 	</bean>
 
-	<bean id="report4" class="domain.Report">
+	<bean id="report4" class="domain.Review">
 		<property name="originalityScore" value="3.3" />
 		<property name="qualityScore" value="4.0" />
 		<property name="readabilityScore" value="2.1" />
@@ -1490,7 +1491,7 @@
 		<property name="submission" ref="submission5" />
 	</bean>
 
-	<bean id="report5" class="domain.Report">
+	<bean id="report5" class="domain.Review">
 		<property name="originalityScore" value="4" />
 		<property name="qualityScore" value="3.6" />
 		<property name="readabilityScore" value="1.5" />
@@ -1500,7 +1501,7 @@
 		<property name="submission" ref="submission5" />
 	</bean>
 
-	<bean id="report6" class="domain.Report">
+	<bean id="report6" class="domain.Review">
 		<property name="isWritten" value="false" />
 		<property name="reviewer" ref="reviewer1" />
 		<property name="submission" ref="submission7" />

@@ -5,14 +5,14 @@ import javax.transaction.Transactional;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import domain.Report;
+import domain.Review;
 
 @Component
 @Transactional
-public class ReportToStringConverter implements Converter<Report, String> {
+public class ReviewToStringConverter implements Converter<Review, String> {
 
 	@Override
-	public String convert(final Report report) {
+	public String convert(final Review report) {
 		String result;
 
 		if (report == null)

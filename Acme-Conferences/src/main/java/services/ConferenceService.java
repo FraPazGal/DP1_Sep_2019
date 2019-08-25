@@ -18,7 +18,7 @@ import domain.Actor;
 import domain.Administrator;
 import domain.Conference;
 import domain.Mensaje;
-import domain.Report;
+import domain.Review;
 import domain.Submission;
 
 @Transactional
@@ -354,10 +354,10 @@ public class ConferenceService {
 	}
 	
 	private Submission reviewASubmission(Submission submission) {
-		Collection<Report> reports = this.reviewService.findReportsOfSubmission(submission.getId());
+		Collection<Review> reports = this.reviewService.findReportsOfSubmission(submission.getId());
 		int reject = 0; int accept = 0;
 		
-		for(Report report : reports) {
+		for(Review report : reports) {
 			if (report.getStatus().equals("ACCEPTED"))
 				accept ++;
 			else if (report.getStatus().equals("REJECTED"))

@@ -60,8 +60,11 @@ public class ActivityService {
 	}
 
 	public void deleteAll(Collection<Activity> activitiesOfConference) {
-		for (Activity a : activitiesOfConference) {
-			this.activityRepository.delete(a);
+		if (!activitiesOfConference.isEmpty()) {
+			for (Activity a : activitiesOfConference) {
+				this.activityRepository.delete(a);
+				this.flush();
+			}
 		}
 	}
 }
