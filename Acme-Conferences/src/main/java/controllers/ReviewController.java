@@ -47,7 +47,7 @@ public class ReviewController extends AbstractController {
 			Assert.isTrue(this.utilityService.checkAuthority(principal,
 					"REVIEWER"));
 
-			myReports = this.reviewService.findMyReports(principal.getId());
+			myReports = this.reviewService.findMyReviews(principal.getId());
 
 			res = new ModelAndView("review/mine");
 			res.addObject("reports", myReports);
@@ -68,7 +68,7 @@ public class ReviewController extends AbstractController {
 			Assert.isTrue(this.utilityService.checkAuthority(
 					this.utilityService.findByPrincipal(), "ADMIN"));
 
-			conferenceReports = this.reviewService.findConferenceReports(id);
+			conferenceReports = this.reviewService.findConferenceReviews(id);
 
 			res = new ModelAndView("report/conference");
 			res.addObject("reports", conferenceReports);
@@ -93,7 +93,7 @@ public class ReviewController extends AbstractController {
 						|| submission.getStatus().equals("REJECTED"));
 			}
 			result.addObject("reviews",
-					this.reviewService.findReportsOfSubmission(submissionId));
+					this.reviewService.findReviewsOfSubmission(submissionId));
 			result.addObject("submission", submission);
 		} catch (Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");

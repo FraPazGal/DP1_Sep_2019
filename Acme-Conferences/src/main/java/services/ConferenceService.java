@@ -354,7 +354,7 @@ public class ConferenceService {
 	}
 	
 	private Submission reviewASubmission(Submission submission) {
-		Collection<Review> reports = this.reviewService.findReportsOfSubmission(submission.getId());
+		Collection<Review> reports = this.reviewService.findReviewsOfSubmission(submission.getId());
 		int reject = 0; int accept = 0;
 		
 		for(Review report : reports) {

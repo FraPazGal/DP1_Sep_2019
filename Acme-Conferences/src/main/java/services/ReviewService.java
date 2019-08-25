@@ -120,12 +120,12 @@ public class ReviewService {
 		return res;
 	}
 
-	public Collection<Review> findMyReports(Integer id) {
-		return this.reportRepository.findMyReports(id);
+	public Collection<Review> findMyReviews(Integer id) {
+		return this.reportRepository.findMyReviews(id);
 	}
 
-	public Collection<Review> findConferenceReports(Integer id) {
-		return this.reportRepository.findConferenceReports(id);
+	public Collection<Review> findConferenceReviews(Integer id) {
+		return this.reportRepository.findConferenceReviews(id);
 	}
 
 	public Review findOne(Integer id) {
@@ -182,11 +182,11 @@ public class ReviewService {
 	}
 
 	public boolean isAssigned(int id) {
-		return !this.reportRepository.findSubmissionReport(id).isEmpty();
+		return !this.reportRepository.findSubmissionReview(id).isEmpty();
 	}
 
-	public Collection<Review> findReportsOfSubmission(Integer submissionId) {
-		return this.reportRepository.findReportsOfSubmission(submissionId);
+	public Collection<Review> findReviewsOfSubmission(Integer submissionId) {
+		return this.reportRepository.findReviewsOfSubmission(submissionId);
 	}
 
 	public boolean checkIfAssigned(Integer submissionId) {

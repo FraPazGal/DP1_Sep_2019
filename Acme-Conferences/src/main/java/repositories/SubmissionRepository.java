@@ -20,13 +20,13 @@ public interface SubmissionRepository extends
 	@Query("select s from Submission s where s.author.id = ?1")
 	Collection<Submission> submissionsPerAuthor(int auhtorId);
 
-	@Query("select s from Report r join r.submission s where r.reviewer.id = ?1")
+	@Query("select s from Review r join r.submission s where r.reviewer.id = ?1")
 	Collection<Submission> submissionsPerReviewer(int reviewerId);
 
 	@Query("select s.author from Submission s where s.conference.id = ?1")
 	Collection<Actor> findActorsWithSubmitions(Integer id);
 
-	@Query("select r.submission from Report r")
+	@Query("select r.submission from Review r")
 	Collection<Submission> submissionsAssigned();
 
 	@Query("select s from Submission s where s.conference.id = ?1")
