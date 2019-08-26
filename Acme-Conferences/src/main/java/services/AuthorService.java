@@ -1,8 +1,11 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -18,6 +21,7 @@ import security.Authority;
 import security.UserAccount;
 import domain.Actor;
 import domain.Author;
+import domain.Conference;
 import forms.ActorForm;
 import forms.ActorRegistrationForm;
 
@@ -43,6 +47,9 @@ public class AuthorService {
 
 	@Autowired
 	private Validator validator;
+
+	@Autowired
+	private ConferenceService conferenceService;
 
 	/* Simple CRUD methods */
 
@@ -269,6 +276,82 @@ public class AuthorService {
 		/* Creating admin */
 
 		return res;
+	}
+
+	public void computeScore() {
+		Collection<Conference> conferences;
+		String words = "";
+		Collection<String> splittedWords;
+		Collection<String> voidWords;
+		Collection<String> buzzWords = new ArrayList<>();
+		Map<String, Integer> counter = new HashMap<>();
+		Integer fmax = 0;
+		Double ratioBuzzWords = 0.;
+
+		Collection<Author> authors;
+
+		try {
+
+			// Getting conferences
+			conferences = this.conferenceService.findConferencesForScore();
+
+			// Getting all the words
+			for (Conference c : conferences) {
+				words += c.getTitle() + " " + c.getSummary() + " ";
+			}
+
+			// Splitting the words into an array
+			words.toLowerCase();
+			words.replaceAll(",.;:-", "");
+			splittedWords = Arrays.asList(words.split("\\s"));
+
+			// Getting the void words
+			voidWords = Arrays.asList(this.systemConfigurationService
+					.findMySystemConfiguration().getVoidWords().get("Español")
+					.toLowerCase().split(","));
+			voidWords.addAll(Arrays.asList(this.systemConfigurationService
+					.findMySystemConfiguration().getVoidWords().get("English")
+					.toLowerCase().split(",")));
+
+			// Deleting the void words
+			for (String s : splittedWords) {
+				if (voidWords.contains(s)) {
+					splittedWords.remove(s);
+				}
+			}
+
+			// Counting words and getting fmax
+			for (String s : splittedWords) {
+				if (!counter.containsKey(s)) {
+					counter.put(s, 0);
+				} else {
+					int aux = counter.get(s) + 1;
+					counter.put(s, aux);
+					if (fmax < aux) {
+						fmax = aux;
+					}
+				}
+			}
+
+			// Calculating the ratio to get the buzz words
+			ratioBuzzWords = fmax - (0.2 * fmax);
+
+			// Getting the buzz words
+			for (String s : counter.keySet()) {
+				if (counter.get(s) > ratioBuzzWords) {
+					buzzWords.add(s);
+				}
+			}
+
+			/*
+			 * Here ends the process of getting the buzz words and now we have
+			 * to compute the score of the authors
+			 */
+
+		} catch (Throwable oops) {
+
+		}
+
 	}
 
 	public void flush() {

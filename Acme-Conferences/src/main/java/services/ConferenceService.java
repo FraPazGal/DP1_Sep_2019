@@ -303,6 +303,17 @@ public class ConferenceService {
 		return result;
 	}
 
+	public Collection<Conference> findConferencesForScore() {
+		Collection<Conference> res = new ArrayList<>();
+		Calendar hello = Calendar.getInstance();
+		hello.add(Calendar.YEAR, -1);
+		Date toCompare = hello.getTime();
+
+		res = this.conferenceRepository.pastConferences(toCompare);
+
+		return res;
+	}
+
 	public Collection<Conference> runningConferences() {
 		Collection<Conference> result = new ArrayList<>();
 		Calendar hello = Calendar.getInstance();
