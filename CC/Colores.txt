@@ -1,0 +1,42 @@
+ASI TIENE QUE SER (MÁS O MENOS) LA IMPLEMENTACIÓN DE LOS COLORES
+
+
+<style>
+<!--
+.tableColorGreen {
+	background-color: chartreuse;
+}
+.tableColorOrange {
+	background-color: orange;
+}
+.tableColorGrey {
+	background-color: grey;
+}
+.tableColorDefault {
+	background-color: white;
+}
+-->
+</style>
+
+
+<jstl:set var="a" value="${applications.fixUpTask.startMoment}" />
+<jsp:useBean id="now" class="java.util.Date" />
+
+<jstl:choose>
+	<jstl:when test="${applications.status == 'ACCEPTED'}">
+		<jstl:set var="bgcolor" value="tableColorGreen" />
+	</jstl:when>
+	<jstl:when test="${applications.status == 'REJECTED'}">
+		<jstl:set var="bgcolor" value="tableColorOrange" />
+	</jstl:when>
+	<jstl:when test="${applications.status == 'PENDING' && a < now}">
+		<jstl:set var="bgcolor" value="tableColorGrey" />
+	</jstl:when>
+	<jstl:otherwise>
+		<jstl:set var="bgcolor" value="tableColorDefault" />
+	</jstl:otherwise>
+</jstl:choose>
+
+
+<display:column property="status" titleKey="application.status"
+						sortable="true" class="${bgcolor}" />
