@@ -282,7 +282,8 @@ public class AuthorService {
 		return res;
 	}
 
-	public void computeScore() {
+	public Boolean computeScore() {
+		Boolean res;
 		Collection<Conference> conferences;
 		String words = "";
 		Collection<String> splittedWords;
@@ -299,120 +300,126 @@ public class AuthorService {
 		// Getting conferences
 		conferences = this.conferenceService.findConferencesForScore();
 
-		// Getting all the words
-		for (Conference c : conferences) {
-			words += c.getTitle() + " " + c.getSummary() + " ";
-		}
-
-		// Splitting the words into an array
-		words.toLowerCase();
-		words.replaceAll(",.;:-", "");
-		splittedWords = new ArrayList<>(Arrays.asList(words.split("\\s")));
-
-		// Getting the void words
-		voidWords = new ArrayList<>(
-				Arrays.asList(this.systemConfigurationService
-						.findMySystemConfiguration().getVoidWords()
-						.get("Español").toLowerCase().split(",")));
-		voidWords.addAll(Arrays.asList(this.systemConfigurationService
-				.findMySystemConfiguration().getVoidWords().get("English")
-				.toLowerCase().split(",")));
-
-		// Deleting the void words
-		Collection<String> copyWords = new ArrayList<>(splittedWords);
-		for (String s : copyWords) {
-			if (voidWords.contains(s)) {
-				splittedWords.remove(s);
+		if (!conferences.isEmpty()) {
+			// Getting all the words
+			for (Conference c : conferences) {
+				words += c.getTitle() + " " + c.getSummary() + " ";
 			}
-		}
 
-		// Counting words and getting fmax
-		for (String s : splittedWords) {
-			if (!counter.containsKey(s)) {
-				counter.put(s, 0);
-			} else {
-				int aux = counter.get(s) + 1;
-				counter.put(s, aux);
-				if (fmax < aux) {
-					fmax = aux;
+			// Splitting the words into an array
+			words.toLowerCase();
+			words.replaceAll(",.;:-", "");
+			splittedWords = new ArrayList<>(Arrays.asList(words.split("\\s")));
+
+			// Getting the void words
+			voidWords = new ArrayList<>(
+					Arrays.asList(this.systemConfigurationService
+							.findMySystemConfiguration().getVoidWords()
+							.get("Español").toLowerCase().split(",")));
+			voidWords.addAll(Arrays.asList(this.systemConfigurationService
+					.findMySystemConfiguration().getVoidWords().get("English")
+					.toLowerCase().split(",")));
+
+			// Deleting the void words
+			Collection<String> copyWords = new ArrayList<>(splittedWords);
+			for (String s : copyWords) {
+				if (voidWords.contains(s)) {
+					splittedWords.remove(s);
 				}
 			}
-		}
 
-		// Calculating the ratio to get the buzz words
-		ratioBuzzWords = fmax - (0.2 * fmax);
-
-		// Getting the buzz words
-		for (String s : counter.keySet()) {
-			if (counter.get(s) > ratioBuzzWords) {
-				buzzWords.add(s);
-			}
-		}
-
-		/*
-		 * Here ends the process of getting the buzz words and now we have to
-		 * compute the score of the authors
-		 */
-
-		// Getting all authors of the system
-		authors = this.authorRepository.findAll();
-
-		// Getting their points
-		for (Author a : authors) {
-
-			// Getting the CR papers
-			Collection<Paper> papers = this.submissionService.findCRPapers(a
-					.getId());
-
-			if (!papers.isEmpty()) {
-				for (Paper p : papers) {
-
-					// Getting the words of the CR papers and splitting them
-					words += p.getTitle() + " " + p.getSummary() + " ";
-
-					words.toLowerCase();
-					words.replaceAll(",.;:-", "");
-					splittedWords = new ArrayList<>(Arrays.asList(words
-							.split("\\s")));
-
-				}
-
-				// Deleting the void words
-				copyWords = new ArrayList<>(splittedWords);
-				for (String s : copyWords) {
-					if (voidWords.contains(s)) {
-						splittedWords.remove(s);
+			// Counting words and getting fmax
+			for (String s : splittedWords) {
+				if (!counter.containsKey(s)) {
+					counter.put(s, 0);
+				} else {
+					int aux = counter.get(s) + 1;
+					counter.put(s, aux);
+					if (fmax < aux) {
+						fmax = aux;
 					}
 				}
+			}
 
-				// Counting
-				int aux = 0;
-				for (String b : buzzWords) {
-					for (String s : splittedWords) {
-						if (b.equalsIgnoreCase(s)) {
-							aux++;
+			// Calculating the ratio to get the buzz words
+			ratioBuzzWords = fmax - (0.2 * fmax);
+
+			// Getting the buzz words
+			for (String s : counter.keySet()) {
+				if (counter.get(s) > ratioBuzzWords) {
+					buzzWords.add(s);
+				}
+			}
+
+			/*
+			 * Here ends the process of getting the buzz words and now we have
+			 * to compute the score of the authors
+			 */
+
+			// Getting all authors of the system
+			authors = this.authorRepository.findAll();
+
+			// Getting their points
+			for (Author a : authors) {
+
+				// Getting the CR papers
+				Collection<Paper> papers = this.submissionService
+						.findCRPapers(a.getId());
+
+				if (!papers.isEmpty()) {
+					for (Paper p : papers) {
+
+						// Getting the words of the CR papers and splitting them
+						words += p.getTitle() + " " + p.getSummary() + " ";
+
+						words.toLowerCase();
+						words.replaceAll(",.;:-", "");
+						splittedWords = new ArrayList<>(Arrays.asList(words
+								.split("\\s")));
+
+					}
+
+					// Deleting the void words
+					copyWords = new ArrayList<>(splittedWords);
+					for (String s : copyWords) {
+						if (voidWords.contains(s)) {
+							splittedWords.remove(s);
 						}
 					}
-				}
-				points.put(a, aux * 1.);
 
-				if (aux > pmax) {
-					pmax = aux;
+					// Counting
+					int aux = 0;
+					for (String b : buzzWords) {
+						for (String s : splittedWords) {
+							if (b.equalsIgnoreCase(s)) {
+								aux++;
+							}
+						}
+					}
+					points.put(a, aux * 1.);
+
+					if (aux > pmax) {
+						pmax = aux;
+					}
+				} else {
+					points.put(a, 0.);
 				}
-			} else {
-				points.put(a, 0.);
+
 			}
 
-		}
+			// Calculating the score of the authors
+			for (Author a : points.keySet()) {
+				Double score = points.get(a) / pmax;
+				a.setScore(score);
+				this.authorRepository.save(a);
+				this.authorRepository.flush();
+			}
 
-		// Calculating the score of the authors
-		for (Author a : points.keySet()) {
-			Double score = points.get(a) / pmax;
-			a.setScore(score);
-			this.authorRepository.save(a);
-			this.authorRepository.flush();
+			res = true;
+		} else {
+			res = false;
 		}
-
+		return res;
 	}
 
 	public void flush() {

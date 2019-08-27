@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
-	* InitialiseDatabase.xml 
-	* 
-	* Copyright (C) 2019 Universidad de Sevilla 
-	* 
-	* The use of this project is hereby constrained to the conditions of the 
-	* TDG Licence, a copy of which you may download from http://www.tdg-seville.info/License.html 
--->
+<!-- * InitialiseDatabase.xml * * Copyright (C) 2019 Universidad de Sevilla 
+	* * The use of this project is hereby constrained to the conditions of the 
+	* TDG Licence, a copy of which you may download from http://www.tdg-seville.info/License.html -->
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
     http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- SPECIAL -->
+
+	<bean id="userAnonymous" class="security.UserAccount">
+		<property name="username" value="[Anonymous]" />
+		<property name="password" value="1ea4b70898f9ef5eb7172cb3f83f6e56" />
+		<property name="anonymous" value="true" />
+		<property name="authorities">
+			<list>
+				<bean class="security.Authority">
+					<property name="authority" value="ANONYMOUS" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ANONYMOUS -->
+
+	<bean id="anonymousActor" class="domain.Actor">
+		<property name="name" value="[Anonymous]" />
+		<property name="surname" value="[Anonymous]" />
+		<property name="email" value="[Anonymous]" />
+		<property name="userAccount" ref="userAnonymous" />
+	</bean>
+
 
 	<!-- User accounts -->
 
@@ -28,9 +48,9 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- ADMINISTATOR -->
-	
+
 	<bean id="administrator1" class="domain.Administrator">
 		<property name="name" value="Boros" />
 		<property name="surname" value="Dominator of the Universe" />
@@ -41,20 +61,22 @@
 		<property name="address" value="C/ Collapsing Star Roaring Cannon" />
 		<property name="userAccount" ref="userAdmin1" />
 	</bean>
-	
+
 	<!-- SYSTEM CONFIGURATION -->
 
 	<bean id="systemConfiguration" class="domain.SystemConfiguration">
 		<property name="systemName" value="Acme-Conferenes" />
 		<property name="banner" value="https://i.ibb.co/GVpZCtM/acme-conference.png" />
-		<property name="countryCode" value="+034"></property>
+		<property name="countryCode" value="+034" />
+		<property name="makes"
+			value="VISA,MASTERCARD,AMERICAN EXPRESS,DINNERS,AMEX" />
 		<property name="welcomeMessage">
 			<util:map id="utilmap19" map-class="java.util.HashMap"
 				key-type="java.lang.String" value-type="java.lang.String">
 				<entry key="English"
-					value="Welcome to Acme Conference! Your scientific event manager" />
+					value="Welcome to Acme Conference! Your scientific event manager!" />
 				<entry key="Español"
-					value="¡Bienvenidos a Acme Conference! Su gestor de eventos científicos" />
+					value="¡Bienvenidos a Acme Conference! ¡Su gestor de eventos científicos!" />
 			</util:map>
 		</property>
 		<property name="topics">
@@ -75,6 +97,442 @@
 		</property>
 		<property name="timeResultsCached" value="5" />
 		<property name="maxResults" value="10" />
+	</bean>
+
+	<!-- CATEGORY -->
+	<bean id="CONFERENCE" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="CONFERENCIA" />
+				<entry key="English" value="CONFERENCE" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<null />
+		</property>
+		<property name="childCategories">
+			<list>
+				<ref bean="ComputerScience" />
+				<ref bean="Physics" />
+				<ref bean="Biology" />
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Computer Science -->
+	<bean id="ComputerScience" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap1" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Ciencias de la Computación" />
+				<entry key="English" value="Computer Science" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="CONFERENCE" />
+		</property>
+		<property name="childCategories">
+			<list>
+				<ref bean="ArtificialIntelligence" />
+				<ref bean="SoftwareEngineering" />
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Physics -->
+	<bean id="Physics" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap2" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Física" />
+				<entry key="English" value="Physics" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="CONFERENCE" />
+		</property>
+		<property name="childCategories">
+			<list>
+				<ref bean="Kinetic" />
+				<ref bean="Electricity" />
+				<ref bean="Electronics" />
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Biology -->
+	<bean id="Biology" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap3" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Biología" />
+				<entry key="English" value="Biology" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="CONFERENCE" />
+		</property>
+		<property name="childCategories">
+			<list>
+				<ref bean="Animals" />
+				<ref bean="Plants" />
+				<ref bean="Fungi" />
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Artificial Intelligence -->
+	<bean id="ArtificialIntelligence" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap4" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Inteligencia Artificial" />
+				<entry key="English" value="Artificial Intelligence" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="ComputerScience" />
+		</property>
+		<property name="childCategories">
+			<list>
+				<ref bean="DeepLeaning" />
+				<ref bean="Instance-basedLearning" />
+				<ref bean="Regression" />
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Software Engineering -->
+	<bean id="SoftwareEngineering" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap5" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Ingeniería del Software" />
+				<entry key="English" value="Software Engineering" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="ComputerScience" />
+		</property>
+		<property name="childCategories">
+			<list>
+				<ref bean="BigData" />
+				<ref bean="BigProcessing" />
+				<ref bean="Methods" />
+				<ref bean="Tools" />
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Kinetic -->
+	<bean id="Kinetic" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap6" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Cinético" />
+				<entry key="English" value="Kinetic" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="Physics" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Electricity -->
+	<bean id="Electricity" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap7" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Electricidad" />
+				<entry key="English" value="Electricity" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="Physics" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Electronics -->
+	<bean id="Electronics" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap8" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Electrónica" />
+				<entry key="English" value="Electronics" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="Physics" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Animals -->
+	<bean id="Animals" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap9" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Fauna" />
+				<entry key="English" value="Animals" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="Biology" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Plants -->
+	<bean id="Plants" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap10" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Flora" />
+				<entry key="English" value="Plants" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="Biology" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Fungi -->
+	<bean id="Fungi" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap11" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Fungi" />
+				<entry key="English" value="Fungi" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="Biology" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Deep Leaning -->
+	<bean id="DeepLeaning" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap12" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Deep Leaning" />
+				<entry key="English" value="Deep Leaning" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="ArtificialIntelligence" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Instance-based Learning -->
+	<bean id="Instance-basedLearning" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap13" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Aprendizaje Instance-based" />
+				<entry key="English" value="Instance-based Learning" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="ArtificialIntelligence" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Regression -->
+	<bean id="Regression" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap18" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Regresión" />
+				<entry key="English" value="Regression" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="ArtificialIntelligence" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Big Data -->
+	<bean id="BigData" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap14" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Big Data" />
+				<entry key="English" value="Big Data" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="SoftwareEngineering" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Big Processing -->
+	<bean id="BigProcessing" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap15" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Big Processing (Español)" />
+				<entry key="English" value="Big Processing" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="SoftwareEngineering" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Methods -->
+	<bean id="Methods" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap16" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Métodos" />
+				<entry key="English" value="Methods" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="SoftwareEngineering" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Tools -->
+	<bean id="Tools" class="domain.Category">
+		<property name="title">
+			<util:map id="utilmap17" map-class="java.util.HashMap"
+				key-type="java.lang.String" value-type="java.lang.String">
+				<entry key="Español" value="Herramientas" />
+				<entry key="English" value="Tools" />
+			</util:map>
+		</property>
+		<property name="parentCategory">
+			<ref bean="SoftwareEngineering" />
+		</property>
+		<property name="childCategories">
+			<list>
+			</list>
+		</property>
+		<property name="conferences">
+			<list>
+			</list>
+		</property>
 	</bean>
 
 </beans>

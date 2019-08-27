@@ -7,7 +7,7 @@
 <%@taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <jstl:choose>
 	<jstl:when test="${found}">
@@ -62,7 +62,8 @@
 					<br />
 					<div>
 						<strong><spring:message code="actor.score" />: </strong>
-						<jstl:out value="${author.score}" />
+						<fmt:formatNumber minFractionDigits="2" maxFractionDigits="2"
+							value="${author.score}" />
 					</div>
 				</jstl:if>
 

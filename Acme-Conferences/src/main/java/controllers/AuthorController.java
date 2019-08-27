@@ -217,12 +217,14 @@ public class AuthorController extends AbstractController {
 	@RequestMapping(value = "/administrator/computescore", method = RequestMethod.GET)
 	public ModelAndView computeScore() {
 		ModelAndView res;
+		Boolean success;
 
 		try {
 			Assert.isTrue(this.utilityService.checkAuthority(
 					this.utilityService.findByPrincipal(), "ADMIN"));
-			this.authorService.computeScore();
+			success = this.authorService.computeScore();
 			res = new ModelAndView("redirect:/config/admin/display.do");
+			res.addObject("success", success);
 		} catch (final Throwable oops) {
 			res = new ModelAndView("redirect:/welcome/index.do");
 		}
