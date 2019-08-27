@@ -33,6 +33,7 @@
 <%@ attribute name="readonly" required="false"%>
 <%@ attribute name="password" required="false"%>
 <%@ attribute name="required" required="false"%>
+<%@ attribute name="type" required="false"%>
 
 <jstl:if test="${readonly == null}">
 	<jstl:set var="readonly" value="false" />
@@ -51,7 +52,7 @@
 	<br>
 	<jstl:if test="${password eq null }">
 		<form:input path="${path}" readonly="${readonly}" size="${size }"
-			required="${required}" placeholder="${place}" />
+			required="${required}" placeholder="${place}" type="${type}" />
 	</jstl:if>
 	<jstl:if test="${password eq true }">
 		<form:password path="${path}" size="${size }" required="${required}"

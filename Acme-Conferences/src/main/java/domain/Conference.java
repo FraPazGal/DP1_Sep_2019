@@ -51,7 +51,7 @@ public class Conference extends DomainEntity {
 	}
 
 	@NotBlank
-	@Type(type="text")
+	@Type(type = "text")
 	public String getSummary() {
 		return summary;
 	}
@@ -61,7 +61,7 @@ public class Conference extends DomainEntity {
 	}
 
 	@NotBlank
-	@Type(type="text")
+	@Type(type = "text")
 	public String getVenue() {
 		return venue;
 	}
@@ -69,7 +69,7 @@ public class Conference extends DomainEntity {
 	public void setVenue(String venue) {
 		this.venue = venue;
 	}
-	
+
 	@NotBlank
 	@Pattern(regexp = "^DRAFT|FINAL|DECISION-MADE|NOTIFIED$")
 	public String getStatus() {
@@ -131,7 +131,6 @@ public class Conference extends DomainEntity {
 	}
 
 	@NotNull
-	@DateTimeFormat(pattern = "dd/MM/yyyy HH:mm")
 	public Double getEntryFee() {
 		return entryFee;
 	}
@@ -153,7 +152,7 @@ public class Conference extends DomainEntity {
 
 	@Valid
 	@NotNull
-	@ManyToOne(optional = false) 
+	@ManyToOne(optional = false)
 	public Category getCategory() {
 		return category;
 	}
@@ -161,6 +160,5 @@ public class Conference extends DomainEntity {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-	
-	
+
 }

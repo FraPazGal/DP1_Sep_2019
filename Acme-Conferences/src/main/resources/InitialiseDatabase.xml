@@ -62,6 +62,16 @@
 		<property name="userAccount" ref="userAdmin1" />
 	</bean>
 
+	<!-- FINDER -->
+
+	<bean id="finderAdmin1" class="domain.Finder">
+		<property name="results">
+			<list>
+			</list>
+		</property>
+		<property name="actor" ref="administrator1" />
+	</bean>
+
 	<!-- SYSTEM CONFIGURATION -->
 
 	<bean id="systemConfiguration" class="domain.SystemConfiguration">
