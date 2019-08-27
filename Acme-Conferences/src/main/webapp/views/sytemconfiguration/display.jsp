@@ -110,5 +110,9 @@
 		onclick="redirect: location.href = 'config/admin/edit.do';"
 		value="<spring:message code='sysconfig.edit' />" />
 
+	<input type="button"
+		onclick="redirect: location.href = 'author/administrator/computescore.do';"
+		value="<spring:message code='sysconfig.computescore' />" />
+
 	<hr>
 </security:authorize>

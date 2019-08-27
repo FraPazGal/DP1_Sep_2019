@@ -118,6 +118,8 @@
 			access="isAnonymous()" />
 		<security:intercept-url pattern="/author/author/edit.do"
 			access="hasRole('AUTHOR')" />
+		<security:intercept-url pattern="/author/administrator/computescore.do"
+			access="hasRole('ADMIN')" />
 
 		<security:intercept-url pattern="/reviewer/display.do"
 			access="permitAll" />

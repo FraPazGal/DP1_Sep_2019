@@ -47,9 +47,12 @@ public interface SubmissionRepository extends
 	@Query("select s from Submission s where s.author.id = ?1 and s.conference.id = ?2")
 	Submission findOneByActorAndConference(Integer actorId, Integer conferenceId);
 
+	@Query("select s.cameraReadyPaper from Submission s where s.author.id = ?1")
+	Collection<Paper> findCRPapers(Integer id);
+
 	@Query("select s.cameraReadyPaper from Submission s where s.conference.id = ?1")
 	Collection<Paper> findCameraReadyPapersOfConference(int conferenceid);
-	
+
 	@Query("select case when (count(s) = 0) then true else false end from Submission s where s.conference.id = ?1 and s.author.id = ?2")
 	boolean noPreviousSubmissions(Integer conferenceId, Integer authorId);
 }

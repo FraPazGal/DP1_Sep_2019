@@ -58,6 +58,14 @@
 					<jstl:out value="${author.address}" />
 				</div>
 
+				<jstl:if test="${not empty author.score}">
+					<br />
+					<div>
+						<strong><spring:message code="actor.score" />: </strong>
+						<jstl:out value="${author.score}" />
+					</div>
+				</jstl:if>
+
 			</div>
 
 			<div style="float: right;">

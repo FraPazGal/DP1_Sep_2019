@@ -309,7 +309,7 @@ public class ConferenceService {
 		hello.add(Calendar.YEAR, -1);
 		Date toCompare = hello.getTime();
 
-		res = this.conferenceRepository.pastConferences(toCompare);
+		res = this.conferenceRepository.conferences4Score(toCompare);
 
 		return res;
 	}

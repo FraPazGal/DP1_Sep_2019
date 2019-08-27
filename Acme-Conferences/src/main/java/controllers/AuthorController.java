@@ -214,6 +214,22 @@ public class AuthorController extends AbstractController {
 		return res;
 	}
 
+	@RequestMapping(value = "/administrator/computescore", method = RequestMethod.GET)
+	public ModelAndView computeScore() {
+		ModelAndView res;
+
+		try {
+			Assert.isTrue(this.utilityService.checkAuthority(
+					this.utilityService.findByPrincipal(), "ADMIN"));
+			this.authorService.computeScore();
+			res = new ModelAndView("redirect:/config/admin/display.do");
+		} catch (final Throwable oops) {
+			res = new ModelAndView("redirect:/welcome/index.do");
+		}
+
+		return res;
+	}
+
 	/* Auxiliary methods */
 
 	/* Registration related */
