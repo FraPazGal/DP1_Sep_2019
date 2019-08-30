@@ -37,6 +37,7 @@
 			id="form">
 			
 			<form:hidden path="id" />
+			<form:hidden path="conference" />
 			
 			<acme:textbox code="submission.paper.title" path="titlePCR" size="70px" /><br> 
 			<acme:textarea code="submission.paper.authors" path="authorsPCR" cols="40px" rows="3"/><br> 

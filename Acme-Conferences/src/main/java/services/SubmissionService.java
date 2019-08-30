@@ -220,8 +220,9 @@ public class SubmissionService {
 
 				submission.setPaper(saved);
 			}
-			this.validator.validate(submission, binding);
 		}
+		this.validator.validate(submission, binding);
+		
 		return submission;
 	}
 

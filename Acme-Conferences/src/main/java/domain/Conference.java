@@ -9,6 +9,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -131,6 +132,7 @@ public class Conference extends DomainEntity {
 	}
 
 	@NotNull
+	@Min(value = 0L)
 	public Double getEntryFee() {
 		return entryFee;
 	}

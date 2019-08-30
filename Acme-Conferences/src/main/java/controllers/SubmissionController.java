@@ -169,7 +169,9 @@ public class SubmissionController extends AbstractController {
 
 			if (binding.hasErrors()) {
 				result = this.createEditModelAndView(submissionForm);
-				result.addObject("cameraReady", true);
+				if(submission.getId() != 0) {
+					result.addObject("cameraReady", true);
+				}
 			} else {
 				this.submissionService.save(submission);
 			}

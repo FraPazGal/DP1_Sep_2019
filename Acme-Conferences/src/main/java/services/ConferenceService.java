@@ -148,8 +148,7 @@ public class ConferenceService {
 
 		this.validator.validate(result, binding);
 
-		if (!binding.hasErrors()) {
-
+		if (conference.getSubmissionDeadline() != null ) {
 			try {
 				Assert.isTrue(
 						conference.getSubmissionDeadline().before(
@@ -159,7 +158,18 @@ public class ConferenceService {
 				binding.rejectValue("submissionDeadline",
 						"submission.before.notification");
 			}
-
+			
+			try {
+				Date now = new Date(System.currentTimeMillis() - 1);
+				Assert.isTrue(conference.getSubmissionDeadline().after(now),
+						"submission.after.now");
+			} catch (final Exception e) {
+				binding.rejectValue("submissionDeadline",
+						"submission.after.now");
+			}
+		}
+		
+		if (conference.getNotificationDeadline() != null ) {
 			try {
 				Assert.isTrue(
 						conference.getNotificationDeadline().before(
@@ -169,7 +179,9 @@ public class ConferenceService {
 				binding.rejectValue("notificationDeadline",
 						"notification.before.camera");
 			}
-
+		}
+		
+		if (conference.getCameraReadyDeadline() != null ) {
 			try {
 				Assert.isTrue(
 						conference.getCameraReadyDeadline().before(
@@ -179,7 +191,9 @@ public class ConferenceService {
 				binding.rejectValue("cameraReadyDeadline",
 						"camera.before.start");
 			}
-
+		}
+		
+		if (conference.getStartDate() != null ) {
 			try {
 				Assert.isTrue(
 						conference.getStartDate().before(
@@ -187,31 +201,17 @@ public class ConferenceService {
 			} catch (final Exception e) {
 				binding.rejectValue("startDate", "start.before.end");
 			}
-
+		}
+		
+		if (conference.getStartDate() != null ) {
 			try {
-				Date now = new Date(System.currentTimeMillis() - 1);
-				Assert.isTrue(conference.getSubmissionDeadline().after(now),
-						"submission.after.now");
-			} catch (final Exception e) {
-				binding.rejectValue("submissionDeadline",
-						"submission.after.now");
-			}
-
-			try {
-				Assert.isTrue(
-						conference.getEndDate().after(LocalDate.now().toDate()),
+				Assert.isTrue(conference.getEndDate().after(LocalDate.now().toDate()),
 						"end.after.now");
 			} catch (final Exception e) {
 				binding.rejectValue("endDate", "end.after.now");
 			}
-
-			try {
-				Assert.isTrue(conference.getEntryFee() >= 0, "entryfee.error");
-			} catch (final Exception e) {
-				binding.rejectValue("entryFee", "entryfee.error");
-			}
 		}
-
+		
 		this.flush();
 
 		return result;
@@ -400,11 +400,14 @@ public class ConferenceService {
 		int reject = 0;
 		int accept = 0;
 
+		// If the report has no status, it will not count (same as those reports with status BORDER-LINE)
 		for (Review report : reports) {
-			if (report.getStatus().equals("ACCEPTED"))
-				accept++;
-			else if (report.getStatus().equals("REJECTED"))
-				reject++;
+			if(report.getStatus() != null) {
+				if (report.getStatus().equals("ACCEPTED"))
+					accept++;
+				else if (report.getStatus().equals("REJECTED"))
+					reject++;
+			}
 		}
 
 		if (accept >= reject)

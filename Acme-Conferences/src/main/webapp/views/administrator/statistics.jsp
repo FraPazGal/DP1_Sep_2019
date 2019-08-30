@@ -8,6 +8,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@ taglib prefix="acme" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 
 <h1><spring:message code="administrator.statistics" /></h1>	
@@ -20,22 +21,22 @@
 		<jstl:when test="${statsSubmissionsPerConference[0] ne null}">
 			<tr>
 				<td style=""><spring:message code="administrator.statsSubmissionsPerConference.max" /></td>
-				<td> ${statsSubmissionsPerConference[0]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsSubmissionsPerConference[0]}"/> </td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsSubmissionsPerConference.min" /></td>
-				<td> ${statsSubmissionsPerConference[1]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsSubmissionsPerConference[1]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsSubmissionsPerConference.avg" /></td>
-				<td> ${statsSubmissionsPerConference[2]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsSubmissionsPerConference[2]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsSubmissionsPerConference.stddev" /></td>
-				<td> ${statsSubmissionsPerConference[3]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsSubmissionsPerConference[3]}"/></td>
 			</tr>
 		</jstl:when>
 		<jstl:otherwise>
@@ -52,25 +53,25 @@
 		<spring:message code="administrator.statsRegistrationsPerConference" />
 	</td></tr>
 	<jstl:choose>
-		<jstl:when test="${statsSubmissionsPerConference[0] ne null}">
+		<jstl:when test="${statsRegistrationsPerConference[0] ne null}">
 			<tr>
 				<td><spring:message code="administrator.statsRegistrationsPerConference.max" /></td>
-				<td> ${statsRegistrationsPerConference[0]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsRegistrationsPerConference[0]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsRegistrationsPerConference.min" /></td>
-				<td> ${statsRegistrationsPerConference[1]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsRegistrationsPerConference[1]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsRegistrationsPerConference.avg" /></td>
-				<td> ${statsRegistrationsPerConference[2]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsRegistrationsPerConference[2]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsRegistrationsPerConference.stddev" /></td>
-				<td> ${statsRegistrationsPerConference[3]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsRegistrationsPerConference[3]}"/></td>
 			</tr>
 		</jstl:when>
 		<jstl:otherwise>
@@ -87,25 +88,25 @@
 		<spring:message code="administrator.statsConferenceFees" />
 	</td></tr>
 	<jstl:choose>
-		<jstl:when test="${statsSubmissionsPerConference[0] ne null}">
+		<jstl:when test="${statsConferenceFees[0] ne null}">
 			<tr>
 				<td><spring:message code="administrator.statsConferenceFees.max" /></td>
-				<td> ${statsConferenceFees[0]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsConferenceFees[0]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsConferenceFees.min" /></td>
-				<td> ${statsConferenceFees[1]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsConferenceFees[1]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsConferenceFees.avg" /></td>
-				<td> ${statsConferenceFees[2]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsConferenceFees[2]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsConferenceFees.stddev" /></td>
-				<td> ${statsConferenceFees[3]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsConferenceFees[3]}"/></td>
 			</tr>
 		</jstl:when>
 		<jstl:otherwise>
@@ -122,25 +123,25 @@
 		<spring:message code="administrator.statsDaysPerConference" />
 	</td></tr>
 	<jstl:choose>
-		<jstl:when test="${statsSubmissionsPerConference[0] ne null}">
+		<jstl:when test="${statsDaysPerConference[0] ne null}">
 			<tr>
 				<td><spring:message code="administrator.statsDaysPerConference.max" /></td>
-				<td> ${statsDaysPerConference[0]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsDaysPerConference[0]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsDaysPerConference.min" /></td>
-				<td> ${statsDaysPerConference[1]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsDaysPerConference[1]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsDaysPerConference.avg" /></td>
-				<td> ${statsDaysPerConference[2]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsDaysPerConference[2]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsDaysPerConference.stddev" /></td>
-				<td> ${statsDaysPerConference[3]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsDaysPerConference[3]}"/></td>
 			</tr>
 		</jstl:when>
 		<jstl:otherwise>
@@ -156,25 +157,25 @@
 		<spring:message code="administrator.statsConferencesPerCategory" />
 	</td></tr>
 	<jstl:choose>
-		<jstl:when test="${statsSubmissionsPerConference[0] ne null}">
+		<jstl:when test="${statsConferencesPerCategory[0] ne null}">
 			<tr>
 				<td style=""><spring:message code="administrator.statsConferencesPerCategory.max" /></td>
-				<td> ${statsConferencesPerCategory[0]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsConferencesPerCategory[0]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsConferencesPerCategory.min" /></td>
-				<td> ${statsConferencesPerCategory[1]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsConferencesPerCategory[1]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsConferencesPerCategory.avg" /></td>
-				<td> ${statsConferencesPerCategory[2]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsConferencesPerCategory[2]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsConferencesPerCategory.stddev" /></td>
-				<td> ${statsConferencesPerCategory[3]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsConferencesPerCategory[3]}"/></td>
 			</tr>
 		</jstl:when>
 		<jstl:otherwise>
@@ -190,25 +191,25 @@
 		<spring:message code="administrator.statsCommentsPerConference" />
 	</td></tr>
 	<jstl:choose>
-		<jstl:when test="${statsSubmissionsPerConference[0] ne null}">
+		<jstl:when test="${statsCommentsPerConference[0] ne null}">
 			<tr>
 				<td><spring:message code="administrator.statsCommentsPerConference.max" /></td>
-				<td> ${statsCommentsPerConference[0]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsCommentsPerConference[0]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsCommentsPerConference.min" /></td>
-				<td> ${statsCommentsPerConference[1]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsCommentsPerConference[1]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsCommentsPerConference.avg" /></td>
-				<td> ${statsCommentsPerConference[2]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsCommentsPerConference[2]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsCommentsPerConference.stddev" /></td>
-				<td> ${statsCommentsPerConference[3]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsCommentsPerConference[3]}"/></td>
 			</tr>
 		</jstl:when>
 		<jstl:otherwise>
@@ -225,25 +226,25 @@
 		<spring:message code="administrator.statsCommentsPerActivity" />
 	</td></tr>
 	<jstl:choose>
-		<jstl:when test="${statsSubmissionsPerConference[0] ne null}">
+		<jstl:when test="${statsCommentsPerActivity[0] ne null}">
 			<tr>
 				<td><spring:message code="administrator.statsCommentsPerActivity.max" /></td>
-				<td> ${statsCommentsPerActivity[0]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsCommentsPerActivity[0]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsCommentsPerActivity.min" /></td>
-				<td> ${statsCommentsPerActivity[1]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsCommentsPerActivity[1]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsCommentsPerActivity.avg" /></td>
-				<td> ${statsCommentsPerActivity[2]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsCommentsPerActivity[2]}"/></td>
 			</tr>
 			
 			<tr>
 				<td><spring:message code="administrator.statsCommentsPerActivity.stddev" /></td>
-				<td> ${statsCommentsPerActivity[3]}</td>
+				<td><fmt:formatNumber type="number" minFractionDigits="1" maxFractionDigits="2" value="${statsCommentsPerActivity[3]}"/></td>
 			</tr>
 		</jstl:when>
 		<jstl:otherwise>
