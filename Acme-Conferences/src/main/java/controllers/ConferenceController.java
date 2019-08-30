@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -79,17 +80,22 @@ public class ConferenceController extends AbstractController {
 					.getActivitiesOfConference(conferenceId);
 			Collection<Comentario> comments = this.commentService
 					.getCommentsOfConference(conferenceId);
-			
-			hasSubcriptions = (this.registrationService.findActorsRegisteredTo(conferenceId).isEmpty()) ? false	: true;
-			hasSubmittions = (this.submissionService.findActorsWithSubmitions(conferenceId).isEmpty()) ? false : true;
-			
+
+			hasSubcriptions = (this.registrationService
+					.findActorsRegisteredTo(conferenceId).isEmpty()) ? false
+					: true;
+			hasSubmittions = (this.submissionService
+					.findActorsWithSubmitions(conferenceId).isEmpty()) ? false
+					: true;
+
 			try {
 				principal = this.utilityService.findByPrincipal();
 				if (this.utilityService.checkAuthority(principal, "ADMIN"))
 					isPrincipal = true;
-				
-			} catch (final Throwable oops) {}
-			
+
+			} catch (final Throwable oops) {
+			}
+
 			conference = this.conferenceService.findOneToDisplay(conferenceId);
 
 			result.addObject("conference", conference);
@@ -100,6 +106,9 @@ public class ConferenceController extends AbstractController {
 			result.addObject("comments", comments);
 			result.addObject("hasSubcriptions", hasSubcriptions);
 			result.addObject("hasSubmittions", hasSubmittions);
+			result.addObject(
+					"hasStarted",
+					(LocalDate.now().toDate().before(conference.getStartDate())));
 			result.addObject("requestURI",
 					"conference/display.do?conferenceId=" + conferenceId);
 		} catch (final Throwable oops) {
@@ -110,8 +119,9 @@ public class ConferenceController extends AbstractController {
 
 	/* Listing */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam (required = false) final String catalog, 
-			@RequestParam (required = false) final Integer categoryId) {
+	public ModelAndView list(
+			@RequestParam(required = false) final String catalog,
+			@RequestParam(required = false) final Integer categoryId) {
 		ModelAndView result = new ModelAndView("conference/list");
 		Collection<Conference> conferences = null;
 		Collection<Conference> conferencesRegisteredTo = new ArrayList<>();
@@ -123,7 +133,7 @@ public class ConferenceController extends AbstractController {
 			if (categoryId != null) {
 				Category category = this.categoryService.findOne(categoryId);
 				conferences = category.getConferences();
-				
+
 				result.addObject("category", category);
 			} else {
 				switch (catalog) {
@@ -147,7 +157,8 @@ public class ConferenceController extends AbstractController {
 							switch (catalog) {
 							case "unpublished":
 								conferences = this.conferenceService
-									.findConferencesUnpublishedAndMine(principal.getId());
+										.findConferencesUnpublishedAndMine(principal
+												.getId());
 								break;
 
 							case "5sub":
@@ -171,9 +182,10 @@ public class ConferenceController extends AbstractController {
 								break;
 							}
 						}
-					} else if (this.utilityService.checkAuthority(principal, "AUTHOR")) {
+					} else if (this.utilityService.checkAuthority(principal,
+							"AUTHOR")) {
 						isPrincipal = "AUTHOR";
-						
+
 						conferencesRegisteredTo = this.conferenceService
 								.conferencesRegisteredTo(principal.getId());
 						conferencesSubmittedTo = this.conferenceService

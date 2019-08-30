@@ -45,8 +45,8 @@
 		<bean class="converters.RegistrationToStringConverter" />
 		<bean class="converters.StringToRegistrationConverter" />
 
-		<bean class="converters.ReportToStringConverter" />
-		<bean class="converters.StringToReportConverter" />
+		<bean class="converters.ReviewToStringConverter" />
+		<bean class="converters.StringToReviewConverter" />
 
 		<bean class="converters.ReviewerToStringConverter" />
 		<bean class="converters.StringToReviewerConverter" />

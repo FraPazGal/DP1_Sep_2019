@@ -53,7 +53,7 @@
 		</tr>
 
 		<jstl:choose>
-			<jstl:when test="${pageContext.response.locale.language == 'es'}"> 
+			<jstl:when test="${pageContext.response.locale.language == 'es'}">
 				<tr>
 					<td><strong> <spring:message
 								code="conference.category" /> :
@@ -150,9 +150,18 @@
 		value="<spring:message code='activity.list' />" />
 
 	<jstl:if test="${isPrincipal}">
-		<input type="button"
-			onclick="redirect: location.href = 'activity/create.do?conferenceid=${conference.id}';"
-			value="<spring:message code='activity.create' />" />
+		<jsp:useBean id="nownow" class="java.util.Date" />
+
+		<fmt:formatDate var="startDate" pattern="${format}"
+			value="${conference.startDate}" />
+		<fmt:formatDate var="currentDate" pattern="${format}"
+			value="${nownow}" />
+
+		<jstl:if test="${hasStarted}">
+			<input type="button"
+				onclick="redirect: location.href = 'activity/create.do?conferenceid=${conference.id}';"
+				value="<spring:message code='activity.create' />" />
+		</jstl:if>
 		<jstl:if test="${hasSubcriptions}">
 			<input type="button"
 				onclick="redirect: location.href = 'message/createbroadcast.do?type=reg&id=${conference.id}';"

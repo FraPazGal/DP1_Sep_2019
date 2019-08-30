@@ -72,7 +72,7 @@ public class MessageController extends AbstractController {
 			res.addObject("principal", this.utilityService.findByPrincipal());
 
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;
@@ -96,9 +96,12 @@ public class MessageController extends AbstractController {
 			actors.remove((Actor) this.utilityService
 					.findByUsername("[Anonymous]"));
 
-			res.addObject("actors", actors);
+			if (actors.isEmpty())
+				res.addObject("found", false);
+			else
+				res.addObject("actors", actors);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -129,7 +132,7 @@ public class MessageController extends AbstractController {
 				res = new ModelAndView("redirect:list.do");
 			}
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;
@@ -140,7 +143,7 @@ public class MessageController extends AbstractController {
 			@RequestParam(value = "type") String type,
 			@RequestParam(value = "id", required = false) Integer id) {
 		ModelAndView res;
-		String messageError;
+		String messageError = null;
 		Mensaje newMessage;
 		Collection<Actor> actors = new ArrayList<>();
 
@@ -155,10 +158,12 @@ public class MessageController extends AbstractController {
 			case "sub":
 				actors = this.submissionService.findActorsWithSubmitions(id);
 				newMessage.setReciever(actors);
+				messageError = (actors.isEmpty()) ? "reciever.error" : null;
 				break;
 			case "reg":
 				actors = this.registrationService.findActorsRegisteredTo(id);
 				newMessage.setReciever(actors);
+				messageError = (actors.isEmpty()) ? "reciever.error" : null;
 				break;
 			case "aut":
 				actors = this.actorService.findAll();
@@ -168,22 +173,25 @@ public class MessageController extends AbstractController {
 						authors.add(a);
 					}
 				}
+				messageError = (authors.isEmpty()) ? "reciever.error" : null;
 				newMessage.setReciever(authors);
 				break;
 			case "all":
 				actors = this.actorService.findAll();
+				actors.remove((Actor) this.utilityService.findByPrincipal());
+				actors.remove((Actor) this.utilityService
+						.findByUsername("[Anonymous]"));
 				newMessage.setReciever(actors);
+				messageError = (actors.isEmpty()) ? "reciever.error" : null;
 				break;
 			}
-
-			messageError = (actors.isEmpty()) ? "reciever.error" : null;
 
 			res.addObject("mensaje", newMessage);
 			res.addObject("topics", this.systemConfigurationService
 					.findMySystemConfiguration().getTopics());
 			res.addObject("messageError", messageError);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -205,7 +213,7 @@ public class MessageController extends AbstractController {
 				res = new ModelAndView("redirect:list.do");
 			}
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;

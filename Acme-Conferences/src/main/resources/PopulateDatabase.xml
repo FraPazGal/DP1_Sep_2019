@@ -86,7 +86,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="userReviewer3" class="security.UserAccount">
 		<property name="username" value="reviewer3" />
 		<property name="password" value="315d31e7c8f3a136610aafa220d689be" />
@@ -227,7 +227,7 @@
 		<property name="keywords" value="evil,fabulous,vampire,stand user,time-saver" />
 		<property name="userAccount" ref="userReviewer2" />
 	</bean>
-	
+
 	<bean id="reviewer3" class="domain.Reviewer">
 		<property name="name" value="Test" />
 		<property name="surname" value="Test" />
@@ -236,7 +236,8 @@
 		<property name="email" value="Test@outlook.com" />
 		<property name="phoneNumber" value="+34685742458" />
 		<property name="address" value="C/ Test Blood" />
-		<property name="keywords" value="evil,fabulous,vampire,stand user,time-saver,conferencia,conference,la" />
+		<property name="keywords"
+			value="evil,fabulous,vampire,stand user,time-saver,conferencia,conference,la" />
 		<property name="userAccount" ref="userReviewer3" />
 	</bean>
 
@@ -498,53 +499,60 @@
 		<property name="paperDocument"
 			value="Este paper es mágnífico y dice verdades como puños." />
 	</bean>
-	
+
 	<bean id="paper8" class="domain.Paper">
 		<property name="title" value="Paper de testeo 1" />
 		<property name="authors" value="El tester 1" />
-		<property name="summary" value="Léete el paper de testeo 1 y déjatede resúmenes" />
+		<property name="summary"
+			value="Léete el paper de testeo 1 y déjatede resúmenes" />
 		<property name="paperDocument" value="Este paper de testeo 1 llegará lejos" />
 	</bean>
-	
+
 	<bean id="paper9" class="domain.Paper">
 		<property name="title" value="Paper de testeo 2" />
 		<property name="authors" value="El tester 2" />
-		<property name="summary" value="Léete el paper de testeo 2 y déjatede resúmenes" />
+		<property name="summary"
+			value="Léete el paper de testeo 2 y déjatede resúmenes" />
 		<property name="paperDocument" value="Este paper de testeo 2 llegará lejos" />
 	</bean>
-	
+
 	<bean id="paper10" class="domain.Paper">
 		<property name="title" value="Paper de testeo 3" />
 		<property name="authors" value="El tester 3" />
-		<property name="summary" value="Léete el paper de testeo 3 y déjatede resúmenes" />
+		<property name="summary"
+			value="Léete el paper de testeo 3 y déjatede resúmenes" />
 		<property name="paperDocument" value="Este paper de testeo 3 llegará lejos" />
 	</bean>
-	
+
 	<bean id="paper11" class="domain.Paper">
 		<property name="title" value="Paper de testeo 4" />
 		<property name="authors" value="El tester 4" />
-		<property name="summary" value="Léete el paper de testeo 4 y déjatede resúmenes" />
+		<property name="summary"
+			value="Léete el paper de testeo 4 y déjatede resúmenes" />
 		<property name="paperDocument" value="Este paper de testeo 4 llegará lejos" />
 	</bean>
-	
+
 	<bean id="paper12" class="domain.Paper">
 		<property name="title" value="Paper de testeo 5" />
 		<property name="authors" value="El tester 5" />
-		<property name="summary" value="Léete el paper de testeo 5 y déjatede resúmenes" />
+		<property name="summary"
+			value="Léete el paper de testeo 5 y déjatede resúmenes" />
 		<property name="paperDocument" value="Este paper de testeo 5 llegará lejos" />
 	</bean>
-	
+
 	<bean id="paper13" class="domain.Paper">
 		<property name="title" value="Paper de testeo 6" />
 		<property name="authors" value="El tester 6" />
-		<property name="summary" value="Léete el paper de testeo 6 y déjatede resúmenes" />
+		<property name="summary"
+			value="Léete el paper de testeo 6 y déjatede resúmenes" />
 		<property name="paperDocument" value="Este paper de testeo 6 llegará lejos" />
 	</bean>
-	
+
 	<bean id="paper14" class="domain.Paper">
 		<property name="title" value="Paper de testeo 7" />
 		<property name="authors" value="El tester 7" />
-		<property name="summary" value="Léete el paper de testeo 7 y déjatede resúmenes" />
+		<property name="summary"
+			value="Léete el paper de testeo 7 y déjatede resúmenes" />
 		<property name="paperDocument" value="Este paper de testeo 7 llegará lejos" />
 	</bean>
 
@@ -1110,7 +1118,7 @@
 		<property name="administrator" ref="administrator2" />
 		<property name="category" ref="Physics" />
 	</bean>
-	
+
 	<bean id="conference8" class="domain.Conference">
 		<property name="title" value="Conferencia testeo en curso" />
 		<property name="acronym" value="CFEC" />
@@ -1126,7 +1134,7 @@
 		<property name="administrator" ref="administrator1" />
 		<property name="category" ref="DeepLeaning" />
 	</bean>
-	
+
 	<bean id="conference9" class="domain.Conference">
 		<property name="title" value="Conferencia testeo de submissions" />
 		<property name="acronym" value="CTDS" />
@@ -1142,7 +1150,7 @@
 		<property name="administrator" ref="administrator2" />
 		<property name="category" ref="Methods" />
 	</bean>
-	
+
 	<bean id="conference10" class="domain.Conference">
 		<property name="title" value="Conferencia testeo Sub5" />
 		<property name="acronym" value="CTS5" />
@@ -1158,7 +1166,7 @@
 		<property name="administrator" ref="administrator2" />
 		<property name="category" ref="Regression" />
 	</bean>
-	
+
 	<bean id="conference11" class="domain.Conference">
 		<property name="title" value="Conferencia testeo Not5" />
 		<property name="acronym" value="CTS5" />
@@ -1174,7 +1182,7 @@
 		<property name="administrator" ref="administrator1" />
 		<property name="category" ref="Regression" />
 	</bean>
-	
+
 	<bean id="conference12" class="domain.Conference">
 		<property name="title" value="Conferencia testeo cam5" />
 		<property name="acronym" value="CTC5" />
@@ -1190,7 +1198,7 @@
 		<property name="administrator" ref="administrator2" />
 		<property name="category" ref="Regression" />
 	</bean>
-	
+
 	<bean id="conference13" class="domain.Conference">
 		<property name="title" value="Conferencia testeo org5" />
 		<property name="acronym" value="CTO5" />
@@ -1206,7 +1214,7 @@
 		<property name="administrator" ref="administrator1" />
 		<property name="category" ref="Regression" />
 	</bean>
-	
+
 	<bean id="conference14" class="domain.Conference">
 		<property name="title" value="Conferencia testeo start por horas" />
 		<property name="acronym" value="CTSPH" />
@@ -1222,7 +1230,7 @@
 		<property name="administrator" ref="administrator1" />
 		<property name="category" ref="Regression" />
 	</bean>
-	
+
 	<!-- ***** CREDITCARD ***** -->
 
 	<bean id="creditCard1" class="domain.CreditCard">
@@ -1409,7 +1417,7 @@
 		<property name="conference" ref="conference7" />
 		<property name="paper" ref="paper4" />
 	</bean>
-	
+
 	<bean id="submission6" class="domain.Submission">
 		<property name="ticker" value="TSK-8LH3" />
 		<property name="status" value="UNDER-REVIEW" />
@@ -1418,7 +1426,7 @@
 		<property name="conference" ref="conference9" />
 		<property name="paper" ref="paper8" />
 	</bean>
-	
+
 	<bean id="submission7" class="domain.Submission">
 		<property name="ticker" value="TTE-634L" />
 		<property name="status" value="UNDER-REVIEW" />
@@ -1427,7 +1435,7 @@
 		<property name="conference" ref="conference11" />
 		<property name="paper" ref="paper9" />
 	</bean>
-	
+
 	<bean id="submission8" class="domain.Submission">
 		<property name="ticker" value="Y70-8OU6" />
 		<property name="status" value="UNDER-REVIEW" />
@@ -1436,10 +1444,10 @@
 		<property name="conference" ref="conference11" />
 		<property name="paper" ref="paper10" />
 	</bean>
-	
+
 	<!-- ****** REVIEW/REPORT ****** -->
 
-	<bean id="report1" class="domain.Report">
+	<bean id="report1" class="domain.Review">
 		<property name="originalityScore" value="7.5" />
 		<property name="qualityScore" value="8.1" />
 		<property name="readabilityScore" value="9.0" />
@@ -1449,8 +1457,8 @@
 		<property name="reviewer" ref="reviewer1" />
 		<property name="submission" ref="submission3" />
 	</bean>
-	
-	<bean id="report2" class="domain.Report">
+
+	<bean id="report2" class="domain.Review">
 		<property name="originalityScore" value="8.2" />
 		<property name="qualityScore" value="9.1" />
 		<property name="readabilityScore" value="9.4" />
@@ -1460,8 +1468,8 @@
 		<property name="reviewer" ref="reviewer2" />
 		<property name="submission" ref="submission3" />
 	</bean>
-	
-	<bean id="report3" class="domain.Report">
+
+	<bean id="report3" class="domain.Review">
 		<property name="originalityScore" value="5.2" />
 		<property name="qualityScore" value="6.1" />
 		<property name="readabilityScore" value="4.4" />
@@ -1471,8 +1479,8 @@
 		<property name="reviewer" ref="reviewer1" />
 		<property name="submission" ref="submission4" />
 	</bean>
-	
-	<bean id="report4" class="domain.Report">
+
+	<bean id="report4" class="domain.Review">
 		<property name="originalityScore" value="3.3" />
 		<property name="qualityScore" value="4.0" />
 		<property name="readabilityScore" value="2.1" />
@@ -1482,8 +1490,8 @@
 		<property name="reviewer" ref="reviewer1" />
 		<property name="submission" ref="submission5" />
 	</bean>
-	
-	<bean id="report5" class="domain.Report">
+
+	<bean id="report5" class="domain.Review">
 		<property name="originalityScore" value="4" />
 		<property name="qualityScore" value="3.6" />
 		<property name="readabilityScore" value="1.5" />
@@ -1492,8 +1500,8 @@
 		<property name="reviewer" ref="reviewer2" />
 		<property name="submission" ref="submission5" />
 	</bean>
-	
-	<bean id="report6" class="domain.Report">
+
+	<bean id="report6" class="domain.Review">
 		<property name="isWritten" value="false" />
 		<property name="reviewer" ref="reviewer1" />
 		<property name="submission" ref="submission7" />
@@ -1505,7 +1513,8 @@
 		<property name="systemName" value="Acme-Conferenes" />
 		<property name="banner" value="https://i.ibb.co/GVpZCtM/acme-conference.png" />
 		<property name="countryCode" value="+034" />
-		<property name="makes" value="VISA,MASTERCARD,AMERICAN EXPRESS,DINNERS,AMEX" />
+		<property name="makes"
+			value="VISA,MASTERCARD,AMERICAN EXPRESS,DINNERS,AMEX" />
 		<property name="welcomeMessage">
 			<util:map id="utilmap19" map-class="java.util.HashMap"
 				key-type="java.lang.String" value-type="java.lang.String">
@@ -1582,6 +1591,20 @@
 	</bean>
 
 	<!-- ACTIVITY -->
+
+	<bean id="activity1Conference7" class="domain.Activity">
+		<property name="title" value="Presentation of the conference" />
+		<property name="speakersInvolved" value="Too many, more, and even more" />
+		<property name="type" value="PRESENTATION" />
+		<property name="summary"
+			value="The director will introduce the audience to what is coming next" />
+		<property name="usedRoom" value="A3.10" />
+		<property name="attachement" value="https://timetablepdf.com" />
+		<property name="startMoment" value="05/05/2019 09:01" />
+		<property name="duration" value="25" />
+		<property name="conference" ref="conference7" />
+		<!-- <property name="submission" ref="" /> -->
+	</bean>
 
 	<!-- CONFERENCE 1 ACTIVITIES -->
 

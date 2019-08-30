@@ -14,7 +14,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -26,9 +25,8 @@ public class Activity extends DomainEntity {
 	/* Attributes */
 
 	private String title, speakersInvolved, summary, usedRoom, attachement,
-			type;
+			type, duration;
 	private Date startMoment;
-	private Double duration;
 	private Conference conference;
 	private Submission submission;
 
@@ -105,12 +103,12 @@ public class Activity extends DomainEntity {
 	}
 
 	@NotNull
-	@Range(min = 0, message = "duration.error")
-	public Double getDuration() {
+	@NotBlank
+	public String getDuration() {
 		return duration;
 	}
 
-	public void setDuration(Double duration) {
+	public void setDuration(String duration) {
 		this.duration = duration;
 	}
 

@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.Collection;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +15,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActorService;
 import services.AdministratorService;
+import services.AuthorService;
 import services.FinderService;
 import services.UtilityService;
 import domain.Actor;
 import domain.Administrator;
+import domain.Author;
 import domain.Finder;
 import forms.ActorForm;
 import forms.ActorRegistrationForm;
@@ -38,6 +42,9 @@ public class AdministratorController extends AbstractController {
 
 	@Autowired
 	private UtilityService utilityService;
+
+	@Autowired
+	private AuthorService authorService;
 
 	/* Methods */
 
@@ -265,4 +272,29 @@ public class AdministratorController extends AbstractController {
 		return result;
 	}
 
+	@RequestMapping(value = "/administrator/authorscores", method = RequestMethod.GET)
+	public ModelAndView listAll() {
+		ModelAndView res;
+		Collection<Author> authors;
+		Actor principal;
+		boolean found = false;
+
+		try {
+			principal = this.utilityService.findByPrincipal();
+			Assert.isTrue(this.utilityService
+					.checkAuthority(principal, "ADMIN"));
+
+			authors = this.authorService.findAll();
+			if (!authors.isEmpty()) {
+				found = true;
+			}
+
+			res = new ModelAndView("administraor/authorlist");
+			res.addObject("authors", authors);
+			res.addObject("found", found);
+		} catch (Throwable oops) {
+			res = new ModelAndView("redirect:../welcome/index.do");
+		}
+		return res;
+	}
 }

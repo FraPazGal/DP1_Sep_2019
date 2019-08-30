@@ -7,6 +7,7 @@ import java.util.Date;
 
 import javax.transaction.Transactional;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -18,7 +19,7 @@ import domain.Actor;
 import domain.Administrator;
 import domain.Conference;
 import domain.Mensaje;
-import domain.Report;
+import domain.Review;
 import domain.Submission;
 
 @Transactional
@@ -34,13 +35,13 @@ public class ConferenceService {
 
 	@Autowired
 	private UtilityService utilityService;
-	
+
 	@Autowired
 	private SubmissionService submissionService;
-	
+
 	@Autowired
 	private ReviewService reviewService;
-	
+
 	@Autowired
 	private MessageService messageService;
 
@@ -68,14 +69,14 @@ public class ConferenceService {
 
 	public Conference findOne(final int conferenceId) {
 		Conference result = this.conferenceRepository.findOne(conferenceId);
-		Assert.notNull(result,"wrong.id");
-		
+		Assert.notNull(result, "wrong.id");
+
 		return result;
 	}
 
 	public Conference save(final Conference conference) {
 		Actor principal = this.utilityService.findByPrincipal();
-		
+
 		Assert.notNull(conference);
 		Assert.notNull(conference.getTitle());
 		Assert.notNull(conference.getAcronym());
@@ -89,7 +90,8 @@ public class ConferenceService {
 		Assert.notNull(conference.getEntryFee());
 		Assert.notNull(conference.getCategory());
 
-		Assert.isTrue(conference.getAdministrator().equals(principal), "not.allowed");
+		Assert.isTrue(conference.getAdministrator().equals(principal),
+				"not.allowed");
 
 		Conference result = this.conferenceRepository.save(conference);
 		Assert.notNull(result);
@@ -102,16 +104,19 @@ public class ConferenceService {
 
 		Assert.notNull(conference);
 		Assert.isTrue(conference.getId() != 0, "wrong.id");
-		Assert.isTrue(conference.getStatus().equals("DRAFT"), "conference.final");
+		Assert.isTrue(conference.getStatus().equals("DRAFT"),
+				"conference.final");
 
-		Assert.isTrue(conference.getAdministrator().equals(principal), "not.allowed");
+		Assert.isTrue(conference.getAdministrator().equals(principal),
+				"not.allowed");
 
 		this.conferenceRepository.delete(conference.getId());
 	}
 
 	// Other business methods -------------------------------
 
-	public Conference reconstruct(final Conference conference, BindingResult binding) {
+	public Conference reconstruct(final Conference conference,
+			BindingResult binding) {
 		Conference result, aux = null;
 		Actor principal = this.utilityService.findByPrincipal();
 
@@ -120,7 +125,9 @@ public class ConferenceService {
 		if (conference.getId() != 0) {
 			aux = this.findOne(conference.getId());
 			Assert.isTrue(aux.getStatus().equals("DRAFT"), "conference.final");
-			Assert.isTrue(aux.getAdministrator().equals((Administrator) principal), "not.allowed");
+			Assert.isTrue(
+					aux.getAdministrator().equals((Administrator) principal),
+					"not.allowed");
 
 			result.setId(aux.getId());
 			result.setVersion(aux.getVersion());
@@ -141,8 +148,8 @@ public class ConferenceService {
 
 		this.validator.validate(result, binding);
 
-		if(!binding.hasErrors()) {
-			
+		if (!binding.hasErrors()) {
+
 			try {
 				Assert.isTrue(
 						conference.getSubmissionDeadline().before(
@@ -166,15 +173,17 @@ public class ConferenceService {
 			try {
 				Assert.isTrue(
 						conference.getCameraReadyDeadline().before(
-								conference.getStartDate()), "camera.before.start");
+								conference.getStartDate()),
+						"camera.before.start");
 			} catch (final Exception e) {
-				binding.rejectValue("cameraReadyDeadline", "camera.before.start");
+				binding.rejectValue("cameraReadyDeadline",
+						"camera.before.start");
 			}
 
 			try {
 				Assert.isTrue(
-						conference.getStartDate().before(conference.getEndDate()),
-						"start.before.end");
+						conference.getStartDate().before(
+								conference.getEndDate()), "start.before.end");
 			} catch (final Exception e) {
 				binding.rejectValue("startDate", "start.before.end");
 			}
@@ -184,10 +193,25 @@ public class ConferenceService {
 				Assert.isTrue(conference.getSubmissionDeadline().after(now),
 						"submission.after.now");
 			} catch (final Exception e) {
-				binding.rejectValue("submissionDeadline", "submission.after.now");
+				binding.rejectValue("submissionDeadline",
+						"submission.after.now");
+			}
+
+			try {
+				Assert.isTrue(
+						conference.getEndDate().after(LocalDate.now().toDate()),
+						"end.after.now");
+			} catch (final Exception e) {
+				binding.rejectValue("endDate", "end.after.now");
+			}
+
+			try {
+				Assert.isTrue(conference.getEntryFee() >= 0, "entryfee.error");
+			} catch (final Exception e) {
+				binding.rejectValue("entryFee", "entryfee.error");
 			}
 		}
-		
+
 		this.flush();
 
 		return result;
@@ -207,9 +231,9 @@ public class ConferenceService {
 
 		lastFive = this.conferenceRepository.findSubmissionLastFive(toCompare);
 		auxConf = this.conferenceRepository.findSubmissionLastZero(toCompare);
-		
-		for(Conference c : auxConf) {
-			if(c.getSubmissionDeadline().after(now)) {
+
+		for (Conference c : auxConf) {
+			if (c.getSubmissionDeadline().after(now)) {
 				lastFive.add(c);
 			}
 		}
@@ -223,9 +247,9 @@ public class ConferenceService {
 
 		inFive = this.conferenceRepository.findNotificationInFive(now);
 		auxConf = this.conferenceRepository.findNotificationInZero(now);
-		
-		for(Conference c : auxConf) {
-			if(c.getSubmissionDeadline().before(now)) {
+
+		for (Conference c : auxConf) {
+			if (c.getSubmissionDeadline().before(now)) {
 				inFive.add(c);
 			}
 		}
@@ -239,9 +263,9 @@ public class ConferenceService {
 
 		inFive = this.conferenceRepository.findCameraInFive(now);
 		auxConf = this.conferenceRepository.findCameraInZero(now);
-		
-		for(Conference c : auxConf) {
-			if(c.getSubmissionDeadline().before(now)) {
+
+		for (Conference c : auxConf) {
+			if (c.getSubmissionDeadline().before(now)) {
 				inFive.add(c);
 			}
 		}
@@ -255,9 +279,9 @@ public class ConferenceService {
 
 		inFive = this.conferenceRepository.findStartInFive(now);
 		auxConf = this.conferenceRepository.findStartInZero(now);
-		
-		for(Conference c : auxConf) {
-			if(c.getSubmissionDeadline().before(now)) {
+
+		for (Conference c : auxConf) {
+			if (c.getSubmissionDeadline().before(now)) {
 				inFive.add(c);
 			}
 		}
@@ -277,6 +301,17 @@ public class ConferenceService {
 		result = this.conferenceRepository.pastConferences(toCompare);
 
 		return result;
+	}
+
+	public Collection<Conference> findConferencesForScore() {
+		Collection<Conference> res = new ArrayList<>();
+		Calendar hello = Calendar.getInstance();
+		hello.add(Calendar.YEAR, -1);
+		Date toCompare = hello.getTime();
+
+		res = this.conferenceRepository.conferences4Score(toCompare);
+
+		return res;
 	}
 
 	public Collection<Conference> runningConferences() {
@@ -299,9 +334,11 @@ public class ConferenceService {
 		return result;
 	}
 
-	public Collection<Conference> findConferencesUnpublishedAndMine(Integer adminId) {
+	public Collection<Conference> findConferencesUnpublishedAndMine(
+			Integer adminId) {
 
-		return this.conferenceRepository.findConferencesUnpublishedAndMine(adminId);
+		return this.conferenceRepository
+				.findConferencesUnpublishedAndMine(adminId);
 	}
 
 	public Collection<Conference> conferencesRegisteredTo(Integer authorId) {
@@ -313,85 +350,95 @@ public class ConferenceService {
 
 		return this.conferenceRepository.conferencesSubmittedTo(authorId);
 	}
-	
+
 	public Conference findOneToEdit(int conferenceId) {
 		Conference result = this.findOne(conferenceId);
 		Actor principal = this.utilityService.findByPrincipal();
-		
-		Assert.isTrue(result.getAdministrator().equals((Administrator) principal)
-				&& result.getStatus().equals("DRAFT"), "not.allowed");
-				
+
+		Assert.isTrue(
+				result.getAdministrator().equals((Administrator) principal)
+						&& result.getStatus().equals("DRAFT"), "not.allowed");
+
 		return result;
 	}
-	
+
 	public Conference findOneToDisplay(Integer conferenceId) {
 		Conference result = this.findOne(conferenceId);
-		
-		if(result.getStatus().equals("DRAFT")) {
+
+		if (result.getStatus().equals("DRAFT")) {
 			Actor actor = this.utilityService.findByPrincipal();
 			Assert.notNull(actor, "not.allowed");
-			Assert.isTrue(result.getAdministrator().equals((Administrator) actor));
+			Assert.isTrue(result.getAdministrator().equals(
+					(Administrator) actor));
 		} else {
 			Assert.isTrue(!result.getStatus().equals("DRAFT"), "not.allowed");
 		}
 		return result;
 	}
-	
-	public void reviewSubmissions (Integer conferenceId) {
-		Assert.isTrue(this.utilityService.assertPrincipal("ADMIN"), "not.allowed");
+
+	public void reviewSubmissions(Integer conferenceId) {
+		Assert.isTrue(this.utilityService.assertPrincipal("ADMIN"),
+				"not.allowed");
 		Conference conference = this.findOne(conferenceId);
 		Assert.isTrue(conference.getStatus().equals("FINAL"), "not.allowed");
-		
-		Collection<Submission> toReview = this.submissionService.findConferenceSubmitions(conferenceId);
-		
-		for(Submission submission : toReview) {
+
+		Collection<Submission> toReview = this.submissionService
+				.findConferenceSubmitions(conferenceId);
+
+		for (Submission submission : toReview) {
 			Submission aux = this.reviewASubmission(submission);
 			this.submissionService.saveChangeStatus(aux);
 		}
-		
+
 		conference.setStatus("DECISION-MADE");
 		this.conferenceRepository.save(conference);
 	}
-	
+
 	private Submission reviewASubmission(Submission submission) {
-		Collection<Report> reports = this.reviewService.findReportsOfSubmission(submission.getId());
-		int reject = 0; int accept = 0;
-		
-		for(Report report : reports) {
+		Collection<Review> reports = this.reviewService
+				.findReviewsOfSubmission(submission.getId());
+		int reject = 0;
+		int accept = 0;
+
+		for (Review report : reports) {
 			if (report.getStatus().equals("ACCEPTED"))
-				accept ++;
+				accept++;
 			else if (report.getStatus().equals("REJECTED"))
-				reject ++;
+				reject++;
 		}
-		
-		if(accept >= reject)
+
+		if (accept >= reject)
 			submission.setStatus("ACCEPTED");
 		else
 			submission.setStatus("REJECTED");
-		
+
 		return submission;
 	}
-	
+
 	public void notifySubmissions(Integer conferenceId) {
-		Collection<Actor> toNotify = this.submissionService.findActorsWithSubmitions(conferenceId);
+		Collection<Actor> toNotify = this.submissionService
+				.findActorsWithSubmitions(conferenceId);
 		Conference conference = this.findOneToDisplay(conferenceId);
-		
-		for(Actor actor : toNotify) {
-			Submission submitted = this.submissionService.findOneByActorAndConference(actor.getId(),conferenceId);
+
+		for (Actor actor : toNotify) {
+			Submission submitted = this.submissionService
+					.findOneByActorAndConference(actor.getId(), conferenceId);
 			Mensaje toSend = this.messageService.create();
-			
+
 			Collection<Actor> receiver = new ArrayList<Actor>();
 			receiver.add(actor);
 			toSend.setReciever(receiver);
-			
+
 			toSend.setTopic("OTHER");
 			toSend.setSubject("Submission notification");
-			toSend.setBody("We want to inform you that your submittion to the conference " + 
-					conference.getTitle() + " has been " + submitted.getStatus());
-			
+			toSend.setBody("We want to inform you that your submittion to the conference "
+					+ conference.getTitle()
+					+ " has been "
+					+ submitted.getStatus());
+
 			this.messageService.save(toSend);
 		}
-		
+
 		conference.setStatus("NOTIFIED");
 		this.conferenceRepository.save(conference);
 	}

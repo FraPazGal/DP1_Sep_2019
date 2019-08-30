@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
 
 import repositories.ActivityRepository;
 import domain.Activity;
@@ -23,8 +25,8 @@ public class ActivityService {
 	@Autowired
 	private ConferenceService conferenceService;
 
-	// @Autowired
-	// private UtilityService utilityService;
+	@Autowired
+	private Validator validator;
 
 	public Collection<Activity> listAll() {
 		return this.activityRepository.findAll();
@@ -63,8 +65,26 @@ public class ActivityService {
 	}
 
 	public void deleteAll(Collection<Activity> activitiesOfConference) {
-		for (Activity a : activitiesOfConference) {
-			this.activityRepository.delete(a);
+		if (!activitiesOfConference.isEmpty()) {
+			for (Activity a : activitiesOfConference) {
+				this.activityRepository.delete(a);
+				this.flush();
+			}
 		}
+	}
+
+	public Activity validate(Activity activity, BindingResult binding) {
+		this.validator.validate(activity, binding);
+		try {
+			Integer duration = Integer.parseInt(activity.getDuration());
+			try {
+				Assert.isTrue(duration > 0);
+			} catch (Throwable oops) {
+				binding.rejectValue("duration", "duration.negative.number");
+			}
+		} catch (Throwable oops) {
+			binding.rejectValue("duration", "duration.not.int");
+		}
+		return activity;
 	}
 }

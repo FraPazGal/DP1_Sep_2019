@@ -58,7 +58,7 @@ public class SectionController extends AbstractController {
 			res.addObject("permission", permission);
 			res.addObject("sections", sections);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -89,7 +89,7 @@ public class SectionController extends AbstractController {
 			res.addObject("section", newSection);
 			res.addObject("permission", permission);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -116,7 +116,7 @@ public class SectionController extends AbstractController {
 			res.addObject("section", toEdit);
 			res.addObject("permission", permission);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -144,7 +144,7 @@ public class SectionController extends AbstractController {
 								+ section.getActivity().getId());
 			}
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -165,7 +165,7 @@ public class SectionController extends AbstractController {
 			res = new ModelAndView("redirect:/activity/display.do?activityid="
 					+ section.getActivity().getId());
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}

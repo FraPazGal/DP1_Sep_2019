@@ -47,7 +47,7 @@ public class SubmissionService {
 		Submission result = new Submission();
 
 		this.utilityService.assertPrincipal("AUTHOR");
-		
+
 		result.setSubmissionMoment(new Date(System.currentTimeMillis() - 1));
 		result.setAuthor((Author) principal);
 		result.setTicker(this.generateTicker(principal));
@@ -338,8 +338,13 @@ public class SubmissionService {
 		return this.submissionRepository
 				.findCameraReadyPapersOfConference(conferenceid);
 	}
-	
+
 	public boolean noPreviousSubmissions(Conference conference) {
-		return this.submissionRepository.noPreviousSubmissions(conference.getId(), this.utilityService.findByPrincipal().getId());
+		return this.submissionRepository.noPreviousSubmissions(conference
+				.getId(), this.utilityService.findByPrincipal().getId());
+	}
+
+	public Collection<Paper> findCRPapers(Integer id) {
+		return this.submissionRepository.findCRPapers(id);
 	}
 }

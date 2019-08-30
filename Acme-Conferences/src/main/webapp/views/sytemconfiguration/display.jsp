@@ -110,5 +110,27 @@
 		onclick="redirect: location.href = 'config/admin/edit.do';"
 		value="<spring:message code='sysconfig.edit' />" />
 
+	<input type="button"
+		onclick="redirect: location.href = 'author/administrator/computescore.do';"
+		value="<spring:message code='sysconfig.computescore' />" />
+
+	<input type="button"
+		onclick="redirect: location.href = 'administrator/administrator/authorscores.do';"
+		value="<spring:message code='sysconfig.author.scores' />" />
+
+	<jstl:set var="success" value='<%=request.getParameter("success")%>' />
+	<jstl:if test="${not empty success}">
+		<jstl:choose>
+			<jstl:when test="${success}">
+				<p class="error">
+					<spring:message code="successful.computation.score" />
+			</jstl:when>
+			<jstl:otherwise>
+				<p class="error">
+					<spring:message code="unsuccessful.computation.score" />
+			</jstl:otherwise>
+		</jstl:choose>
+	</jstl:if>
+
 	<hr>
 </security:authorize>

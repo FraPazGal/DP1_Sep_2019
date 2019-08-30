@@ -51,7 +51,7 @@ public class CommentController extends AbstractController {
 			res.addObject("comment", newComment);
 
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -85,7 +85,7 @@ public class CommentController extends AbstractController {
 			}
 
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}

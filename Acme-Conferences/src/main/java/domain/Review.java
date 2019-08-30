@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.Range;
 @Entity
 @Access(AccessType.PROPERTY)
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class Report extends DomainEntity {
+public class Review extends DomainEntity {
 
 	/* Attributes */
 

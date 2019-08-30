@@ -10,72 +10,81 @@
 
 <security:authorize access="isAuthenticated()">
 
-	<fieldset>
-		<legend>
-			<spring:message code="mensaje.legend" />
-		</legend>
-		<form:form action="message/send.do" modelAttribute="mensaje" id="form">
+	<jstl:choose>
+		<jstl:when test="${empty found}">
+			<fieldset>
+				<legend>
+					<spring:message code="mensaje.legend" />
+				</legend>
+				<form:form action="message/send.do" modelAttribute="mensaje"
+					id="form">
 
-			<form:hidden path="id" />
-			<form:hidden path="version" />
-			<form:hidden path="sendMoment" />
-			<form:hidden path="sender" />
+					<form:hidden path="id" />
+					<form:hidden path="version" />
+					<form:hidden path="sendMoment" />
+					<form:hidden path="sender" />
 
-			<acme:textbox code="mensaje.subject" path="subject" required="true" />
+					<acme:textbox code="mensaje.subject" path="subject" required="true" />
 
-			<br>
+					<br>
 
-			<acme:textarea code="mensaje.body" path="body" required="true" />
+					<acme:textarea code="mensaje.body" path="body" required="true" />
 
-			<br>
+					<br>
 
-			<spring:message code="mensaje.topic" />
-			<jstl:choose>
-				<jstl:when test="${pageContext.response.locale.language == 'es'}">
-					<form:select required="true" path="topic" name="topics"
-						style="width:200px;">
-						<jstl:forEach var="topic" items="${topics.get('Español')}">
-							<option value="${topic}">
-								<jstl:out value="${topic}" />
-							</option>
-						</jstl:forEach>
+					<spring:message code="mensaje.topic" />
+					<jstl:choose>
+						<jstl:when test="${pageContext.response.locale.language == 'es'}">
+							<form:select required="true" path="topic" name="topics"
+								style="width:200px;">
+								<jstl:forEach var="topic" items="${topics.get('Español')}">
+									<option value="${topic}">
+										<jstl:out value="${topic}" />
+									</option>
+								</jstl:forEach>
+							</form:select>
+							<br>
+							<br>
+						</jstl:when>
+						<jstl:otherwise>
+							<form:select required="true" path="topic" name="topics"
+								style="width:200px;">
+								<jstl:forEach var="topic" items="${topics.get('English')}">
+									<option value="${topic}">
+										<jstl:out value="${topic}" />
+									</option>
+								</jstl:forEach>
+							</form:select>
+							<br>
+							<br>
+						</jstl:otherwise>
+					</jstl:choose>
+
+					<br>
+
+					<form:select path="reciever" required="true">
+						<form:options items="${actors}" itemLabel="userAccount.username" />
 					</form:select>
 					<br>
-					<br>
-				</jstl:when>
-				<jstl:otherwise>
-					<form:select required="true" path="topic" name="topics"
-						style="width:200px;">
-						<jstl:forEach var="topic" items="${topics.get('English')}">
-							<option value="${topic}">
-								<jstl:out value="${topic}" />
-							</option>
-						</jstl:forEach>
-					</form:select>
+					<form:errors path="reciever" cssClass="error" />
 					<br>
 					<br>
-				</jstl:otherwise>
-			</jstl:choose>
 
-			<br>
-
-			<form:select path="reciever" required="true">
-				<form:options items="${actors}" itemLabel="userAccount.username" />
-			</form:select>
-			<br>
-			<form:errors path="reciever" cssClass="error" />
-			<br>
-			<br>
-
-			<acme:submit code="save" name="save" />&nbsp;
+					<acme:submit code="save" name="save" />&nbsp;
 
 			<acme:cancel code="cancel" url="message/list.do" />
 
-			<br>
+					<br>
 
-			<form:errors path="sender" cssClass="error" />
+					<form:errors path="sender" cssClass="error" />
 
-		</form:form>
-	</fieldset>
+				</form:form>
+			</fieldset>
+		</jstl:when>
+		<jstl:otherwise>
+			<p>
+				<spring:message code="no.actors" />
+		</jstl:otherwise>
+	</jstl:choose>
 
 </security:authorize>

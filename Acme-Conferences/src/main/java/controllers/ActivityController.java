@@ -3,8 +3,7 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.validation.Valid;
-
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -72,8 +71,12 @@ public class ActivityController extends AbstractController {
 			res.addObject("sections", sections);
 			res.addObject("comments", comments);
 			res.addObject("permission", permission);
+			res.addObject(
+					"conferenceStarted",
+					LocalDate.now().toDate()
+							.before(activity.getConference().getStartDate()));
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -102,7 +105,7 @@ public class ActivityController extends AbstractController {
 			res.addObject("activities", activities);
 			res.addObject("requestUri", requestUri);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -127,7 +130,7 @@ public class ActivityController extends AbstractController {
 			res.addObject("activities", activities);
 			res.addObject("requestUri", requestUri);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -151,6 +154,9 @@ public class ActivityController extends AbstractController {
 
 			newActivity = this.activityService.create(conferenceid);
 
+			Assert.isTrue(LocalDate.now().toDate()
+					.before(newActivity.getConference().getStartDate()));
+
 			crPapers = this.submissionService
 					.findCameraReadyPapersOfConference(conferenceid);
 
@@ -159,7 +165,7 @@ public class ActivityController extends AbstractController {
 			res.addObject("crPapers", crPapers);
 			res.addObject("permission", permission);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -183,6 +189,9 @@ public class ActivityController extends AbstractController {
 
 			toEdit = this.activityService.findOne(activityid);
 
+			Assert.isTrue(LocalDate.now().toDate()
+					.before(toEdit.getConference().getStartDate()));
+
 			crPapers = this.submissionService
 					.findCameraReadyPapersOfConference(toEdit.getConference()
 							.getId());
@@ -192,7 +201,7 @@ public class ActivityController extends AbstractController {
 			res.addObject("permission", permission);
 			res.addObject("crPapers", crPapers);
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -200,18 +209,19 @@ public class ActivityController extends AbstractController {
 	// Saving activity
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
 	public ModelAndView save(
-			@Valid Activity activity,
+			Activity activity,
 			@RequestParam(required = false, value = "crpaperid") Integer crpaperid,
 			BindingResult binding) {
 		ModelAndView res;
 		Actor principal;
 
 		try {
+			this.activityService.validate(activity, binding);
 			if (binding.hasErrors()) {
 				Collection<Paper> crPapers = this.submissionService
-						.findCameraReadyPapersOfConference(activity.getConference()
-								.getId());
-				
+						.findCameraReadyPapersOfConference(activity
+								.getConference().getId());
+
 				res = new ModelAndView("activity/edit");
 				res.addObject(activity);
 				res.addObject("permission", true);
@@ -225,13 +235,13 @@ public class ActivityController extends AbstractController {
 					activity.setSubmission(this.submissionService
 							.findSubByPaper(crpaperid));
 				}
-				
+
 				this.activityService.save(activity);
 				res = new ModelAndView("redirect:list.do?conferenceid="
 						+ activity.getConference().getId());
 			}
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -252,7 +262,7 @@ public class ActivityController extends AbstractController {
 			res = new ModelAndView("redirect:list.do?conferenceid="
 					+ activity.getConference().getId());
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}

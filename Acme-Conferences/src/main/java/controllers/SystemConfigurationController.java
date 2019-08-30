@@ -44,7 +44,7 @@ public class SystemConfigurationController extends AbstractController {
 			res.addObject("voidEN", voidEN);
 			res.addObject("topics", config.getTopics());
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
@@ -70,7 +70,7 @@ public class SystemConfigurationController extends AbstractController {
 			res.addObject("voidEN", voidEN);
 			res.addObject("topics", config.getTopics());
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 
 		return res;
@@ -113,7 +113,7 @@ public class SystemConfigurationController extends AbstractController {
 				res = new ModelAndView("redirect:display.do");
 			}
 		} catch (Throwable oops) {
-			res = new ModelAndView("welcome/index");
+			res = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return res;
 	}
