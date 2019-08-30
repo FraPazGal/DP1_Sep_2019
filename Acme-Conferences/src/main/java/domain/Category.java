@@ -30,7 +30,6 @@ public class Category extends DomainEntity {
 
 	/* Getters and setters */
 
-	@NotNull
 	@NotEmpty
 	@ElementCollection
 	public Map<String, String> getTitle() {
@@ -52,8 +51,8 @@ public class Category extends DomainEntity {
 	}
 
 	@Valid
-	@OneToMany
 	@NotNull
+	@OneToMany
 	public Collection<Category> getChildCategories() {
 		return childCategories;
 	}
