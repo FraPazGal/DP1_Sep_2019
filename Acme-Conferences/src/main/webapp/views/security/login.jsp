@@ -24,8 +24,14 @@
 
 	<h1><spring:message	code="security.login" /></h1>
 	<acme:textbox code="security.username" path="username" /><br>
-	
 	<acme:textbox code="security.password" path="password" password="true"/><br> 
+	
+	<jstl:if test="${showError == true}">
+		<div class="error">
+			<spring:message code="security.login.failed" />
+		</div>
+	</jstl:if>
+	<br>
 
 	<input type="submit" value="<spring:message code="security.login" />" />
 

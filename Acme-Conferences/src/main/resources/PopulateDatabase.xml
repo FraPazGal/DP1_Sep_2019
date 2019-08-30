@@ -1157,8 +1157,8 @@
 		<property name="summary" value="Testeo con CTS5" />
 		<property name="venue" value="Submissions last 5" />
 		<property name="submissionDeadline" value="08/19/2019 23:59" />
-		<property name="notificationDeadline" value="09/29/2019 23:59" />
-		<property name="cameraReadyDeadline" value="10/19/2019 23:59" />
+		<property name="notificationDeadline" value="09/01/2019 23:59" />
+		<property name="cameraReadyDeadline" value="09/02/2019 23:59" />
 		<property name="startDate" value="10/18/2019 09:00" />
 		<property name="endDate" value="10/22/2019 9:00" />
 		<property name="entryFee" value="55.55" />
@@ -1169,13 +1169,13 @@
 
 	<bean id="conference11" class="domain.Conference">
 		<property name="title" value="Conferencia testeo Not5" />
-		<property name="acronym" value="CTS5" />
+		<property name="acronym" value="CTN5" />
 		<property name="summary" value="Testeo con CTN5" />
 		<property name="venue" value="Notification less than 5" />
 		<property name="submissionDeadline" value="08/21/2019 23:59" />
-		<property name="notificationDeadline" value="08/22/2019 23:59" />
-		<property name="cameraReadyDeadline" value="08/25/2019 10:00" />
-		<property name="startDate" value="08/25/2019 22:00" />
+		<property name="notificationDeadline" value="09/01/2019 23:59" />
+		<property name="cameraReadyDeadline" value="09/02/2019 23:59" />
+		<property name="startDate" value="09/25/2019 22:00" />
 		<property name="endDate" value="10/22/2019 9:00" />
 		<property name="entryFee" value="55.55" />
 		<property name="status" value="FINAL" />
@@ -1189,9 +1189,9 @@
 		<property name="summary" value="Testeo con CTC5" />
 		<property name="venue" value="Camera-Ready less than 5" />
 		<property name="submissionDeadline" value="07/19/2019 23:59" />
-		<property name="notificationDeadline" value="07/29/2019 23:59" />
-		<property name="cameraReadyDeadline" value="08/23/2019 23:59" />
-		<property name="startDate" value="08/26/2019 09:00" />
+		<property name="notificationDeadline" value="09/01/2019 23:59" />
+		<property name="cameraReadyDeadline" value="09/02/2019 23:59" />
+		<property name="startDate" value="09/26/2019 09:00" />
 		<property name="endDate" value="10/22/2019 9:00" />
 		<property name="entryFee" value="55.55" />
 		<property name="status" value="DECISION-MADE" />
@@ -1205,9 +1205,9 @@
 		<property name="summary" value="Testeo con CTO5" />
 		<property name="venue" value="Organized less than 5" />
 		<property name="submissionDeadline" value="07/19/2019 23:59" />
-		<property name="notificationDeadline" value="07/29/2019 23:59" />
-		<property name="cameraReadyDeadline" value="08/21/2019 23:59" />
-		<property name="startDate" value="08/24/2019 09:00" />
+		<property name="notificationDeadline" value="09/01/2019 23:59" />
+		<property name="cameraReadyDeadline" value="09/02/2019 23:59" />
+		<property name="startDate" value="09/24/2019 09:00" />
 		<property name="endDate" value="10/22/2019 9:00" />
 		<property name="entryFee" value="55.55" />
 		<property name="status" value="DECISION-MADE" />
@@ -1220,11 +1220,11 @@
 		<property name="acronym" value="CTSPH" />
 		<property name="summary" value="Start por horas" />
 		<property name="venue" value="Organized less than 5" />
-		<property name="submissionDeadline" value="07/19/2019 23:59" />
-		<property name="notificationDeadline" value="07/29/2019 23:59" />
-		<property name="cameraReadyDeadline" value="07/21/2019 23:59" />
-		<property name="startDate" value="08/20/2019 13:00" />
-		<property name="endDate" value="10/22/2019 9:00" />
+		<property name="submissionDeadline" value="08/19/2019 23:59" />
+		<property name="notificationDeadline" value="09/01/2019 23:59" />
+		<property name="cameraReadyDeadline" value="09/02/2019 23:59" />
+		<property name="startDate" value="09/05/2019 13:00" />
+		<property name="endDate" value="11/22/2019 9:00" />
 		<property name="entryFee" value="55.55" />
 		<property name="status" value="NOTIFIED" />
 		<property name="administrator" ref="administrator1" />

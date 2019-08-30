@@ -400,11 +400,14 @@ public class ConferenceService {
 		int reject = 0;
 		int accept = 0;
 
+		// If the report has no status, it will not count (same as those reports with status BORDER-LINE)
 		for (Review report : reports) {
-			if (report.getStatus().equals("ACCEPTED"))
-				accept++;
-			else if (report.getStatus().equals("REJECTED"))
-				reject++;
+			if(report.getStatus() != null) {
+				if (report.getStatus().equals("ACCEPTED"))
+					accept++;
+				else if (report.getStatus().equals("REJECTED"))
+					reject++;
+			}
 		}
 
 		if (accept >= reject)
