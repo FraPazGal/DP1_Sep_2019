@@ -42,9 +42,7 @@ public class CategoryController extends AbstractController {
 		ModelAndView result = new ModelAndView("redirect:list.do");
 		
 		try {
-			Category category = this.categoryService.create();
-
-			result = this.createEditModelAndView(category);
+			result = this.createEditModelAndView(this.categoryService.create());
 			
 		} catch (Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
