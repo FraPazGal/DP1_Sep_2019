@@ -139,12 +139,22 @@ public class SponsorshipService {
 		
 		if(!binding.hasErrors()) {
 			/* Credit card */
+			if (creditCard.getExpirationMonth() != null
+					&& creditCard.getExpirationYear() != null) {
+				
+				try {
+					Assert.isTrue(!this.creditCardService.checkIfExpired(
+									creditCard.getExpirationMonth(),
+									creditCard.getExpirationYear()), "card.date.error");
+				} catch (Throwable oops) {
+					binding.rejectValue("expirationMonth", "card.date.error");
+				}
+			}
+			
 			try {
-				Assert.isTrue(!this.creditCardService.checkIfExpired(
-								creditCard.getExpirationMonth(),
-								creditCard.getExpirationYear()), "card.date.error");
+				Assert.isTrue(this.utilityService.isValidCCMake(form.getMake()));
 			} catch (Throwable oops) {
-				binding.rejectValue("expirationMonth", "card.date.error");
+				binding.rejectValue("make", "invalid.make");
 			}
 			
 			if (!binding.hasErrors()) {

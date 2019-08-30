@@ -8,6 +8,7 @@ import java.util.Map;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -194,18 +195,16 @@ public class ConferenceController extends AbstractController {
 				} catch (Throwable oops) {
 				}
 			}
-			if (conferences == null) {
-				result = new ModelAndView("redirect:/welcome/index.do");
-			} else {
-				result.addObject("conferences", conferences);
-				result.addObject("conferencesRegisteredTo",
-						conferencesRegisteredTo);
-				result.addObject("conferencesSubmittedTo",
-						conferencesSubmittedTo);
-				result.addObject("isPrincipal", isPrincipal);
-				result.addObject("catalog", catalog);
-				result.addObject("listConf", true);
-			}
+			Assert.notNull(conferences, "not.allowed");
+			
+			result.addObject("conferences", conferences);
+			result.addObject("conferencesRegisteredTo",
+					conferencesRegisteredTo);
+			result.addObject("conferencesSubmittedTo",
+					conferencesSubmittedTo);
+			result.addObject("isPrincipal", isPrincipal);
+			result.addObject("catalog", catalog);
+			result.addObject("listConf", true);
 
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do/");

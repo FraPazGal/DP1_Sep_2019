@@ -126,6 +126,13 @@ public class RegistrationService {
 					binding.rejectValue("expirationMonth", "card.date.error");
 				}
 			}
+			
+			try {
+				Assert.isTrue(this.utilityService.isValidCCMake(form.getMake()));
+			} catch (Throwable oops) {
+				binding.rejectValue("make", "invalid.make");
+			}
+			
 			if (!binding.hasErrors()) {
 				CreditCard saved;
 				saved = this.creditCardService.save(creditCard);

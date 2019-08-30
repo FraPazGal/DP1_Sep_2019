@@ -102,14 +102,11 @@ public class SubmissionController extends AbstractController {
 				result.addObject("listSub", true);
 				
 			}
-			if (submissions == null) {
-				result = new ModelAndView("redirect:/welcome/index.do");
-			
-			} else {
-				result.addObject("submissions", submissions);
-				result.addObject("isPrincipal", isPrincipal);
-				result.addObject("catalog", catalog);
-			}
+			Assert.notNull(submissions, "not.allowed");
+		
+			result.addObject("submissions", submissions);
+			result.addObject("isPrincipal", isPrincipal);
+			result.addObject("catalog", catalog);
 			
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");

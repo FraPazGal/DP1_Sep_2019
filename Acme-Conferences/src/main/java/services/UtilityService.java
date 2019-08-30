@@ -23,6 +23,9 @@ public class UtilityService {
 	@Autowired
 	private ActorRepository actorRepository;
 	
+	@Autowired
+	private SystemConfigurationService systemConfigurationService;	
+	
 	// Other business methods -------------------------------
 
 	public Boolean checkEmail(final String email, final String authority) {
@@ -85,5 +88,17 @@ public class UtilityService {
 		Assert.isTrue(this.checkAuthority(principal, authority), "not.allowed");
 		
 		return result;
+	}
+	
+	public boolean isValidCCMake (String toValidate) {
+		boolean isValid = false;
+		String[] aux = this.systemConfigurationService.findMySystemConfiguration().getMakes().split(",");
+		for(String validMake : aux) {
+			if(toValidate.contentEquals(validMake)) {
+				isValid = true;
+				break;
+			}
+		}
+		return isValid;
 	}
 }
