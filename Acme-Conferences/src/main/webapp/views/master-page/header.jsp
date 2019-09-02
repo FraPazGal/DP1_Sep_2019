@@ -40,7 +40,7 @@
 						<li><a href="conference/list.do?catalog=future"><spring:message
 									code="master.page.conference.list" /></a></li>
 						<li><a href="category/list.do"><spring:message
-								code="master.page.categories" /></a></li>
+									code="master.page.categories" /></a></li>
 					</security:authorize>
 					<security:authorize access="hasRole('ADMIN')">
 						<li><a href="conference/list.do?catalog=unpublished"><spring:message
@@ -61,7 +61,7 @@
 
 		<security:authorize access="hasRole('ADMIN')">
 
-			<li><a class="fNiv"><spring:message
+			<li><a href="category/list.do" class="fNiv"><spring:message
 						code="master.page.categories" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -73,7 +73,7 @@
 		</security:authorize>
 
 		<security:authorize access="hasRole('SPONSOR')">
-			<li><a class="fNiv"><spring:message
+			<li><a href="sponsorship/list.do" class="fNiv"><spring:message
 						code="master.page.sponsorship" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -85,7 +85,7 @@
 		</security:authorize>
 
 		<security:authorize access="hasRole('AUTHOR')">
-			<li><a class="fNiv"><spring:message
+			<li><a href="registration/list.do" class="fNiv"><spring:message
 						code="master.page.registration" /></a>
 				<ul>
 					<li class="arrow"></li>
@@ -97,12 +97,12 @@
 		</security:authorize>
 
 		<security:authorize access="hasRole('AUTHOR')">
-			<li><a class="fNiv"><spring:message
+			<li><a href="submission/list.do" class="fNiv"><spring:message
 						code="master.page.submission" /></a>
 				<ul>
 					<li class="arrow"></li>
-						<li><a href="submission/list.do"><spring:message
-									code="master.page.submission.list" /></a></li>
+					<li><a href="submission/list.do"><spring:message
+								code="master.page.submission.list" /></a></li>
 				</ul></li>
 
 		</security:authorize>
@@ -140,7 +140,7 @@
 		</security:authorize>
 
 		<security:authorize access="isAuthenticated()">
-			<li><a class="fNiv"> <spring:message
+			<li><a href="message/list.do" class="fNiv"> <spring:message
 						code="master.page.message" />
 			</a>
 				<ul>

@@ -14,7 +14,6 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.URL;
 
 @Entity
@@ -24,9 +23,9 @@ public class SystemConfiguration extends DomainEntity {
 
 	/* Attributes */
 
-	private String systemName, banner, countryCode, makes;
+	private String systemName, banner, countryCode, makes, timeResultsCached,
+			maxResults;
 	private Map<String, String> welcomeMessage, topics, voidWords;
-	private Integer timeResultsCached, maxResults;
 
 	/* Getters and setters */
 
@@ -107,22 +106,20 @@ public class SystemConfiguration extends DomainEntity {
 	}
 
 	@NotNull
-	@Range(min = 1, max = 24, message = "range.error")
-	public Integer getTimeResultsCached() {
+	public String getTimeResultsCached() {
 		return timeResultsCached;
 	}
 
-	public void setTimeResultsCached(Integer timeResultsCached) {
+	public void setTimeResultsCached(String timeResultsCached) {
 		this.timeResultsCached = timeResultsCached;
 	}
 
 	@NotNull
-	@Range(min = 0, max = 100, message = "range.error")
-	public Integer getMaxResults() {
+	public String getMaxResults() {
 		return maxResults;
 	}
 
-	public void setMaxResults(Integer maxResults) {
+	public void setMaxResults(String maxResults) {
 		this.maxResults = maxResults;
 	}
 }

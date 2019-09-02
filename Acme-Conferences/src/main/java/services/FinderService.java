@@ -114,8 +114,8 @@ public class FinderService {
 		Date maxLivedMoment = new Date();
 		int timeChachedFind;
 
-		timeChachedFind = this.systemConfigurationService
-				.findMySystemConfiguration().getTimeResultsCached();
+		timeChachedFind = Integer.parseInt(this.systemConfigurationService
+				.findMySystemConfiguration().getTimeResultsCached());
 		maxLivedMoment = DateUtils.addHours(new Date(
 				System.currentTimeMillis() - 1), -timeChachedFind);
 		if (finder.getSearchMoment().before(maxLivedMoment)) {
@@ -142,8 +142,8 @@ public class FinderService {
 
 		Collection<Conference> resultsPageables = new ArrayList<Conference>();
 
-		nResults = this.systemConfigurationService.findMySystemConfiguration()
-				.getMaxResults();
+		nResults = Integer.parseInt(this.systemConfigurationService
+				.findMySystemConfiguration().getMaxResults());
 
 		keyWord = (finder.getKeyWord() == null || finder.getKeyWord().isEmpty()) ? ""
 				: finder.getKeyWord();
@@ -224,8 +224,9 @@ public class FinderService {
 		Finder finder = this.findFinderByActorId(principal.getId());
 
 		if (finder.getSearchMoment() != null) {
-			final int timeChachedFind = this.systemConfigurationService
-					.findMySystemConfiguration().getTimeResultsCached();
+			final int timeChachedFind = Integer
+					.parseInt(this.systemConfigurationService
+							.findMySystemConfiguration().getTimeResultsCached());
 			maxLivedMoment = DateUtils.addHours(maxLivedMoment,
 					-timeChachedFind);
 

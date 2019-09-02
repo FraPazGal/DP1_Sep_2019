@@ -70,11 +70,27 @@ public class SystemConfigurationService {
 		}
 
 		try {
-			Assert.isTrue(systemConfiguration.getMaxResults() instanceof Integer);
-			Assert.isTrue(systemConfiguration.getMaxResults() > 0
-					&& systemConfiguration.getMaxResults() <= 10);
+			Integer maxResults = Integer.parseInt(systemConfiguration
+					.getMaxResults());
+			try {
+				Assert.isTrue(maxResults > 0 && maxResults <= 10);
+			} catch (Throwable oops) {
+				binding.rejectValue("maxResults", "results.out.of.range");
+			}
 		} catch (Throwable oops) {
 			binding.rejectValue("maxResults", "results.error");
+		}
+
+		try {
+			Integer time = Integer.parseInt(systemConfiguration
+					.getTimeResultsCached());
+			try {
+				Assert.isTrue(time > 0 && time <= 24);
+			} catch (Throwable oops) {
+				binding.rejectValue("timeResultsCached", "time.out.of.range");
+			}
+		} catch (Throwable oops) {
+			binding.rejectValue("timeResultsCached", "time.error");
 		}
 
 		this.validator.validate(systemConfiguration, binding);
