@@ -21,8 +21,6 @@
 
 					<form:hidden path="id" />
 					<form:hidden path="version" />
-					<form:hidden path="sendMoment" />
-					<form:hidden path="sender" />
 
 					<acme:textbox code="mensaje.subject" path="subject" required="true" />
 
@@ -59,6 +57,11 @@
 							<br>
 						</jstl:otherwise>
 					</jstl:choose>
+					<jstl:if test="${not empty binding.getFieldError('topic')}">
+						<p class="error">
+							<spring:message code="message.topic.error" />
+						</p>
+					</jstl:if>
 
 					<br>
 

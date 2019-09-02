@@ -3,8 +3,6 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -84,7 +82,8 @@ public class MessageController extends AbstractController {
 		Mensaje newMessage;
 
 		try {
-			newMessage = this.messageService.create();
+			// newMessage = this.messageService.create();
+			newMessage = new Mensaje();
 
 			res = new ModelAndView("message/edit");
 			res.addObject("mensaje", newMessage);
@@ -126,6 +125,7 @@ public class MessageController extends AbstractController {
 						.findByUsername("[Anonymous]"));
 
 				res.addObject("actors", actors);
+				res.addObject("binding", binding);
 			} else {
 				this.messageService.save(message);
 
@@ -190,6 +190,7 @@ public class MessageController extends AbstractController {
 			res.addObject("topics", this.systemConfigurationService
 					.findMySystemConfiguration().getTopics());
 			res.addObject("messageError", messageError);
+			res.addObject("broadcast", false);
 		} catch (Throwable oops) {
 			res = new ModelAndView("redirect:../welcome/index.do");
 		}
@@ -197,16 +198,17 @@ public class MessageController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/broadcast", method = RequestMethod.POST, params = "save")
-	public ModelAndView sendBroadcast(@Valid Mensaje message,
-			BindingResult binding) {
+	public ModelAndView sendBroadcast(Mensaje message, BindingResult binding) {
 		ModelAndView res;
 
 		try {
+			this.messageService.validate(message, binding);
 			if (binding.hasErrors()) {
 				res = new ModelAndView("message/broadcast");
 				res.addObject("mensaje", message);
 				res.addObject("topics", this.systemConfigurationService
 						.findMySystemConfiguration().getTopics());
+				res.addObject("binding", binding);
 			} else {
 				this.messageService.save(message);
 

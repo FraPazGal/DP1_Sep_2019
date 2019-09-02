@@ -2,6 +2,7 @@ package services;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
@@ -27,6 +28,9 @@ public class MessageService {
 	private UtilityService utilityService;
 
 	@Autowired
+	private SystemConfigurationService systemConfigurationService;
+
+	@Autowired
 	private Validator validator;
 
 	public Mensaje create() {
@@ -48,6 +52,8 @@ public class MessageService {
 
 	public void validate(final Mensaje message, final BindingResult binding) {
 
+		message.setSendMoment(new Date(System.currentTimeMillis() - 1));
+		message.setSender(this.utilityService.findByPrincipal());
 		try {
 			Assert.isTrue(!message.getBody().isEmpty()
 					&& message.getBody() != null);
@@ -81,6 +87,20 @@ public class MessageService {
 					.getSender().getId());
 		} catch (Throwable oops) {
 			binding.rejectValue("sender", "message.sender.error");
+		}
+
+		try {
+			boolean ci = false;
+			for (String t : this.systemConfigurationService
+					.findMySystemConfiguration().getTopics().values()) {
+				if (t.toLowerCase().contains(message.getTopic().toLowerCase())) {
+					ci = true;
+					break;
+				}
+			}
+			Assert.isTrue(ci);
+		} catch (Throwable oops) {
+			binding.rejectValue("topic", "message.topic.error");
 		}
 
 		this.validator.validate(message, binding);
