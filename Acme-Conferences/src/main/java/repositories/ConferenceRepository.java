@@ -12,30 +12,18 @@ import domain.Conference;
 @Repository
 public interface ConferenceRepository extends
 		JpaRepository<Conference, Integer> {
+	
+	@Query("select c from Conference c where c.submissionDeadline > ?2 and c.submissionDeadline < ?1 and c.status != 'DRAFT'")
+	Collection<Conference> findSubmissionLastFive(Date now, Date nowMinusFive);
 
-	@Query("select c from Conference c where datediff(c.submissionDeadline, ?1)<=5 and datediff(c.submissionDeadline,?1)>0 and c.status != 'DRAFT'")
-	Collection<Conference> findSubmissionLastFive(Date toCompare);
+	@Query("select c from Conference c where c.notificationDeadline > ?1 and c.notificationDeadline < ?2 and c.status != 'DRAFT'")
+	Collection<Conference> findNotificationInFive(Date now, Date nowPlusFive);
 
-	@Query("select c from Conference c where datediff(c.submissionDeadline,?1)=0 and c.status != 'DRAFT'")
-	Collection<Conference> findSubmissionLastZero(Date toCompare);
-
-	@Query("select c from Conference c where datediff(c.notificationDeadline, ?1)<=5 and datediff(c.notificationDeadline,?1)>0 and c.status != 'DRAFT'")
-	Collection<Conference> findNotificationInFive(Date toCompare);
-
-	@Query("select c from Conference c where datediff(c.notificationDeadline, ?1)=0 and c.status != 'DRAFT'")
-	Collection<Conference> findNotificationInZero(Date toCompare);
-
-	@Query("select c from Conference c where datediff(c.cameraReadyDeadline, ?1)<=5 and datediff(c.cameraReadyDeadline,?1)>0 and c.status != 'DRAFT'")
-	Collection<Conference> findCameraInFive(Date toCompare);
-
-	@Query("select c from Conference c where datediff(c.cameraReadyDeadline, ?1)=0 and c.status != 'DRAFT'")
-	Collection<Conference> findCameraInZero(Date toCompare);
-
-	@Query("select c from Conference c where datediff(c.startDate, ?1)<=5 and datediff(c.startDate,?1)>0 and c.status != 'DRAFT'")
-	Collection<Conference> findStartInFive(Date toCompare);
-
-	@Query("select c from Conference c where datediff(c.startDate, ?1)=0 and c.status != 'DRAFT'")
-	Collection<Conference> findStartInZero(Date toCompare);
+	@Query("select c from Conference c where c.cameraReadyDeadline > ?1 and c.cameraReadyDeadline < ?2 and c.status != 'DRAFT'")
+	Collection<Conference> findCameraInFive(Date now, Date nowPlusFive);
+	
+	@Query("select c from Conference c where c.startDate > ?1 and c.startDate < ?2 and c.status != 'DRAFT'")
+	Collection<Conference> findStartInFive(Date now, Date nowPlusFive);
 
 	@Query("select c from Conference c where c.status != 'DRAFT'")
 	Collection<Conference> publishedConferences();

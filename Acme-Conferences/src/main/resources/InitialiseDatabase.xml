@@ -56,7 +56,7 @@
 		<property name="surname" value="Dominator of the Universe" />
 		<property name="photo"
 			value="https://vignette.wikia.nocookie.net/onepunchman/images/c/ce/Boros_color.jpg/revision/latest?cb=20151017212925" />
-		<property name="email" value="boros@yahoo.com" />
+		<property name="email" value="boros@" />
 		<property name="phoneNumber" value="+34666666666" />
 		<property name="address" value="C/ Collapsing Star Roaring Cannon" />
 		<property name="userAccount" ref="userAdmin1" />
