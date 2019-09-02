@@ -8,7 +8,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 <%@taglib prefix="acme" tagdir="/WEB-INF/tags"%>
 
-<SCRIPT>
+<!-- <SCRIPT>
 	function checkEmpty(language) {
 		var isValid = true;
 		var maps = [ document.getElementById('welcomeES').value,
@@ -33,7 +33,7 @@
 
 		return isValid;
 	}
-</SCRIPT>
+</SCRIPT> -->
 
 <security:authorize access="hasRole('ADMIN')">
 
@@ -50,7 +50,7 @@
 			<form:hidden path="id" />
 			<form:hidden path="version" />
 
-			<acme:textbox code="config.sysname" path="systemName" required="true" />
+			<acme:textbox code="config.sysname" path="systemName" size="100%" />
 			<jstl:if
 				test="${not empty binding.getFieldError('systemName').getCode()}">
 				<p class="error">
@@ -61,7 +61,7 @@
 
 			<br>
 
-			<acme:textbox code="config.banner" path="banner" required="true" />
+			<acme:textbox code="config.banner" path="banner" size="100%" />
 			<jstl:if
 				test="${not empty binding.getFieldError('banner').getCode()}">
 				<p class="error">
@@ -72,7 +72,7 @@
 			<br>
 
 			<acme:textbox code="config.countryCode" path="countryCode"
-				required="true" />
+				size="100%" />
 			<jstl:if
 				test="${not empty binding.getFieldError('countryCode').getCode()}">
 				<p class="error">
@@ -83,22 +83,7 @@
 
 			<br>
 
-			<form:label path="timeResultsCached">
-				<spring:message code="config.cache" />
-			</form:label>
-			<form:input type="number" path="timeResultsCached" required="true" />
-			<jstl:if
-				test="${not empty binding.getFieldError('timeResultsCached').getCode()}">
-				<p class="error">
-					<spring:message
-						code="cache.error" />
-				</p>
-			</jstl:if>
-
-			<br>
-			<br>
-
-			<acme:textbox code="config.makes" path="makes" required="true" />
+			<acme:textbox code="config.makes" path="makes" size="100%" />
 			<jstl:if test="${not empty binding.getFieldError('makes').getCode()}">
 				<p class="error">
 					<spring:message code="make.error" />
@@ -107,10 +92,26 @@
 
 			<br>
 
+			<form:label path="timeResultsCached">
+				<spring:message code="config.cache" />
+			</form:label>
+			<br>
+			<form:input path="timeResultsCached" />
+			<jstl:if
+				test="${not empty binding.getFieldError('timeResultsCached').getCode()}">
+				<p class="error">
+					<spring:message code="cache.error" />
+				</p>
+			</jstl:if>
+
+			<br>
+			<br>
+
 			<form:label path="maxResults">
 				<spring:message code="config.maxResults" />
 			</form:label>
-			<form:input type="number" path="maxResults" required="true" />
+			<br>
+			<form:input path="maxResults" />
 			<jstl:if
 				test="${not empty binding.getFieldError('maxResults').getCode()}">
 				<p class="error">
@@ -126,8 +127,7 @@
 
 			<input type="text" name="welcomeES" id="welcomeES" size="100%"
 				value="${welcome.get('Español')}"
-				placeholder="<spring:message code='sysconfig.edit.welcome.message.es' />"
-				required>
+				placeholder="<spring:message code='sysconfig.edit.welcome.message.es' />">
 
 			<br />
 
@@ -138,8 +138,7 @@
 			</p>
 			<input type="text" name="welcomeEN" id="welcomeEN" size="100%"
 				value="${welcome.get('English')}"
-				placeholder="<spring:message code='sysconfig.edit.welcome.message.en' />"
-				required>
+				placeholder="<spring:message code='sysconfig.edit.welcome.message.en' />">
 			<jstl:if
 				test="${not empty binding.getFieldError('welcomeMessage').getCode()}">
 				<p class="error">
@@ -151,16 +150,13 @@
 			<br />
 			<br />
 
-
-
 			<p>
 				<spring:message code="void.es" />
 			</p>
 
 			<input type="text" name="voidES" id="voidES" size="100%"
 				value="${voidES}"
-				placeholder="<spring:message code='sysconfig.edit.void.message.es' />"
-				required>
+				placeholder="<spring:message code='sysconfig.edit.void.message.es' />">
 
 			<br />
 			<br />
@@ -170,8 +166,7 @@
 			</p>
 			<input type="text" name="voidEN" id="voidEN" size="100%"
 				value="${voidEN}"
-				placeholder="<spring:message code='sysconfig.edit.void.message.en' />"
-				required>
+				placeholder="<spring:message code='sysconfig.edit.void.message.en' />">
 			<jstl:if
 				test="${not empty binding.getFieldError('voidWords').getCode()}">
 				<p class="error">
@@ -191,8 +186,7 @@
 
 			<input type="text" name="topicsES" id="topicsES" size="100%"
 				value="${topics.get('Español')}"
-				placeholder="<spring:message code='sysconfig.edit.topics.message.es' />"
-				required>
+				placeholder="<spring:message code='sysconfig.edit.topics.message.es' />">
 
 			<br />
 			<br />
@@ -202,8 +196,7 @@
 			</p>
 			<input type="text" name="topicsEN" id="topicsEN" size="100%"
 				value="${topics.get('English')}"
-				placeholder="<spring:message code='sysconfig.edit.topics.message.en' />"
-				required>
+				placeholder="<spring:message code='sysconfig.edit.topics.message.en' />">
 			<jstl:if
 				test="${not empty binding.getFieldError('topics').getCode()}">
 				<p class="error">
