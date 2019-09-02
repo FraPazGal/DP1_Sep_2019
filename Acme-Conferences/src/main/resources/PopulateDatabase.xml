@@ -224,7 +224,7 @@
 		<property name="email" value="dio@outlook.com" />
 		<property name="phoneNumber" value="+34685742458" />
 		<property name="address" value="C/ Phantom Blood" />
-		<property name="keywords" value="evil,fabulous,vampire,stand user,time-saver" />
+		<property name="keywords" value="evil,fabulous,vampire,stand user,time-saver,Not5" />
 		<property name="userAccount" ref="userReviewer2" />
 	</bean>
 
