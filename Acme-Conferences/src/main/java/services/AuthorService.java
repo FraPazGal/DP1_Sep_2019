@@ -323,7 +323,7 @@ public class AuthorService {
 			// Deleting the void words
 			Collection<String> copyWords = new ArrayList<>(splittedWords);
 			for (String s : copyWords) {
-				if (voidWords.contains(s)) {
+				if (voidWords.contains(s.toLowerCase())) {
 					splittedWords.remove(s);
 				}
 			}
@@ -331,7 +331,7 @@ public class AuthorService {
 			// Counting words and getting fmax
 			for (String s : splittedWords) {
 				if (!counter.containsKey(s)) {
-					counter.put(s, 0);
+					counter.put(s, 1);
 				} else {
 					int aux = counter.get(s) + 1;
 					counter.put(s, aux);
@@ -382,7 +382,7 @@ public class AuthorService {
 					// Deleting the void words
 					copyWords = new ArrayList<>(splittedWords);
 					for (String s : copyWords) {
-						if (voidWords.contains(s)) {
+						if (voidWords.contains(s.toLowerCase())) {
 							splittedWords.remove(s);
 						}
 					}
@@ -402,6 +402,7 @@ public class AuthorService {
 						pmax = aux;
 					}
 				} else {
+					// If he/she does not have any CR paper --> score = 0
 					points.put(a, 0.);
 				}
 
