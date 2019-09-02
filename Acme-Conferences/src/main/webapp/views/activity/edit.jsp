@@ -40,23 +40,23 @@
 			<form:hidden path="conference" />
 			<form:hidden path="submission" />
 
-			<acme:textbox code="activity.title" path="title" 
+			<acme:textbox code="activity.title" path="title" required="true"
 				size="60" />
 
 			<br>
 
 			<acme:textbox code="activity.speakersInvolved"
-				path="speakersInvolved"  size="60" />
+				path="speakersInvolved" required="true" size="60" />
 
 			<br>
 
-			<acme:textbox code="activity.summary" path="summary" 
+			<acme:textbox code="activity.summary" path="summary" required="true"
 				size="60" />
 
 			<br>
 
 			<acme:textbox code="activity.usedRoom" path="usedRoom"
-				 size="60" />
+				required="true" size="60" />
 
 			<br>
 
@@ -69,7 +69,7 @@
 				<spring:message code="activity.type" />
 			</form:label>
 			<br />
-			<form:select path="type"  size="4"
+			<form:select path="type" required="true" size="4"
 				onfocus="checkIfPresentation(this)"
 				onchange="checkIfPresentation(this)">
 				<spring:message code='activity.selected' var="selected" />
@@ -118,12 +118,12 @@
 			<br>
 
 			<acme:textbox code="activity.startMoment" path="startMoment"
-				placeholder="moment.placeholder"  size="60" />
+				placeholder="moment.placeholder" required="true" size="60" />
 
 			<br>
 
 			<acme:textbox code="activity.duration" path="duration"
-				 size="60" />
+				required="true" size="60" />
 
 			<br>
 
