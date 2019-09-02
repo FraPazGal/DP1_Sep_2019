@@ -1,3 +1,4 @@
+
 package controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import services.CommentService;
+import services.ConferenceService;
 import services.UtilityService;
 import domain.Comentario;
+import domain.Conference;
 
 @Controller
 @RequestMapping("/comment")
@@ -23,6 +26,9 @@ public class CommentController extends AbstractController {
 	@Autowired
 	private UtilityService utilityService;
 
+	@Autowired
+	private ConferenceService conferenceService;
+
 	// Creating comment
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -33,7 +39,9 @@ public class CommentController extends AbstractController {
 		Comentario newComment;
 
 		try {
-
+			Conference conference = this.conferenceService
+					.findOne(conferenceid);
+			Assert.isTrue(conference.getStatus().equalsIgnoreCase("FINAL"));
 			try {
 				Assert.notNull(this.utilityService.findByPrincipal());
 				try {

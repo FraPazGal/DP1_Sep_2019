@@ -202,9 +202,11 @@
 		</display:table>
 	</jstl:if>
 
-	<input type="button"
-		onclick="redirect: location.href = 'comment/create.do?conferenceid=${conference.id}';"
-		value="<spring:message code='comment.create' />" />
+	<jstl:if test="${conference.status == 'FINAL'}">
+		<input type="button"
+			onclick="redirect: location.href = 'comment/create.do?conferenceid=${conference.id}';"
+			value="<spring:message code='comment.create' />" />
+	</jstl:if>
 </div>
 
 <jstl:if test="${spoBanner.targetPage ne null}">

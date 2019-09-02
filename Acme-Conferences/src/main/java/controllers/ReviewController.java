@@ -160,12 +160,15 @@ public class ReviewController extends AbstractController {
 
 	@RequestMapping(value = "/admin/assign", method = RequestMethod.POST)
 	public ModelAndView assign(
-			@RequestParam(value = "reviewerid") Integer[] reviewerids,
-			@RequestParam(value = "submissionid") Integer submissionid) {
+			@RequestParam(value = "reviewerid", required = false) Integer[] reviewerids,
+			@RequestParam(value = "submissionid", required = false) Integer submissionid) {
 		ModelAndView res;
 		Review newReport;
 
 		try {
+			Assert.notNull(submissionid);
+			Assert.notNull(reviewerids);
+
 			Assert.isTrue(this.utilityService.checkAuthority(
 					this.utilityService.findByPrincipal(), "ADMIN"));
 
@@ -177,8 +180,8 @@ public class ReviewController extends AbstractController {
 			res = new ModelAndView(
 					"redirect:/submission/list.do?catalog=underR");
 		} catch (Throwable oops) {
-			Collection<Reviewer> availableReviewers = this.reviewService
-					.findReviewersNotAssigned();
+			Collection<Reviewer> availableReviewers = this.reviewerService
+					.findAll();
 
 			res = new ModelAndView("review/assign");
 			res.addObject("reviewers", availableReviewers);

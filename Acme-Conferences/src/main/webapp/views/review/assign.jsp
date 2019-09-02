@@ -19,7 +19,9 @@
 					<spring:message code="review.reviewer.selection" />
 				</legend>
 
-				<form action="review/admin/assign.do">
+				<spring:message code="no.more" var="advertencia" />
+				<form action="review/admin/assign.do"
+					onsubmit="return window.confirm('${advertencia}');">
 
 					<input type="hidden" name="submissionid" value="${submissionid}">
 
@@ -32,22 +34,19 @@
 							</option>
 						</jstl:forEach>
 
-					</select>
-
-					<jstl:if test="${not empty errormessage}">
-						<p class="error">
-							<spring:message code="${errormessage}" />
-						</p>
-					</jstl:if>
-
-					<br /> <br /> <input type="submit"
+					</select> <br /> <br /> <input type="submit"
 						value="<spring:message code="review.assign" />" formmethod="post">
-
 
 				</form>
 
 			</fieldset>
-
+			
+			<jstl:if test="${not empty errormesage}">
+				<p class="error">
+					<spring:message code="${errormesage}" />
+				</p>
+			</jstl:if>
+			
 		</jstl:when>
 		<jstl:otherwise>
 			<h2>
@@ -55,7 +54,7 @@
 			</h2>
 
 			<input type="button" onclick="window.history.back()"
-				value="<spring:message code="go.back" />">
+				value="<spring:message code="go.back" />" />
 
 		</jstl:otherwise>
 

@@ -1,7 +1,5 @@
 package domain;
 
-import java.util.Date;
-
 import javax.persistence.Access;
 import javax.persistence.AccessType;
 import javax.persistence.Entity;
@@ -26,7 +24,7 @@ public class Activity extends DomainEntity {
 
 	private String title, speakersInvolved, summary, usedRoom, attachement,
 			type, duration;
-	private Date startMoment;
+	private String startMoment;
 	private Conference conference;
 	private Submission submission;
 
@@ -94,11 +92,11 @@ public class Activity extends DomainEntity {
 
 	@NotNull
 	@DateTimeFormat(pattern = "dd-MM-yyy hh:mm")
-	public Date getStartMoment() {
+	public String getStartMoment() {
 		return startMoment;
 	}
 
-	public void setStartMoment(Date startMoment) {
+	public void setStartMoment(String startMoment) {
 		this.startMoment = startMoment;
 	}
 

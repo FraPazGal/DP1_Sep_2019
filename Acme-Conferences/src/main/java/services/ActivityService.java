@@ -1,10 +1,13 @@
 package services;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.transaction.Transactional;
 
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -84,6 +87,30 @@ public class ActivityService {
 			}
 		} catch (Throwable oops) {
 			binding.rejectValue("duration", "duration.not.int");
+		}
+
+		try {
+			SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyy hh:mm");
+			String dateInString = activity.getStartMoment();
+
+			Date date = formatter.parse(dateInString);
+
+			try {
+				Assert.isTrue(date.after(LocalDate.now().toDate()));
+				try {
+					Assert.isTrue(date.before(activity.getConference()
+							.getEndDate())
+							&& date.after(activity.getConference()
+									.getStartDate()));
+				} catch (Throwable oops) {
+					binding.rejectValue("startMoment",
+							"moment.during.conference");
+				}
+			} catch (Throwable oops) {
+				binding.rejectValue("startMoment", "moment.after.now");
+			}
+		} catch (Exception e) {
+			binding.rejectValue("startMoment", "moment.error");
 		}
 		return activity;
 	}
