@@ -54,8 +54,7 @@
 				<td><strong> <spring:message
 							code="activity.startMoment" /> :
 				</strong></td>
-				<td><fmt:formatDate type="both" dateStyle="short"
-						timeStyle="short" value="${activity.startMoment}" /></td>
+				<td><jstl:out value="${activity.startMoment}" /></td>
 			</tr>
 
 			<tr>

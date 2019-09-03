@@ -42,8 +42,7 @@
 	</display:column>
 
 	<display:column titleKey="activity.startMoment" sortable="true">
-		<fmt:formatDate type="both" dateStyle="short" timeStyle="short"
-			value="${activity.startMoment}" />
+		<jstl:out value="${activity.startMoment}" />
 	</display:column>
 
 	<display:column titleKey="activity.duration" sortable="true">
