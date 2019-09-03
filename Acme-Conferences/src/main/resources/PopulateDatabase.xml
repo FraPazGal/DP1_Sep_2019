@@ -224,7 +224,8 @@
 		<property name="email" value="dio@outlook.com" />
 		<property name="phoneNumber" value="+34685742458" />
 		<property name="address" value="C/ Phantom Blood" />
-		<property name="keywords" value="evil,fabulous,vampire,stand user,time-saver,Not5" />
+		<property name="keywords"
+			value="evil,fabulous,vampire,stand user,time-saver,Not5" />
 		<property name="userAccount" ref="userReviewer2" />
 	</bean>
 
@@ -450,6 +451,14 @@
 			value="Este paper no tiene nada interesante pero como es gratis pues molestamos." />
 	</bean>
 
+	<bean id="paper4cr" class="domain.Paper">
+		<property name="title" value="Paper de coña conferencia (Camera Ready)" />
+		<property name="authors" value="Anónimos" />
+		<property name="summary" value="HAHAHAHAHA" />
+		<property name="paperDocument"
+			value="Este paper no tiene nada interesante pero como es gratis pues molestamos." />
+	</bean>
+
 	<bean id="paper5" class="domain.Paper">
 		<property name="title" value="Cuánto sufrimiento" />
 		<property name="authors" value="Alumnos de DP que van a septiembre" />
@@ -459,7 +468,7 @@
 	</bean>
 
 	<bean id="paper5cr" class="domain.Paper">
-		<property name="title" value="Cuánto sufrimiento (Camera Ready)" />
+		<property name="title" value="Cuánto sufrimiento conferencia conferencia conferencia (Camera Ready)" />
 		<property name="authors" value="Alumnos de DP que van a septiembre" />
 		<property name="summary" value="DPI, DPII y cómo destroza veranos" />
 		<property name="paperDocument"
@@ -476,7 +485,7 @@
 	</bean>
 
 	<bean id="paper6cr" class="domain.Paper">
-		<property name="title" value="Me empiezo a cansar (Camera Ready)" />
+		<property name="title" value="Me empiezo a cansar conferencia (Camera Ready)" />
 		<property name="authors" value="Creador del populate" />
 		<property name="summary"
 			value="Desvaríos varios de alguien con mejores cosas que hacer" />
@@ -493,7 +502,7 @@
 	</bean>
 
 	<bean id="paper7cr" class="domain.Paper">
-		<property name="title" value="Hablemos de Ing. del Software (Camera Ready)" />
+		<property name="title" value="Hablemos de Ing. del Software conferencia (Camera Ready)" />
 		<property name="authors" value="Estudiantes de Ing. del Software" />
 		<property name="summary" value="Léete el paper y déjatede resúmenes" />
 		<property name="paperDocument"
@@ -518,6 +527,14 @@
 
 	<bean id="paper10" class="domain.Paper">
 		<property name="title" value="Paper de testeo 3" />
+		<property name="authors" value="El tester 3" />
+		<property name="summary"
+			value="Léete el paper de testeo 3 y déjatede resúmenes" />
+		<property name="paperDocument" value="Este paper de testeo 3 llegará lejos" />
+	</bean>
+
+	<bean id="paper10cr" class="domain.Paper">
+		<property name="title" value="Paper de testeo 3 conferencia (Camera ready)" />
 		<property name="authors" value="El tester 3" />
 		<property name="summary"
 			value="Léete el paper de testeo 3 y déjatede resúmenes" />
@@ -1379,6 +1396,7 @@
 		<property name="author" ref="author1" />
 		<property name="conference" ref="conference1" />
 		<property name="paper" ref="paper6" />
+		<property name="cameraReadyPaper" ref="paper6cr" />
 	</bean>
 
 	<bean id="submission2" class="domain.Submission">
@@ -1407,6 +1425,7 @@
 		<property name="author" ref="author2" />
 		<property name="conference" ref="conference7" />
 		<property name="paper" ref="paper5" />
+		<property name="cameraReadyPaper" ref="paper5cr" />
 	</bean>
 
 	<bean id="submission5" class="domain.Submission">
@@ -1416,6 +1435,7 @@
 		<property name="author" ref="author1" />
 		<property name="conference" ref="conference7" />
 		<property name="paper" ref="paper4" />
+		<property name="cameraReadyPaper" ref="paper4cr" />
 	</bean>
 
 	<bean id="submission6" class="domain.Submission">
@@ -1443,6 +1463,7 @@
 		<property name="author" ref="author2" />
 		<property name="conference" ref="conference11" />
 		<property name="paper" ref="paper10" />
+		<property name="cameraReadyPaper" ref="paper10cr" />
 	</bean>
 
 	<!-- ****** REVIEW/REPORT ****** -->

@@ -346,7 +346,7 @@ public class AuthorService {
 
 			// Getting the buzz words
 			for (String s : counter.keySet()) {
-				if (counter.get(s) > ratioBuzzWords) {
+				if (counter.get(s) >= ratioBuzzWords) {
 					buzzWords.add(s);
 				}
 			}
