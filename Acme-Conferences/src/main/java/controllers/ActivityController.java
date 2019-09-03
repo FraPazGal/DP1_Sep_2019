@@ -15,12 +15,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.ActivityService;
 import services.CommentService;
+import services.ConferenceService;
 import services.SectionService;
 import services.SubmissionService;
 import services.UtilityService;
 import domain.Activity;
 import domain.Actor;
 import domain.Comentario;
+import domain.Conference;
 import domain.Paper;
 import domain.Section;
 
@@ -42,6 +44,9 @@ public class ActivityController extends AbstractController {
 
 	@Autowired
 	private CommentService commentService;
+
+	@Autowired
+	private ConferenceService conferenceService;
 
 	// Displaying an activity
 
@@ -150,6 +155,12 @@ public class ActivityController extends AbstractController {
 			Assert.isTrue(this.utilityService
 					.checkAuthority(principal, "ADMIN"));
 
+			Conference conference = this.conferenceService
+					.findOne(conferenceid);
+
+			Assert.isTrue(conference.getAdministrator().getId() == principal
+					.getId());
+
 			permission = true;
 
 			newActivity = this.activityService.create(conferenceid);
@@ -185,9 +196,15 @@ public class ActivityController extends AbstractController {
 			Assert.isTrue(this.utilityService
 					.checkAuthority(principal, "ADMIN"));
 
-			permission = true;
-
 			toEdit = this.activityService.findOne(activityid);
+
+			Conference conference = this.conferenceService.findOne(toEdit
+					.getConference().getId());
+
+			Assert.isTrue(conference.getAdministrator().getId() == principal
+					.getId());
+
+			permission = true;
 
 			Assert.isTrue(LocalDate.now().toDate()
 					.before(toEdit.getConference().getStartDate()));
