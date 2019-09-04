@@ -33,6 +33,10 @@
 		<jstl:out value="${activity.title}" />
 	</display:column>
 
+	<display:column titleKey="activity.title" sortable="true">
+		<jstl:out value="${activity.type}" />
+	</display:column>
+
 	<display:column titleKey="activity.summary" sortable="true">
 		<jstl:out value="${activity.summary}" />
 	</display:column>

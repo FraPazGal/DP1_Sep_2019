@@ -81,7 +81,10 @@
 				url="activity/display.do?activityid=${section.activity.id}" />
 
 			<br />
-			<form:errors cssClass="error" code="${message}" />
+			<jstl:if test="${not empty activityerror}">
+				<p class="error">
+					<spring:message code="${activityerror}" />
+			</jstl:if>
 		</form:form>
 	</fieldset>
 

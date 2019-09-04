@@ -82,7 +82,6 @@ public class MessageController extends AbstractController {
 		Mensaje newMessage;
 
 		try {
-			// newMessage = this.messageService.create();
 			newMessage = new Mensaje();
 
 			res = new ModelAndView("message/edit");

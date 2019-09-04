@@ -54,19 +54,19 @@ public class MessageService {
 
 		message.setSendMoment(new Date(System.currentTimeMillis() - 1));
 		message.setSender(this.utilityService.findByPrincipal());
-		try {
-			Assert.isTrue(!message.getBody().isEmpty()
-					&& message.getBody() != null);
-		} catch (Throwable oops) {
-			binding.rejectValue("body", "message.body.not.blank");
-		}
-
-		try {
-			Assert.isTrue(!message.getSubject().isEmpty()
-					&& message.getSubject() != null);
-		} catch (Throwable oops) {
-			binding.rejectValue("subject", "message.subject.not.blank");
-		}
+//		try {
+//			Assert.isTrue(!message.getBody().isEmpty()
+//					&& message.getBody() != null);
+//		} catch (Throwable oops) {
+//			binding.rejectValue("body", "message.body.not.blank");
+//		}
+//
+//		try {
+//			Assert.isTrue(!message.getSubject().isEmpty()
+//					&& message.getSubject() != null);
+//		} catch (Throwable oops) {
+//			binding.rejectValue("subject", "message.subject.not.blank");
+//		}
 
 		try {
 			Assert.isTrue(!message.getTopic().isEmpty()

@@ -82,6 +82,9 @@ public class SectionController extends AbstractController {
 					.checkAuthority(principal, "ADMIN"));
 
 			a = this.activityService.findOne(activityid);
+
+			Assert.isTrue(a.getConference().getAdministrator().getId() == principal
+					.getId());
 			Assert.isTrue(a.getType().equalsIgnoreCase("TUTORIAL"));
 
 			permission = true;
@@ -112,9 +115,12 @@ public class SectionController extends AbstractController {
 			Assert.isTrue(this.utilityService
 					.checkAuthority(principal, "ADMIN"));
 
-			permission = true;
-
 			toEdit = this.sectionService.findOne(sectionid);
+
+			Assert.isTrue(toEdit.getActivity().getConference()
+					.getAdministrator().getId() == principal.getId());
+
+			permission = true;
 
 			res = new ModelAndView("section/edit");
 			res.addObject("section", toEdit);
@@ -137,10 +143,16 @@ public class SectionController extends AbstractController {
 				res = new ModelAndView("section/edit");
 				res.addObject(section);
 				res.addObject("permission", true);
+				if (section.getActivity() == null) {
+					res.addObject("activityerror", "activity.error");
+				}
 			} else {
 				principal = this.utilityService.findByPrincipal();
 				Assert.isTrue(this.utilityService.checkAuthority(principal,
 						"ADMIN"));
+
+				Assert.isTrue(section.getActivity().getConference()
+						.getAdministrator().getId() == principal.getId());
 
 				this.sectionService.save(section);
 				res = new ModelAndView(
