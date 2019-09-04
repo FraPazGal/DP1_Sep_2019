@@ -78,6 +78,7 @@ public class SubmissionController extends AbstractController {
 		String isPrincipal = null;
 
 		try {
+			Assert.notNull(catalog);
 			Actor principal = this.utilityService.findByPrincipal();
 
 			Assert.isTrue(this.utilityService
