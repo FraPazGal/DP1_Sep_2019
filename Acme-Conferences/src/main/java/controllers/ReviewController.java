@@ -60,11 +60,13 @@ public class ReviewController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/admin/conferencereports", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam(value = "id") Integer id) {
+	public ModelAndView listConference(
+			@RequestParam(value = "id", required = false) Integer id) {
 		ModelAndView res;
 		Collection<Review> conferenceReports;
 
 		try {
+			Assert.notNull(id);
 			Assert.isTrue(this.utilityService.checkAuthority(
 					this.utilityService.findByPrincipal(), "ADMIN"));
 
@@ -81,10 +83,12 @@ public class ReviewController extends AbstractController {
 
 	/* Listing */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam final int submissionId) {
+	public ModelAndView list(
+			@RequestParam(required = false) final Integer submissionId) {
 		ModelAndView result = new ModelAndView("review/list");
 
 		try {
+			Assert.notNull(submissionId);
 			Submission submission = this.submissionService
 					.findOne(submissionId);
 			if (this.utilityService.checkAuthority(
@@ -103,10 +107,12 @@ public class ReviewController extends AbstractController {
 
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam(value = "id") Integer id) {
+	public ModelAndView display(
+			@RequestParam(value = "id", required = false) Integer id) {
 		ModelAndView result = new ModelAndView("review/display");
 
 		try {
+			Assert.notNull(id);
 			Actor principal = this.utilityService.findByPrincipal();
 			Assert.isTrue(this.utilityService.checkAuthority(principal,
 					"REVIEWER")
@@ -137,11 +143,12 @@ public class ReviewController extends AbstractController {
 
 	@RequestMapping(value = "/admin/assign", method = RequestMethod.GET)
 	public ModelAndView assignView(
-			@RequestParam(value = "submissionid") Integer submissionid) {
+			@RequestParam(value = "submissionid", required = false) Integer submissionid) {
 		ModelAndView res;
 		Collection<Reviewer> availableReviewers;
 
 		try {
+			Assert.notNull(submissionid);
 			Assert.isTrue(this.utilityService.checkAuthority(
 					this.utilityService.findByPrincipal(), "ADMIN"));
 
@@ -233,12 +240,14 @@ public class ReviewController extends AbstractController {
 	}
 
 	@RequestMapping(value = "/reviewer/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam(value = "reviewid") int reviewid) {
+	public ModelAndView edit(
+			@RequestParam(value = "reviewid", required = false) Integer reviewid) {
 		ModelAndView res;
 		Actor principal;
 		Review toWrite;
 
 		try {
+			Assert.notNull(reviewid);
 			principal = this.utilityService.findByPrincipal();
 			Assert.isTrue(this.utilityService.checkAuthority(principal,
 					"REVIEWER"));

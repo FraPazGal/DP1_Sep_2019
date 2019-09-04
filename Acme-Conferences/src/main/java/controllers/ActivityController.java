@@ -51,7 +51,8 @@ public class ActivityController extends AbstractController {
 	// Displaying an activity
 
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam int activityid) {
+	public ModelAndView display(
+			@RequestParam(required = false) Integer activityid) {
 		ModelAndView res;
 		Activity activity;
 		Collection<Section> sections;
@@ -59,6 +60,8 @@ public class ActivityController extends AbstractController {
 		Boolean permission;
 
 		try {
+			Assert.notNull(activityid);
+
 			permission = this.utilityService.isAdmin();
 
 			activity = this.activityService.findOne(activityid);
@@ -118,12 +121,15 @@ public class ActivityController extends AbstractController {
 	// Listing activities of a conference
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam int conferenceid) {
+	public ModelAndView list(
+			@RequestParam(required = false) Integer conferenceid) {
 		ModelAndView res;
 		Collection<Activity> activities;
 		String requestUri;
 
 		try {
+			Assert.notNull(conferenceid);
+
 			activities = this.activityService
 					.getActivitiesOfConference(conferenceid);
 			activities = (activities == null) ? activities = new ArrayList<>()
@@ -143,7 +149,8 @@ public class ActivityController extends AbstractController {
 	// Creating activity
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam Integer conferenceid) {
+	public ModelAndView create(
+			@RequestParam(required = false) Integer conferenceid) {
 		ModelAndView res;
 		Activity newActivity;
 		Actor principal;
@@ -154,6 +161,8 @@ public class ActivityController extends AbstractController {
 			principal = this.utilityService.findByPrincipal();
 			Assert.isTrue(this.utilityService
 					.checkAuthority(principal, "ADMIN"));
+
+			Assert.notNull(conferenceid);
 
 			Conference conference = this.conferenceService
 					.findOne(conferenceid);
@@ -176,7 +185,12 @@ public class ActivityController extends AbstractController {
 			res.addObject("crPapers", crPapers);
 			res.addObject("permission", permission);
 		} catch (Throwable oops) {
-			res = new ModelAndView("redirect:../welcome/index.do");
+			if (conferenceid == null) {
+				res = new ModelAndView(
+						"redirect:../conference/list.do?catalog=unpublished");
+			} else {
+				res = new ModelAndView("redirect:../welcome/index.do");
+			}
 		}
 		return res;
 	}
@@ -184,7 +198,7 @@ public class ActivityController extends AbstractController {
 	// Editing activity
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam Integer activityid) {
+	public ModelAndView edit(@RequestParam(required = false) Integer activityid) {
 		ModelAndView res;
 		Activity toEdit;
 		Actor principal;
@@ -195,6 +209,8 @@ public class ActivityController extends AbstractController {
 			principal = this.utilityService.findByPrincipal();
 			Assert.isTrue(this.utilityService
 					.checkAuthority(principal, "ADMIN"));
+
+			Assert.notNull(activityid);
 
 			toEdit = this.activityService.findOne(activityid);
 
@@ -218,7 +234,12 @@ public class ActivityController extends AbstractController {
 			res.addObject("permission", permission);
 			res.addObject("crPapers", crPapers);
 		} catch (Throwable oops) {
-			res = new ModelAndView("redirect:../welcome/index.do");
+			if (activityid == null) {
+				res = new ModelAndView(
+						"redirect:../conference/list.do?catalog=unpublished");
+			} else {
+				res = new ModelAndView("redirect:../welcome/index.do");
+			}
 		}
 		return res;
 	}
@@ -235,9 +256,17 @@ public class ActivityController extends AbstractController {
 		try {
 			this.activityService.validate(activity, binding);
 			if (binding.hasErrors()) {
-				Collection<Paper> crPapers = this.submissionService
-						.findCameraReadyPapersOfConference(activity
-								.getConference().getId());
+				Collection<Paper> crPapers;
+				try {
+					crPapers = this.submissionService
+							.findCameraReadyPapersOfConference(activity
+									.getConference().getId());
+				} catch (Throwable oops) {
+					crPapers = this.submissionService
+							.findCameraReadyPapersOfConference(this.activityService
+									.findOne(activity.getId()).getConference()
+									.getId());
+				}
 
 				res = new ModelAndView("activity/edit");
 				res.addObject(activity);

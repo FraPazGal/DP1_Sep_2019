@@ -1,4 +1,3 @@
-
 package controllers;
 
 import java.util.ArrayList;
@@ -29,31 +28,36 @@ import forms.SponsorshipForm;
 public class SponsorshipController extends AbstractController {
 
 	/* Services */
-	
-	@Autowired
-	private UtilityService	utilityService;
 
 	@Autowired
-	private SponsorshipService		sponsorshipService;
-	
+	private UtilityService utilityService;
+
 	@Autowired
-	private ConferenceService		conferenceService;
-	
+	private SponsorshipService sponsorshipService;
+
 	@Autowired
-	private SystemConfigurationService		systemConfigurationService;
+	private ConferenceService conferenceService;
+
+	@Autowired
+	private SystemConfigurationService systemConfigurationService;
 
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam final int sponsorshipId) {
+	public ModelAndView display(
+			@RequestParam(required = false) final Integer sponsorshipId) {
 		ModelAndView result = new ModelAndView("sponsorship/display");
 
 		try {
-			Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
+			Assert.notNull(sponsorshipId);
+			Sponsorship sponsorship = this.sponsorshipService
+					.findOne(sponsorshipId);
 			Actor principal = this.utilityService.findByPrincipal();
-			Assert.isTrue(sponsorship.getSponsor().equals((Sponsor) principal), "not.allowed");
+			Assert.isTrue(sponsorship.getSponsor().equals((Sponsor) principal),
+					"not.allowed");
 
 			result.addObject("sponsorship", sponsorship);
-			//result.addObject("requestURI", "sponsorship/display.do?sponsorshipId=" + sponsorshipId);
+			// result.addObject("requestURI",
+			// "sponsorship/display.do?sponsorshipId=" + sponsorshipId);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do/");
 		}
@@ -69,9 +73,10 @@ public class SponsorshipController extends AbstractController {
 		try {
 			Actor principal = this.utilityService.findByPrincipal();
 			if (this.utilityService.checkAuthority(principal, "SPONSOR")) {
-				sponsorships = this.sponsorshipService.sponsorshipsPerSponsor(principal.getId());
+				sponsorships = this.sponsorshipService
+						.sponsorshipsPerSponsor(principal.getId());
 			}
-						
+
 			result.addObject("sponsorships", sponsorships);
 
 		} catch (final Throwable oops) {
@@ -84,7 +89,7 @@ public class SponsorshipController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView createSponsorship() {
 		ModelAndView result;
-		
+
 		try {
 			result = this.createEditModelAndView(new SponsorshipForm());
 
@@ -94,53 +99,62 @@ public class SponsorshipController extends AbstractController {
 
 		return result;
 	}
-	
+
 	/* Edit */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int sponsorshipId) {
+	public ModelAndView edit(
+			@RequestParam(required = false) final Integer sponsorshipId) {
 		ModelAndView result;
-		
+
 		try {
+			Assert.notNull(sponsorshipId);
 			Actor principal = this.utilityService.findByPrincipal();
-			Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
-			Assert.isTrue(sponsorship.getSponsor().equals((Sponsor) principal), "not.allowed");
-			
-			result = this.createEditModelAndView(new SponsorshipForm(sponsorship));
+			Sponsorship sponsorship = this.sponsorshipService
+					.findOne(sponsorshipId);
+			Assert.isTrue(sponsorship.getSponsor().equals((Sponsor) principal),
+					"not.allowed");
+
+			result = this.createEditModelAndView(new SponsorshipForm(
+					sponsorship));
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return result;
 	}
-	
+
 	/* Save */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView edit(SponsorshipForm editSponsorshipFormObject, BindingResult binding) {
+	public ModelAndView edit(SponsorshipForm editSponsorshipFormObject,
+			BindingResult binding) {
 		ModelAndView result = new ModelAndView("redirect:list.do");
 
 		try {
-			Sponsorship sponsorship = this.sponsorshipService.reconstruct(editSponsorshipFormObject, binding);
-			
+			Sponsorship sponsorship = this.sponsorshipService.reconstruct(
+					editSponsorshipFormObject, binding);
+
 			if (binding.hasErrors()) {
 				result = this.createEditModelAndView(editSponsorshipFormObject);
-			}
-			else {
+			} else {
 				this.sponsorshipService.save(sponsorship);
 			}
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
 		}
-		
+
 		return result;
 	}
-	
+
 	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int sponsorshipId) {
+	public ModelAndView delete(
+			@RequestParam(required = false) final Integer sponsorshipId) {
 		ModelAndView result = new ModelAndView("redirect:list.do");
 		try {
-			final Sponsorship sponsorship = this.sponsorshipService.findOne(sponsorshipId);
+			Assert.notNull(sponsorshipId);
+			final Sponsorship sponsorship = this.sponsorshipService
+					.findOne(sponsorshipId);
 			this.sponsorshipService.delete(sponsorship);
-			
+
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
 		}
@@ -148,19 +162,23 @@ public class SponsorshipController extends AbstractController {
 	}
 
 	/* Ancillary methods */
-	protected ModelAndView createEditModelAndView(final SponsorshipForm sponsorshipForm) {
+	protected ModelAndView createEditModelAndView(
+			final SponsorshipForm sponsorshipForm) {
 		return this.createEditModelAndView(sponsorshipForm, null);
 	}
 
-	protected ModelAndView createEditModelAndView(final SponsorshipForm sponsorshipForm, final String messageCode) {
+	protected ModelAndView createEditModelAndView(
+			final SponsorshipForm sponsorshipForm, final String messageCode) {
 		ModelAndView result;
-		Collection<Conference> conferences = this.conferenceService.publishedConferences();
-		
+		Collection<Conference> conferences = this.conferenceService
+				.publishedConferences();
+
 		result = new ModelAndView("sponsorship/edit");
 		result.addObject("sponsorshipForm", sponsorshipForm);
 		result.addObject("errMsg", messageCode);
 		result.addObject("conferences", conferences);
-		String[] aux = this.systemConfigurationService.findMySystemConfiguration().getMakes().split(",");
+		String[] aux = this.systemConfigurationService
+				.findMySystemConfiguration().getMakes().split(",");
 		result.addObject("makes", Arrays.asList(aux));
 
 		return result;

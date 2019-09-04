@@ -62,7 +62,8 @@ public class ConferenceController extends AbstractController {
 
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam final int conferenceId) {
+	public ModelAndView display(
+			@RequestParam(required = false) final Integer conferenceId) {
 
 		ModelAndView result = new ModelAndView("conference/display");
 		boolean isPrincipal = false;
@@ -71,6 +72,7 @@ public class ConferenceController extends AbstractController {
 		Map<String, String> titleCat = new HashMap<>();
 		Conference conference = null;
 		try {
+			Assert.notNull(conferenceId);
 			Actor principal = null;
 			Sponsorship spoBanner = this.sponsorshipService
 					.findBanner(conferenceId);
@@ -196,12 +198,10 @@ public class ConferenceController extends AbstractController {
 				}
 			}
 			Assert.notNull(conferences, "not.allowed");
-			
+
 			result.addObject("conferences", conferences);
-			result.addObject("conferencesRegisteredTo",
-					conferencesRegisteredTo);
-			result.addObject("conferencesSubmittedTo",
-					conferencesSubmittedTo);
+			result.addObject("conferencesRegisteredTo", conferencesRegisteredTo);
+			result.addObject("conferencesSubmittedTo", conferencesSubmittedTo);
 			result.addObject("isPrincipal", isPrincipal);
 			result.addObject("catalog", catalog);
 			result.addObject("listConf", true);
@@ -229,9 +229,11 @@ public class ConferenceController extends AbstractController {
 
 	/* Edit */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int conferenceId) {
+	public ModelAndView edit(
+			@RequestParam(required = false) final Integer conferenceId) {
 		ModelAndView result;
 		try {
+			Assert.notNull(conferenceId);
 			result = this.createEditModelAndView(this.conferenceService
 					.findOneToEdit(conferenceId));
 
@@ -290,10 +292,12 @@ public class ConferenceController extends AbstractController {
 
 	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int conferenceId) {
+	public ModelAndView delete(
+			@RequestParam(required = false) final Integer conferenceId) {
 		ModelAndView result = new ModelAndView(
 				"redirect:list.do?catalog=unpublished");
 		try {
+			Assert.notNull(conferenceId);
 			final Conference conference = this.conferenceService
 					.findOne(conferenceId);
 			this.activityService.deleteAll(this.activityService
@@ -308,10 +312,12 @@ public class ConferenceController extends AbstractController {
 
 	/* Review submissions */
 	@RequestMapping(value = "/review", method = RequestMethod.GET)
-	public ModelAndView reviewSubmissions(@RequestParam final int conferenceId) {
+	public ModelAndView reviewSubmissions(
+			@RequestParam(required = false) final Integer conferenceId) {
 		ModelAndView result = new ModelAndView("redirect:list.do?catalog=5noti");
 
 		try {
+			Assert.notNull(conferenceId);
 			this.conferenceService.reviewSubmissions(conferenceId);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do/");
@@ -321,10 +327,12 @@ public class ConferenceController extends AbstractController {
 
 	/* Review submissions */
 	@RequestMapping(value = "/notify", method = RequestMethod.GET)
-	public ModelAndView notifySubmissions(@RequestParam final int conferenceId) {
+	public ModelAndView notifySubmissions(
+			@RequestParam(required = false) final Integer conferenceId) {
 		ModelAndView result = new ModelAndView("redirect:list.do?catalog=5noti");
 
 		try {
+			Assert.notNull(conferenceId);
 			this.conferenceService.notifySubmissions(conferenceId);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do/");

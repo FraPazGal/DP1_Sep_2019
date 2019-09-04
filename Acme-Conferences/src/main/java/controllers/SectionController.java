@@ -37,13 +37,14 @@ public class SectionController extends AbstractController {
 	// Listing activities of a conference
 
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam int activityid) {
+	public ModelAndView list(@RequestParam(required = false) Integer activityid) {
 		ModelAndView res;
 		Collection<Section> sections;
 		Actor principal;
 		boolean permission = false;
 
 		try {
+			Assert.notNull(activityid);
 			principal = this.utilityService.findByPrincipal();
 			Assert.isTrue(this.utilityService
 					.checkAuthority(principal, "ADMIN"));
@@ -66,7 +67,8 @@ public class SectionController extends AbstractController {
 	// Creating section
 
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView create(@RequestParam Integer activityid) {
+	public ModelAndView create(
+			@RequestParam(required = false) Integer activityid) {
 		ModelAndView res;
 		Section newSection;
 		Activity a;
@@ -74,6 +76,7 @@ public class SectionController extends AbstractController {
 		boolean permission = false;
 
 		try {
+			Assert.notNull(activityid);
 			principal = this.utilityService.findByPrincipal();
 			Assert.isTrue(this.utilityService
 					.checkAuthority(principal, "ADMIN"));
@@ -97,13 +100,14 @@ public class SectionController extends AbstractController {
 	// Editing section
 
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam Integer sectionid) {
+	public ModelAndView edit(@RequestParam(required = false) Integer sectionid) {
 		ModelAndView res;
 		Section toEdit;
 		Actor principal;
 		boolean permission = false;
 
 		try {
+			Assert.notNull(sectionid);
 			principal = this.utilityService.findByPrincipal();
 			Assert.isTrue(this.utilityService
 					.checkAuthority(principal, "ADMIN"));

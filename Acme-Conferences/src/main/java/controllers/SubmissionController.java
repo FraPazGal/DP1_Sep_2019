@@ -41,22 +41,25 @@ public class SubmissionController extends AbstractController {
 
 	/* Display */
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
-	public ModelAndView display(@RequestParam final int submissionId) {
+	public ModelAndView display(
+			@RequestParam(required = false) final Integer submissionId) {
 		ModelAndView result = new ModelAndView("submission/display");
 		Submission submission;
 		boolean isAssigned = false;
 		Actor principal;
 
 		try {
+			Assert.notNull(submissionId);
 			submission = this.submissionService.findOne(submissionId);
 			principal = this.utilityService.findByPrincipal();
-			
+
 			if (this.utilityService.checkAuthority(principal, "REVIEWER")) {
 				Assert.isTrue(this.reviewService.checkIfAssigned(submissionId));
 			} else if (this.utilityService.checkAuthority(principal, "ADMIN")) {
 				isAssigned = this.reviewService.isAssigned(submissionId);
 			} else if (this.utilityService.checkAuthority(principal, "AUTHOR")) {
-				Assert.isTrue(submission.getAuthor().getId() == principal.getId());
+				Assert.isTrue(submission.getAuthor().getId() == principal
+						.getId());
 			}
 			result.addObject("submission", submission);
 			result.addObject("isAssigned", isAssigned);
@@ -68,27 +71,31 @@ public class SubmissionController extends AbstractController {
 
 	/* Listing */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list(@RequestParam(required = false) final String catalog) {
+	public ModelAndView list(
+			@RequestParam(required = false) final String catalog) {
 		ModelAndView result = new ModelAndView("submission/list");
 		Collection<Submission> submissions = null;
 		String isPrincipal = null;
 
 		try {
 			Actor principal = this.utilityService.findByPrincipal();
-			
-			Assert.isTrue(this.utilityService.checkAuthority(principal, "ADMIN") || 
-					this.utilityService.checkAuthority(principal, "AUTHOR"));
-			
+
+			Assert.isTrue(this.utilityService
+					.checkAuthority(principal, "ADMIN")
+					|| this.utilityService.checkAuthority(principal, "AUTHOR"));
+
 			if (this.utilityService.checkAuthority(principal, "AUTHOR")) {
-				submissions = this.submissionService.submissionsPerAuthor(principal.getId());
+				submissions = this.submissionService
+						.submissionsPerAuthor(principal.getId());
 				isPrincipal = "AUTHOR";
-				
+
 			} else if (this.utilityService.checkAuthority(principal, "ADMIN")) {
 				isPrincipal = "ADMIN";
-				
+
 				switch (catalog) {
 				case "underR":
-					submissions = this.submissionService.underReviewSubmissions();
+					submissions = this.submissionService
+							.underReviewSubmissions();
 					break;
 
 				case "accepted":
@@ -100,29 +107,34 @@ public class SubmissionController extends AbstractController {
 					break;
 				}
 				result.addObject("listSub", true);
-				
+
 			}
 			Assert.notNull(submissions, "not.allowed");
-		
+
 			result.addObject("submissions", submissions);
 			result.addObject("isPrincipal", isPrincipal);
 			result.addObject("catalog", catalog);
-			
+
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
 		}
-		
+
 		return result;
 	}
 
 	/* Create */
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
-	public ModelAndView createSubmission(@RequestParam final int conferenceId) {
+	public ModelAndView createSubmission(
+			@RequestParam(required = false) final Integer conferenceId) {
 		ModelAndView result;
 		try {
-			Conference conference = this.conferenceService.findOne(conferenceId);
-			
-			Assert.isTrue(this.submissionService.noPreviousSubmissions(conference), "not.allowed");
+			Assert.notNull(conferenceId);
+			Conference conference = this.conferenceService
+					.findOne(conferenceId);
+
+			Assert.isTrue(
+					this.submissionService.noPreviousSubmissions(conference),
+					"not.allowed");
 
 			SubmissionForm submissionForm = new SubmissionForm();
 			submissionForm.setConference(conference);
@@ -138,12 +150,15 @@ public class SubmissionController extends AbstractController {
 
 	/* Edit */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int submissionId) {
+	public ModelAndView edit(
+			@RequestParam(required = false) final Integer submissionId) {
 		ModelAndView result;
 		Actor principal = this.utilityService.findByPrincipal();
 
 		try {
-			Submission submission = this.submissionService.findOne(submissionId);
+			Assert.notNull(submissionId);
+			Submission submission = this.submissionService
+					.findOne(submissionId);
 
 			Assert.isTrue(submission.getAuthor().equals((Author) principal));
 			final SubmissionForm submissionForm = new SubmissionForm(submission);
@@ -159,14 +174,16 @@ public class SubmissionController extends AbstractController {
 
 	/* Save */
 	@RequestMapping(value = "/edit", method = RequestMethod.POST, params = "save")
-	public ModelAndView edit(SubmissionForm submissionForm, BindingResult binding) {
+	public ModelAndView edit(SubmissionForm submissionForm,
+			BindingResult binding) {
 		ModelAndView result = new ModelAndView("redirect:list.do");
 		try {
-			Submission submission = this.submissionService.reconstruct(submissionForm, binding);
+			Submission submission = this.submissionService.reconstruct(
+					submissionForm, binding);
 
 			if (binding.hasErrors()) {
 				result = this.createEditModelAndView(submissionForm);
-				if(submission.getId() != 0) {
+				if (submission.getId() != 0) {
 					result.addObject("cameraReady", true);
 				}
 			} else {
@@ -181,11 +198,14 @@ public class SubmissionController extends AbstractController {
 
 	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int submissionId) {
+	public ModelAndView delete(
+			@RequestParam(required = false) final Integer submissionId) {
 		ModelAndView result = new ModelAndView("redirect:list.do");
 		try {
-			final Submission submission = this.submissionService.findOne(submissionId);
-			
+			Assert.notNull(submissionId);
+			final Submission submission = this.submissionService
+					.findOne(submissionId);
+
 			this.submissionService.delete(submission);
 
 		} catch (final Throwable oops) {
@@ -200,12 +220,14 @@ public class SubmissionController extends AbstractController {
 		return this.createEditModelAndView(submissionForm, null);
 	}
 
-	protected ModelAndView createEditModelAndView(final SubmissionForm submissionForm, final String messageCode) {
+	protected ModelAndView createEditModelAndView(
+			final SubmissionForm submissionForm, final String messageCode) {
 		ModelAndView result = new ModelAndView("submission/edit");
 
 		result.addObject("submissionForm", submissionForm);
 		result.addObject("errMsg", messageCode);
-		result.addObject("conferences", this.conferenceService.publishedConferences());
+		result.addObject("conferences",
+				this.conferenceService.publishedConferences());
 
 		return result;
 	}

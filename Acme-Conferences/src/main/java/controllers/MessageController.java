@@ -140,7 +140,7 @@ public class MessageController extends AbstractController {
 
 	@RequestMapping(value = "/createbroadcast", method = RequestMethod.GET)
 	public ModelAndView createBroadcast(
-			@RequestParam(value = "type") String type,
+			@RequestParam(value = "type", required = false) String type,
 			@RequestParam(value = "id", required = false) Integer id) {
 		ModelAndView res;
 		String messageError = null;
@@ -148,6 +148,7 @@ public class MessageController extends AbstractController {
 		Collection<Actor> actors = new ArrayList<>();
 
 		try {
+			Assert.notNull(type);
 			Assert.isTrue(this.utilityService.checkAuthority(
 					this.utilityService.findByPrincipal(), "ADMIN"));
 			newMessage = this.messageService.create();
@@ -223,12 +224,13 @@ public class MessageController extends AbstractController {
 
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(
-			@RequestParam(value = "messageid") Integer messageid) {
+			@RequestParam(value = "messageid", required = false) Integer messageid) {
 		ModelAndView res;
 		Actor principal;
 		Mensaje toDelete;
 
 		try {
+			Assert.notNull(messageid);
 			principal = this.utilityService.findByPrincipal();
 			toDelete = this.messageService.findOne(messageid);
 

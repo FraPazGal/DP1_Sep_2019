@@ -1,6 +1,5 @@
 package controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -22,7 +21,6 @@ public class CategoryController extends AbstractController {
 	@Autowired
 	private CategoryService categoryService;
 
-
 	/* Listing */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
@@ -40,10 +38,10 @@ public class CategoryController extends AbstractController {
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result = new ModelAndView("redirect:list.do");
-		
+
 		try {
 			result = this.createEditModelAndView(this.categoryService.create());
-			
+
 		} catch (Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
 		}
@@ -52,17 +50,19 @@ public class CategoryController extends AbstractController {
 
 	/* Edit */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
-	public ModelAndView edit(@RequestParam final int categoryId) {
+	public ModelAndView edit(
+			@RequestParam(required = false) final Integer categoryId) {
 		ModelAndView result;
 
 		try {
+			Assert.notNull(categoryId);
 			Category category = this.categoryService.findOne(categoryId);
 			Assert.notNull(category);
-			
+
 			result = this.createEditModelAndView(category);
 			result.addObject("nameEN", category.getTitle().get("English"));
 			result.addObject("nameES", category.getTitle().get("Español"));
-			
+
 		} catch (Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
 		}
@@ -75,11 +75,11 @@ public class CategoryController extends AbstractController {
 			@RequestParam("nameES") String nameES,
 			@RequestParam("nameEN") String nameEN, BindingResult binding) {
 		ModelAndView result = new ModelAndView("redirect:list.do");
-		
+
 		try {
-			Category reconstructed = this.categoryService.reconstruct(category, nameES,
-					nameEN, binding);
-			
+			Category reconstructed = this.categoryService.reconstruct(category,
+					nameES, nameEN, binding);
+
 			if (binding.hasErrors()) {
 				result = this.createEditModelAndView(category);
 				result.addObject("nameES", nameES);
@@ -90,36 +90,39 @@ public class CategoryController extends AbstractController {
 		} catch (Throwable oops) {
 			result = this.createEditModelAndView(category, oops.getMessage());
 		}
-		
+
 		return result;
 	}
 
 	/* Delete */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public ModelAndView delete(@RequestParam final int categoryId) {
+	public ModelAndView delete(
+			@RequestParam(required = false) final Integer categoryId) {
 		ModelAndView result = new ModelAndView("redirect:list.do");
 		try {
+			Assert.notNull(categoryId);
 			Category toDelete = this.categoryService.findOne(categoryId);
-			
+
 			this.categoryService.delete(toDelete);
 		} catch (final Throwable oops) {
 			result = new ModelAndView("redirect:../welcome/index.do");
 		}
 		return result;
 	}
-	
+
 	/* Ancillary methods */
 	protected ModelAndView createEditModelAndView(Category category) {
 		return createEditModelAndView(category, null);
 	}
 
-	protected ModelAndView createEditModelAndView(Category category, String messageCode) {
+	protected ModelAndView createEditModelAndView(Category category,
+			String messageCode) {
 		ModelAndView result = new ModelAndView("category/edit");
 
 		result.addObject("category", category);
 		result.addObject("categories", this.categoryService.findAllAsAdmin());
 		result.addObject("errMsg", messageCode);
-		
+
 		return result;
 	}
 }
